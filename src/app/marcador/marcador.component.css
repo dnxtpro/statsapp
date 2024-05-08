@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap');
+.cuadrado {
+    width: 1920px;
+    height: 1080px;
+    background-color: transparent; /* Puedes cambiar el color de fondo si lo deseas */
+    border:4px;
+  }
+  
+  .cuadrado2 {
+   width: 174px;
+  height: 100px;
+  background-color: transparent;
+  
+
+  }
+  .container {
+    position: relative;
+    width: 1080px;
+    margin: auto;
+    background-color:transparent;
+  }
+  .backgroundperso{
+    
+    font-family: "Bruno Ace", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color:#041f62;
+  }
+  .azul{background-color: #5aaec3e3;}
+  .rosa{background-color: #C281E8e3;}
+  .azulc{background-color: #4ab1ca;}
+  .rosac{background-color: #cd78ff;}
+  body{
+    background-color: transparent;
+  }
+  .blanco{
+    color:white;
+  }

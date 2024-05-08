@@ -1,0 +1,8 @@
+.margenarriba{
+    border-top: 4px solid black;
+    margin-bottom: 2px;
+    border-left: 4px solid black;
+  }
+  .margenabajo{
+    border-bottom: 4px solid black;
+  }

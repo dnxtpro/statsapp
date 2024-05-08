@@ -1,0 +1,19 @@
+<section class="layout"> 
+<div class="header">
+<h2>Nuevo Partido</h2>
+</div>
+<div class="main">
+<form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
+  <label for="rivalTeam">Equipo Rival:</label>
+  <input type="text" id="rivalTeam" formControlName="rivalTeam">
+
+  <label for="date">Fecha:</label>
+  <input type="date" id="date" formControlName="date">  
+
+  <label for="location">Ubicación:</label>
+  <input type="text" id="location" formControlName="location">
+
+  <button type="submit" [disabled]="!matchForm.valid">Empezar Partido</button>
+</form>
+</div>
+</section>

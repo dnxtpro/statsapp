@@ -1,0 +1,27 @@
+<div class="container p-5 mt-2" >
+        <div class="row cuadrado2 p-0 m-0">
+          <div class="row p-0 m-0">
+            <div class="col-6 backgroundperso d-flex justify-content-center azul">
+              <p class="mt-2 fw-bold">CVR</p>
+            </div>
+            <div class="col-3 backgroundperso d-flex justify-content-center azul">
+              <p class="mt-2">{{ marcador?.setsLocal }}</p>
+            </div>
+            <div class="col-3 backgroundperso d-flex justify-content-center azulc">
+              <p class="mt-2" [@parpadeoLocal]="parpadeoLocal">{{ marcador?.scoreLocal }}</p>
+            </div>
+          </div>
+          <div class="row p-0 m-0">
+            <div class="col-6 backgroundperso d-flex justify-content-center rosa">
+              <p class="mt-2 fw-bold">VIS</p>
+            </div>
+            <div class="col-3 backgroundperso d-flex justify-content-center rosa">
+              <p class="mt-2">{{ marcador?.setsVisitor }}</p>
+            </div>
+            <div class="col-3 backgroundperso d-flex justify-content-center rosac">
+              <p class="mt-2" [@parpadeoVisitor]="parpadeoVisitor">{{ marcador?.scoreVisitor }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      

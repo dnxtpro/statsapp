@@ -1,0 +1,15 @@
+
+
+<div class="dialogo" mat-dialog-content>
+  <h1 class="h11">{{ modalTitle }}</h1>
+  <div class="grid-container">
+    <button (click)="onPlayerClick(player)" on *ngFor="let player of players" type="button" class="btn btn-primary">
+      <div class="dorsal">{{ player.dorsal }}</div>
+      <div class="name">{{ player.name }}</div>
+    </button>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onClose()">Close</button> 
+  </div>
+</div>
+

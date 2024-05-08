@@ -1,0 +1,25 @@
+<div class="container-fluid custombackground">
+  <div class="row custombackground">
+  <h1 class="titulo header">Previous Matches</h1>
+</div>
+<div class="row custombackground">
+  <div class="col-4"></div>
+<div class="col-4 custombackground" *ngIf="previousMatches.length > 0; else noMatchesTemplate">
+  
+  <div class="detalles" *ngFor="let match of previousMatches; let i = index">
+    <p class="blanco">PARTIDO {{ i + 1 }}:</p>
+    <ul class="custombackground borderss">
+      <li class="rosa">Equipo Local: {{ match.equipo_local }}</li>
+      <li class="rosa">Rival Team: {{ match.rivalTeam }}</li>
+      <li class="rosa">Date: {{ match.date | date:'fullDate' }}</li>
+      <li class="rosa">Location: {{ match.location }}</li>
+      <button [routerLink]="['/match-details', match.id]">Ver Detalles</button>
+    </ul>
+  </div>
+</div>  
+<div class="col-4"></div>
+<ng-template #noMatchesTemplate>
+  <p>No previous matches found.</p>
+</ng-template>
+</div>
+</div>

@@ -1,0 +1,4 @@
+.fjugador{
+    display: flex;
+    flex-direction: column;
+}

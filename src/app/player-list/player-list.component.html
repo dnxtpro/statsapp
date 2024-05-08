@@ -1,0 +1,13 @@
+<!-- player-list.component.html -->
+<section class="layout">
+<div class="header">
+<h2>Lista de Jugadores</h2>
+</div>
+
+<div class="gues" *ngFor="let player of players">
+    <p>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</p>
+    <!-- Otros detalles del jugador -->
+</div>
+
+<button (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>
+    </section>  

@@ -1,0 +1,50 @@
+.custombackground{
+  background-color: #00365f; 
+}
+  
+.detalles{
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    border-radius: 0 20px 20px 0 ;
+    background-color: #0E678D;
+    font-size: 16px;
+}
+.borderss{
+  border-color: #0E678D;  
+  border-width: 10px;
+}
+.rosa { grid-area: Fallos;
+  color:#5AAEC3;
+  font-family: "Oswald",Sans-serif;
+ }
+ .blanco{
+  color: white;
+ }
+.titulo { 
+  color: #C281E8;
+  font-family: "Oswald",Sans-serif
+  
+   }
+.body{
+    align-items: center;
+    
+    justify-content: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:40px;
+    color:#EEE5E9;
+    background-color:#00365f;
+
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 1fr);
+  grid-template-columns: 0.4fr;
+  gap: 13px;
+}
+button:hover{
+    background-color:#92DCE5 ;
+    color:aliceblue;
+    font-weight: bold;
+    padding: 4px;
+    
+}

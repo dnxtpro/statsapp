@@ -1,0 +1,89 @@
+<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+
+<div class="container custom-background">
+  <div class="row d-flex justify-content-center">
+<div class="col-5" >
+  
+      <button class="button-primary" (click)="previousSet()">
+        <i class="lni lni-shift-left"></i>
+      </button>
+      <button (click)="showSet(1)">Mostrar Set 1</button>
+      <button class="button-primary" (click)="nextSet()"><i class="lni lni-shift-right"></i></button>
+</div>
+</div>
+  
+<div class="row" *ngIf="selectedSet && selectedSet.setNumber">
+ <div class="col-6">
+  <h3>Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h3>
+    <table class="table custom-table2">
+      <thead>
+        <tr>
+          <th class="custom-table" scope="col">Player</th > 
+          <th class="custom-table1" scope="col">Saque</th >
+          <th class="custom-table" scope="col">Ataque</th >
+          <th class="custom-table1" scope="col">Zaguero</th >
+          <th class="custom-table" scope="col">Finta</th >
+          <th  class="custom-table1" scope="col">Bloqueo</th >
+          <th class="custom-table" scope="col">Error Saque Rival</th >
+          <th class="custom-table1" scope="col">Error Ataque Rival</th >
+          <th class="custom-table" scope="col">EX Rival</th >
+          <!-- Agrega otras columnas según sea necesario -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let player_name of getObjectKeys(selectedSet.data)">
+        <tr >
+          <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
+          
+          <td>{{ selectedSet.data[player_name]?.Saque || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Ataque || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Zaguero || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Finta || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Bloqueo || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.ErrorSaqueRival || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.ErrorAtaqueRival || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.EXRival || 0 }}</td>
+          <!-- Agrega otras celdas según sea necesario -->
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="col-6">
+    <h3>Tabla de Fallos - Set {{ selectedSet.setNumber }}</h3>
+    <table class="table custom-table2">
+      <thead>
+        <tr>
+          <th class="custom-table" scope="col">Player</th >
+          <th class="custom-table1"scope="col">FalloSaque</th >
+          <th class="custom-table"scope="col">Fallo Ataque</th >
+          
+          <th class="custom-table1" scope="col">Gorro</th >
+          <th class="custom-table"scope="col">Recepcion</th >
+          <th class="custom-table1"scope="col">EX</th >
+          <th class="custom-table"scope="col">Acierto Rival</th >
+          <th class="custom-table1"scope="col">Acierto Zaguero Rival</th >  
+          <th class="custom-table"scope="col">Acierto Finta Rival</th >
+          <!-- Agrega otras columnas según sea necesario -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let player_name of getObjectKeys(selectedSet.data)">
+        <tr >
+          <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
+         
+          <td>{{ selectedSet.data[player_name]?.FalloSaque || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.FalloAtaque || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Gorro || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.Recepcion || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.EX || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.AciertoRival || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.AciertoZagueroRival || 0 }}</td>
+          <td>{{ selectedSet.data[player_name]?.AciertoFintaRival || 0 }}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+  <button class="row" (click)="exportarExcel()">Exportar a Excel</button>
+</div>
+
+

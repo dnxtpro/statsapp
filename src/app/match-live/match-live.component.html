@@ -1,0 +1,196 @@
+<link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
+
+<div class="container-fluid">
+  <div class="">
+    <!-- Detalles del Partido más Reciente -->
+    <div class="row backgroundazul d-flex justify-content-left">
+      
+        <div class="col">
+      <p class="small-font1">Rival:</p>
+      <p class="small-font">{{ latestMatchRival }}</p>
+    </div>
+    <div class="col">
+      <p class="small-font1">Fecha:</p>
+      <p class="small-font">{{ latestMatchDate | date: 'dd/MM/yyyy' }}</p>
+      </div>
+      <div class="col">
+      <p class="small-font1">Ubicación:</p>
+      <p class="small-font">{{ latestMatchLocation }}</p>
+      </div>  
+      <div class="col">
+        <p class="small-font1">Hora</p>
+        <p class="small-font">{{ latestMatchLocation }}</p>
+        </div>  
+      <div class="col-4"><a class="btn-primary" (click)="openPlayerChooseModal()"> maricon</a><img width="60px" height="60px" src="https://th.bing.com/th/id/OIP.6xwvt7ZhPoiTqb6VkTGu6gHaHa?rs=1&pid=ImgDetMain"></div>
+       
+  </div>
+    
+    <div class="row">
+      
+    <div class="d-flex justify-content-left marcadorVisitante col-4">
+   
+    <div class="row orderL h-50 ">
+      <div class=" equipo1 marbot">
+        <p>Roche</p>
+      </div>
+    </div>
+    <div class="row orderLS marbot">
+      
+    <div class="score-boxL mt-1 ">      
+      <figcaption class="nomargen"> {{ matchScore.homeTeam.points }}</figcaption>
+      </div>
+    </div>
+    <div class="row orderLSS">
+    <div class=" sets-boxL ">
+      <p class="nomargen"> {{ matchScore.homeTeam.sets }}</p>
+    </div>
+  </div>
+ 
+
+    
+      
+  </div>
+    <div class="col-1 d-flex justify-content-center align-items-center">
+      <i *ngIf="tieneSaque" style="font-size: 1.5em;" class="blanco lni lni-arrow-left-circle"></i>
+      
+    </div>
+    <div class="col-2"></div>
+    <div class="col-1  d-flex justify-content-center align-items-center"><i *ngIf="!tieneSaque" style="font-size: 1.5em;" class="blanco lni lni-arrow-right-circle "></i></div>   
+ 
+  
+  
+
+    <div class="marcadorVisitante col-4 "  >
+    <div class="row orderVSS">
+      <p class="nomargen sets-box ">   {{ matchScore.awayTeam.sets }} </p>
+    </div>
+    <div class="row orderVS">
+      <p class="nomargen score-box mt-1 ">   {{ matchScore.awayTeam.points }} </p>
+    </div>
+    <div class="row orderV h-50">
+      <div class="equipo2 ">
+        <p >{{ latestMatchRival }}</p>  
+      </div>
+    </div>
+    
+         </div>
+        </div>
+  
+<div class="row">
+    <!-- Aciertos y Fallos -->
+    <div class="col-1"></div>
+   
+    <div class="col-4 Aciertos">
+      <div class=" ">
+        <h1 class="d-flex justify-content-center">ACIERTOS</h1>
+        <div class="row" *ngFor="let acierto of aciertos">
+          <button type="button" class="btn btn-primary margenderecha button-56" role="button" (click)="handleAcierto(acierto.type)" mat-raised-button><span>{{ acierto.type }}</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2 align-bottom ">
+
+    </div>
+      <!-- Fallos -->
+      <div class="col-4 Fallos ">
+        <h1 class="d-flex justify-content-center"  >FALLOS</h1>
+        <div class="row" *ngFor="let fallo of fallos">
+          <button type="button" class="btn btn-primary button-51" role="button" (click)="handleFallo(fallo.type)" mat-raised-button><span>{{ fallo.type }}</span></button>
+        </div>
+        
+      </div>
+      <div class="col-1s"></div>
+    </div>
+    <div class="row  mt-3 ">
+      <div class="col-4"></div>
+      <div class="col-4 d-flex justify-content-center">
+<button class="align-middle btn btn-primary botonBorrar"  (click)="deleteLastMatchEvent()">Deshacer Ultimo Punto</button>
+</div>
+<div class="col-4"></div>
+
+    </div>
+  </div>
+    <div class="row mt-3 h-50 "style="height: 100px;">
+
+      
+      <div class="col-5 h-25">
+    <ul class="h-50 list-group list-group-flush ">
+      <li class="list-group-item invis2 mb-4 d-flex justify-content-center">ULTIMOS PUNTOS</li>
+      <li class="list-group-item invis mb-2 d-flex justify-content-center  " *ngFor="let player_name of Eventos " >
+        <p class="">{{player_name.dorsal}}  {{player_name.player_name}} {{player_name.type}}     {{player_name.scoreLocal}}-{{player_name.scoreVisitor}}  </p>
+     
+      </li>
+    </ul>
+  </div>
+  <div class="col-2"></div>
+  <div class="col-4  ">
+    <div class="rowd-flex flex-row justify-content-around align-self-center "><p class=" sets-boxL">red</p>
+      <button class="btn btn-primary botonBorrar ml-4" (click)="openSexteto()">seleccionar sexteto</button>
+    </div>
+  
+    <div class="row margenarriba mb-1 pb-3 pt-3  justify-content-center">
+ <div class="col d-flex flex-row justify-content-around align-items-center">
+        <div class="p-4 sexteto1">
+          <div class=" d-flex justify-content-center p-0">
+            {{selectedPlayers[3].dorsal
+            }}
+          </div>
+        </div>
+     
+        <div class=" p-4 sexteto1">
+          <div class="  d-flex justify-content-center p-0">
+            {{selectedPlayers[2].dorsal
+            }}
+          </div>
+        </div>
+      
+        <div class="p-4 sexteto1">
+          <div class=" d-flex justify-content-center p-0">
+            {{selectedPlayers[1].dorsal
+            }}
+          </div>
+        </div>
+      
+    </div>
+  </div>
+  <div class="row margenarriba pt-5 pb-5 margenabajo">
+    
+    <div class="col d-flex flex-row justify-content-around">
+        <div class="p-4 sexteto1">
+          <div class=" d-flex justify-content-center p-0 d-flex justify-content-center">
+            {{selectedPlayers[4].dorsal
+            }}
+          </div>
+        </div>
+           
+        <div class="p-4 sexteto1">
+          <div class=" d-flex justify-content-center p-0">
+            {{selectedPlayers[5].dorsal
+            }}
+          </div>
+        </div>
+           
+        <div class="p-4 sexteto1" [ngClass]="{'sexteto1': !tieneSaque, 'sexteto2':tieneSaque}">
+          <div class=" d-flex justify-content-center p-0">
+            {{selectedPlayers[0].dorsal
+            }}
+          </div>
+        </div>
+         </div>
+</div>
+    </div >
+    
+    <div class="row mt-10">
+     <div class="col-6">
+      
+     </div>
+     <div class="col-6"><button (click)="rotarObjetos()">Rotar Objetos</button></div>
+     
+    </div>
+   
+  </div>
+
+
+<!-- HTML !-->
+
+

@@ -1,0 +1,11 @@
+button{
+    font-size: large;
+}
+.main{
+   
+    align-items: start;
+}
+.custom-background {
+    background-color: #001B30; /* Puedes cambiar el color de fondo según tus preferencias */
+    /* Otros estilos personalizados si los necesitas */
+}

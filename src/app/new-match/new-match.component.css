@@ -1,0 +1,36 @@
+
+input{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    padding-top:20px;
+}
+label{
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size:20px;
+}
+form{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+    font-size: 16px;
+}
+button{
+    color:black;
+    font-weight: bold;  
+    font-size: 14px;
+    padding: 10px 0 10px 0;
+    background-color: #EEE5E9;
+    margin-left: 20px;
+    justify-content: center;
+    align-items: center;
+   
+
+}
+.main{
+    align-self: start;
+}
+button:hover{
+padding:20px 10px 20px 10px;
+
+}

@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap');
+.layout {
+  width: 100vw;
+  height: 100vh;
+  background-color: #00365f; 
+  display: grid;
+  grid:
+    "header header2" auto
+    "marcadorLocal marcadorVisitante" auto
+    "Aciertos Fallos" auto
+    / 1fr 1fr;
+  gap: 8px;
+}
+.margenderecha{
+  margin-right: 5px;
+}
+ .backgroundazul{
+  background-color: #A3D1E7; 
+  font-family: "Bruno Ace", sans-serif;
+ }
+ .pista {
+  width: 600px;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #eee;
+  font-weight: bold;
+}
+
+ .backgroundrosa{
+  font-family: "Bruno Ace", sans-serif;
+  background-color: #D09EE3;
+ }
+  .header { grid-area: header;
+display: flex;
+flex-direction: row;
+align-items: center;
+justify-content: center;
+background-color: #A3D1E7; 
+border-color:#00365f;
+color: black;
+border-width: 20px;}
+
+.marbot{
+  margin-left: 20px;
+  margin-left: 4px;
+}
+
+  .header2 { 
+    font-family: "Bruno Ace", sans-serif;
+    grid-area: header2; 
+    background-color: #D09EE3;
+    border-color:#00365f;}
+  .marcadorLocal {
+     grid-area: marcadorLocal; 
+float:right; }    
+  .marcadorVisitante { grid-area: marcadorVisitante; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .orderVSS,.orderL{
+    order: 1;
+    
+  }
+  .orderLS,.orderVS{order:2;margin:auto;} 
+  .orderLSS,.orderV{order:3;}
+  @media (max-width:481px)  { 
+    .marcadorVisitante { grid-area: marcadorVisitante; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .marbot{
+    margin-left: auto;
+  }
+.orderV,.orderL{
+  order: 1;
+}
+.small-font,.small-font1{
+  font-size: 8px;
+}
+.orderLS,.orderVS{order:2;} 
+.orderLSS,.orderVSS{order:3;}}
+
+  .Aciertos { 
+    color: #C281E8;
+    font-family: "Oswald",Sans-serif;
+   
+    grid-area: Aciertos;
+    
+     }
+  
+  .Fallos { grid-area: Fallos;
+    color:#5AAEC3;
+    font-family: "Oswald",Sans-serif;
+  margin-left: 10px; }
+  .box{box-sizing: content-box;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;}
+   .score-container {
+        display:flex;
+        flex-direction: row;
+        
+        align-items: center;
+      }
+      .score-container1 {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    -webkit-align-content: stretch;
+    align-content: stretch;
+    -webkit-align-items: baseline;
+    align-items: baseline;
+    }
+    .small-font1{
+      font-size: 20px;
+      color: #001B30;
+      margin-right: 5px;
+    }
+    .botonesacierto{
+      display: flex;
+      align-items: center;
+      justify-items: center;
+    }
+    p{
+      margin:0px;
+    }
+    .small-font{
+      font-size: 16px;
+      
+      color: #07415F;
+      margin-right: 5px;
+      margin-top: 5px;
+      font-weight: 300;
+    }
+   .nomargen{
+    margin-bottom: 0px;
+   }   
+.score-box,
+.sets-box {
+  margin: auto;
+  border: 1px solid #C281E8;
+  border-width: 3px;
+    font-family: "Bruno Ace", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  color:#e8eaef;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.score-boxL,
+.sets-boxL {
+  margin: auto;
+  border: 1px solid #5AAEC3;
+  border-width: 3px;
+    font-family: "Bruno Ace", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  color:#e8eaef;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+.score-boxL,.score-box{
+    font-size: large;
+    width: 50px; /* Ajusta el valor según tu preferencia para que sea cuadrado */
+    height: 50px;
+}
+.sets-boxL,.sets-box{
+    font-size: small;
+    width: 40px; /* Ajusta el valor según tu preferencia para que sea cuadrado */
+  height: 40px;
+}
+      
+      .points,
+      .sets {
+        font-weight: bold;
+      }
+/*cosasssss??*/
+.acierto-button,.fallo-button{
+  margin-top: 20px;
+
+}
+.button-56{
+  background: rgb(194, 129, 232);
+background: radial-gradient(circle, rgba(194, 129, 232,1)0%, rgba(194, 129, 232,0) 80%, rgba(194, 129, 232,0) 100%); ;
+  
+}
+.button-51{
+  background: rgb(90,174,195);
+background: radial-gradient(circle, rgba(90,174,195,1) 0%, rgba(90,174,195,0) 90%, rgba(90,174,195,0) 100%);
+}
+.botonBorrar{
+  background-color:#FFFFFF;
+ 
+}
+.sexteto1,.sexteto2{
+  
+  color: #00132C;
+  font-family: "Avenir Next LT W01 Bold",sans-serif;
+}
+.sexteto1{
+  background: rgb(90,174,195);
+}
+.sexteto2{
+  background: rgb(194, 129, 232);
+}
+.botonBorrar,
+.button-56,
+.button-51 {
+  margin-top: 10px;
+  
+  border: 0px solid #5AAEC3;
+  box-sizing: border-box;
+  color: #00132C;
+  font-family: "Avenir Next LT W01 Bold",sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  padding: auto;
+  position: relative;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.invis{
+  border-bottom: 5px #001B30;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  background: rgb(194, 129, 232);
+background: radial-gradient(circle, rgba(194, 129, 232,1)0%, rgba(194, 129, 232,0) 80%, rgba(194, 129, 232,0) 100%);}
+
+.invis2{
+  border-bottom: 5px #001B30;
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  background: rgb(90,174,195);
+background: radial-gradient(circle, rgba(90,174,195,1) 0%, rgba(90,174,195,0) 90%, rgba(90,174,195,0) 100%);}
+.botonBorrar:hover{
+  background-color: transparent;
+  color:#FFFFFF;
+}
+.button-56:hover,
+.button-51:hover {
+  background-color: white;
+  
+  color:#0E678D;
+ 
+  cursor: pointer;
+}
+.equipo2{
+  color: #C281E8;
+}
+.equipo1{
+  color:#5AAEC3;
+}
+.equipo2,
+.equipo1{
+  font-family: "Oswald",Sans-serif;
+  font-size:20px;
+  
+  font-weight: 800;
+    text-transform: uppercase;
+    line-height: 1em;
+}
+.margenarriba{
+  border-top: 4px solid white;
+  margin-bottom: 2px;
+  border-left: 4px solid white;
+  border-right: 4px solid white;
+}
+.margenabajo{
+  border-bottom: 4px solid white;
+  border-right: 4px solid white;
+}
+.blanco{
+  color:white;
+  
+}

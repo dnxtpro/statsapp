@@ -1,0 +1,25 @@
+
+button,table{
+    font-size: 14px;
+}
+.custom-background {
+    background-color: #001B30; /* Puedes cambiar el color de fondo según tus preferencias */
+    /* Otros estilos personalizados si los necesitas */
+}
+.custom-table{
+    background-color: #A3D1E7;
+    color: #001B30;
+    font-weight: bold;
+}
+.custom-table2{border-collapse: collapse;
+    border: 5px solid #D09EE3;
+}
+.custom-table1{
+    color: #A3D1E7;
+    background-color: #001B30;
+    font-weight: bold;
+}
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color:#0E678D; 
+ }
