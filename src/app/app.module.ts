@@ -24,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SextetoComponent } from './sexteto/sexteto.component';
+import { QRCodeModule } from 'angularx-qrcode';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +60,7 @@ import { SextetoComponent } from './sexteto/sexteto.component';
     ReactiveFormsModule,
     DatePipe,
     NgxChartsModule,
+    QRCodeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

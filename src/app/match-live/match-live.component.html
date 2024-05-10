@@ -110,10 +110,10 @@
 
     </div>
   </div>
-    <div class="row mt-3 h-50 "style="height: 100px;">
+    <div class="row gx-3 d-flex justify-content-around mt-3 h-50 "style="height: 100px;">
 
       
-      <div class="col-5 h-25">
+      <div class="col-6 h-25">
     <ul class="h-50 list-group list-group-flush ">
       <li class="list-group-item invis2 mb-4 d-flex justify-content-center">ULTIMOS PUNTOS</li>
       <li class="list-group-item invis mb-2 d-flex justify-content-center  " *ngFor="let player_name of Eventos " >
@@ -122,8 +122,7 @@
       </li>
     </ul>
   </div>
-  <div class="col-2"></div>
-  <div class="col-4  ">
+  <div class="col-6 ">
     <div class="rowd-flex flex-row justify-content-around align-self-center "><p class=" sets-boxL">red</p>
       <button class="btn btn-primary botonBorrar ml-4" (click)="openSexteto()">seleccionar sexteto</button>
     </div>
@@ -178,15 +177,14 @@
         </div>
          </div>
 </div>
+ <div *ngIf="qr" class="row mt-2 d-flex justify-content-center"><qrcode [qrdata]="qr"  [allowEmptyString]="true"
+  [elementType]="'img'"
+  [errorCorrectionLevel]="'M'"
+  [margin]="0"
+  [scale]="1"
+  [width]="150">
+</qrcode></div>
     </div >
-    
-    <div class="row mt-10">
-     <div class="col-6">
-      
-     </div>
-     <div class="col-6"><button (click)="rotarObjetos()">Rotar Objetos</button></div>
-     
-    </div>
    
   </div>
 

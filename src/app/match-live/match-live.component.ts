@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { ChoosePlayersComponent } from '../choose-players/choose-players.component';
 import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 
@@ -65,7 +66,6 @@ interface MatchEvent {
   styleUrls: ['./match-live.component.css']
 })
 export class MatchLiveComponent implements OnInit,DoCheck {
-
   player_name:string|undefined;
   Eventos:any[]=[];
   latestMatchLocalscore=0;
@@ -86,7 +86,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
     events: [],
   };
   registro:string='';
-  selectedPlayers: SextetoPlayer[] = [{ dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 },{ dorsal: 'DESCONOCIDO', position: 1}, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1}];
+  selectedPlayers: SextetoPlayer[] = [{ dorsal: '0', position: 1 }, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1 },{ dorsal: '0', position: 1}, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1}];
   falloType: string = '';
   aciertoType: string = '';
   isPlayerListModalOpen = false;
@@ -94,6 +94,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
   aciertos: any[] = [];
   fallos: any[] = [];
   positions: any[]=[];
+  public qr:string='';
   constructor(
     private route: ActivatedRoute,
   private matchService: MatchService,
@@ -248,7 +249,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
         this.matchScore.homeTeam.points = 0;
         this.matchScore.awayTeam.points = 0;
         this.tieneSaque=true;
-        this.selectedPlayers=[{ dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 },{ dorsal: 'DESCONOCIDO', position: 1}, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1}];
+        this.selectedPlayers=[{ dorsal: '0', position: 1 }, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1 },{ dorsal: '0', position: 1}, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1}];
         },100);
       } else {
         setTimeout(() => {
@@ -256,7 +257,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
         this.matchScore.homeTeam.points = 0;
         this.matchScore.awayTeam.points = 0;
         this.tieneSaque=true;
-        this.selectedPlayers=[{ dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1 },{ dorsal: 'DESCONOCIDO', position: 1}, { dorsal: 'DESCONOCIDO', position: 1 }, { dorsal: 'DESCONOCIDO', position: 1}];
+        this.selectedPlayers=[{ dorsal: '0', position: 1 }, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1 },{ dorsal: '0', position: 1}, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1}];
       },100);
       }
       
@@ -388,8 +389,11 @@ openSexteto():void{
     if (result) {
         this.selectedPlayers = result.selectedPlayers;
         this.tieneSaque=result.tieneSaque ;
-   console.log(this.selectedPlayers,result.tieneSaque);
-   this.pushData(result.selectedPlayers)
+        
+   console.log(this.selectedPlayers,result.tieneSaque,result.jsonObject);
+   this.pushData(result.selectedPlayers);
+   this.qr=JSON.stringify(result.jsonObject);
+
     }
 });
 }
