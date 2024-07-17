@@ -16,8 +16,61 @@ button{
     background-color: rgba(255,255,255,0.2);
     backdrop-filter: blur(4px);
   }
+#sidebar{
+    min-width:250px;
+    max-width:250px;
+    color:white;
+    transition:all .9s;
+    position: relative;
+    min-height: 100vh;
+}
+#content{
+    width:100%;
+    min-height: 100vh;
+    transition:all .9s;
+}
+@media (min-width: 768px) {
+    .p-md-5 {
+      padding: 3rem !important;
+    }
+}
+.custom-menu{
+    display: inline-block;
+  position: absolute;
+  top: 410px;
+  right: 0;
+  margin-right: -52px;
+  -webkit-transition: .9s;
+  -o-transition: .9s;
+  transition: .9s;
+}
+@media (max-width: 991.98px) {
+#sidebar.custom-menu {
+    margin-right: -40px !important;
+    top: 10px !important;
+  }
+}
+#sidebar.active{
+    margin-left:-250px;
+}
+.rotate{
+    transform: rotate(-90deg);
+}
+.custom-menu2{
+    margin-right: -64px;
+    background-color: rgba(43, 4, 71, 0.2);
+    backdrop-filter: blur 8px;
+}
+
+
+
+
+
 h3{color: #EEE5E9;}
-body,html{background-color: #001B30;}
+body,html{background-color: #001B30;
+    background-image: url( '/assets/fondo1.svg' );
+    background-repeat:repeat;background-position:50% 85%;
+}
 .layout {
     width:100vw;
     height: 100vh;
@@ -49,14 +102,10 @@ body,html{background-color: #001B30;}
     
 }
 h2{
-    
-    -webkit-text-stroke-color: rgba(76, 75, 99,0.6);
-    -webkit-text-stroke-width: 4px;
-    text-transform:uppercase;
-    margin-top: 15px;   
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+
     font-size:60px;
-    color:#C281E8;
+    color:#0dbdfd;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

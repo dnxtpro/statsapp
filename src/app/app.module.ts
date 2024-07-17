@@ -25,6 +25,8 @@ import { DatePipe } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SextetoComponent } from './sexteto/sexteto.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SoniaComponent } from './sonia/sonia.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,8 @@ import { QRCodeModule } from 'angularx-qrcode';
     PlayerListComponent,
     PlayerModalComponent,
     DetailsPageComponent,
-    SextetoComponent
+    SextetoComponent,
+    SoniaComponent
   ],
   
   imports: [
@@ -61,6 +64,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     DatePipe,
     NgxChartsModule,
     QRCodeModule,
+    NgxEchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

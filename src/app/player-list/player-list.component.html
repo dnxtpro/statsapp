@@ -1,13 +1,14 @@
 <!-- player-list.component.html -->
-<section class="layout">
-<div class="header">
+<div class="container-fluid">
+<div class="header sss">
 <h2>Lista de Jugadores</h2>
 </div>
-
-<div class="gues" *ngFor="let player of players">
-    <p>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</p>
-    <!-- Otros detalles del jugador -->
+<div class="container-fluid flex pl-5 ml-5 justify-content-center">
+<div class="flex flex-col card bko ml-5" style="width: 500px" *ngFor="let player of players">
+    <div class="font-weight-bold text-white text-center card-body">
+    <p><strong>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</strong></p>
+</div>
 </div>
 
-<button (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>
-    </section>  
+
+    </div>  </div><button class="position-absolute top-10 start-50" (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>

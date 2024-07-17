@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lawea';
+
+
+  sidebarAbierto = false;
+
+  toggleSidebar() {
+    console.log('h')
+    this.sidebarAbierto = !this.sidebarAbierto;
+  }
 }
+

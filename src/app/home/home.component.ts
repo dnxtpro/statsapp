@@ -12,13 +12,10 @@ export class HomeComponent {
   matches: any[] = []; 
   constructor(private router: Router) {}
 
-  navigateToMatchDetails(): void {
-    this.router.navigate(['/match-details']);
-  }
-  navigateToNewMatch(): void {
-    this.router.navigate(['/new-match']);
-}
-navigateToPlayerList(): void {
-  this.router.navigate(['/player-list']);
+sidebarAbierto = false;
+
+toggleSidebar() {
+  console.log('h')
+  this.sidebarAbierto = !this.sidebarAbierto;
 }
 }

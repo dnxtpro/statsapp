@@ -11,6 +11,7 @@ import { ChoosePlayersComponent } from '../choose-players/choose-players.compone
 import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
 import { QRCodeModule } from 'angularx-qrcode';
+import { SoniaComponent } from '../sonia/sonia.component';
 
 
 
@@ -114,18 +115,32 @@ export class MatchLiveComponent implements OnInit,DoCheck {
     this.loadSexteto();
     
     setTimeout(() => {
-      this.handleMatchEvent;
       this.resetScores();
-
       this.ultimoseventosss();
-      this.checkSetWinner();
-      
       this.ultimoseventosss();
       },300);
+      setTimeout(() => {
+        this.ultimoseventosss();
+        if(this.matchScore.homeTeam.points >= 25||this.matchScore.awayTeam.points >= 25){
+          if((this.matchScore.homeTeam.points - this.matchScore.awayTeam.points)>=2){
+            console.log('0-0 y 1 set para local')
+            this.matchScore.awayTeam.points = 0;
+            this.matchScore.homeTeam.points = 0;
+            this.matchScore.homeTeam.sets +=1;
+          }
+          if((this.matchScore.awayTeam.points - this.matchScore.homeTeam.points)>=2){
+            console.log('0-0 y 1 set para visitante')
+          this.matchScore.awayTeam.points = 0;
+          this.matchScore.homeTeam.points = 0;
+          this.matchScore.awayTeam.sets +=1;
+          }
+          
+        }
+        },700);
+      
+  
 
-    
-
-    
+   
   }
   ngDoCheck() {
     if (this.tieneSaque !== this.previousTieneSaque) {
@@ -253,6 +268,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
         },100);
       } else {
         setTimeout(() => {
+          console.log('sexo')
         this.matchScore.awayTeam.sets += 1;
         this.matchScore.homeTeam.points = 0;
         this.matchScore.awayTeam.points = 0;
@@ -374,6 +390,14 @@ export class MatchLiveComponent implements OnInit,DoCheck {
          
       }
   });
+}
+openSonia():void{
+  const dialogRef = this.dialog.open(SoniaComponent,{
+    backdropClass: 'backdropBackground',
+    width: 'auto',
+    height:'auto',
+  });
+  dialogRef.afterClosed();
 }
 openSexteto():void{
   const dialogRef = this.dialog.open(SextetoComponent,{

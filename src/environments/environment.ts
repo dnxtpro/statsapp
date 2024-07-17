@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'www.nervagest.ma:4001'
+    apiUrl: 'http://www.nervagest.ma:4001'
     
 };

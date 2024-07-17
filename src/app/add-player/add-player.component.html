@@ -1,15 +1,15 @@
 <!-- add-player.component.html -->
 <form (submit)="onSubmit()" #playerForm="ngForm">
   <div class="fjugador">
-    <label for="newPlayer.name">Nombre del Jugador:</label>
+    <label class="text-white" for="newPlayer.name">Nombre del Jugador:</label>
     <input type="text" id="playerName" name="playerName" [(ngModel)]="newPlayer.name" required>
 
-    <label for="posicion">Posición:</label>
+    <label class="text-white" for="posicion">Posición:</label>
     <select id="posicion" name="posicion" [(ngModel)]="selectedPositionId" required>
       <option *ngFor="let position of positions" [value]="position.id">{{ position.name }}</option>
     </select>
 
-    <label for="newPlayer.dorsal">Dorsal:</label>
+    <label class="text-white" for="newPlayer.dorsal">Dorsal:</label>
     <input id="dorsal" name="dorsal" [(ngModel)]="newPlayer.dorsal" type="number" required>
   </div>
 

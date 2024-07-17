@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
 
-<div class="container-fluid">
+<div class="container-fluid bkdrop">
   <div class="">
     <!-- Detalles del Partido más Reciente -->
-    <div class="row backgroundazul d-flex justify-content-left">
+    <div class="row backgroundazul d-flex justify-content-left pb-4">
       
         <div class="col">
       <p class="small-font1">Rival:</p>
@@ -21,16 +21,16 @@
         <p class="small-font1">Hora</p>
         <p class="small-font">{{ latestMatchLocation }}</p>
         </div>  
-      <div class="col-4"><a class="btn-primary" (click)="openPlayerChooseModal()"> maricon</a><img width="60px" height="60px" src="https://th.bing.com/th/id/OIP.6xwvt7ZhPoiTqb6VkTGu6gHaHa?rs=1&pid=ImgDetMain"></div>
+      
        
   </div>
     
-    <div class="row">
+    <div class="row bkdrop">
       
     <div class="d-flex justify-content-left marcadorVisitante col-4">
    
     <div class="row orderL h-50 ">
-      <div class=" equipo1 marbot">
+      <div class=" equipo1 marito marbot border border-5 p-2">
         <p>Roche</p>
       </div>
     </div>
@@ -68,7 +68,7 @@
       <p class="nomargen score-box mt-1 ">   {{ matchScore.awayTeam.points }} </p>
     </div>
     <div class="row orderV h-50">
-      <div class="equipo2 ">
+      <div class="equipo2 border border-5 p-2 marito">
         <p >{{ latestMatchRival }}</p>  
       </div>
     </div>
@@ -84,7 +84,19 @@
       <div class=" ">
         <h1 class="d-flex justify-content-center">ACIERTOS</h1>
         <div class="row" *ngFor="let acierto of aciertos">
-          <button type="button" class="btn btn-primary margenderecha button-56" role="button" (click)="handleAcierto(acierto.type)" mat-raised-button><span>{{ acierto.type }}</span></button>
+          <button type="button" class="btn btn-primary margenderecha" role="button" (click)="handleAcierto(acierto.type)"
+          [ngClass]="{
+         
+            'button-56': acierto.type !== 'ErrorSaqueRival' && acierto.type !== 'ErrorAtaqueRival' && acierto.type !== 'EXRival',
+            'button-54 btn-warning mt-2': acierto.type === 'ErrorSaqueRival' ||'ErrorAtaqueRival '|| 'EXRival',
+          }" mat-raised-button>
+           <ng-container [ngSwitch]="acierto.type">
+            <span *ngSwitchDefault>{{ acierto.type }}</span>
+            <span *ngSwitchCase="'ErrorSaqueRival'">Error Saque Rival</span>
+            <span *ngSwitchCase="'ErrorAtaqueRival'">Error Ataque Rival</span>
+            <span *ngSwitchCase="'EXRival'">EX Rival</span>
+          </ng-container> 
+          </button>
         </div>
       </div>
     </div>
@@ -95,7 +107,19 @@
       <div class="col-4 Fallos ">
         <h1 class="d-flex justify-content-center"  >FALLOS</h1>
         <div class="row" *ngFor="let fallo of fallos">
-          <button type="button" class="btn btn-primary button-51" role="button" (click)="handleFallo(fallo.type)" mat-raised-button><span>{{ fallo.type }}</span></button>
+          <button type="button" class="btn " role="button" (click)="handleFallo(fallo.type)"  
+          [ngClass]="{
+            'btn-warning mt-2 button-54': fallo.type === 'AciertoRival' ||'AciertoZagueroRival '|| 'AciertoFintaRival',
+            'button-51': fallo.type !== 'AciertoRival' && fallo.type !== 'AciertoZagueroRival' && fallo.type !== 'AciertoFintaRival'
+          }"
+          mat-raised-button>
+            <ng-container [ngSwitch]="fallo.type">
+              <span *ngSwitchDefault>{{ fallo.type }}</span> 
+              <span *ngSwitchCase="'AciertoRival'">Acierto Rival</span>
+              <span *ngSwitchCase="'AciertoZagueroRival'">Acierto Zaguero Rival</span>
+              <span *ngSwitchCase="'AciertoFintaRival'">Acierto Finta Rival</span><!-- Valor por defecto si no coincide con ningún caso -->
+            </ng-container>
+          </button>
         </div>
         
       </div>
@@ -122,12 +146,12 @@
       </li>
     </ul>
   </div>
-  <div class="col-6 ">
-    <div class="rowd-flex flex-row justify-content-around align-self-center "><p class=" sets-boxL">red</p>
-      <button class="btn btn-primary botonBorrar ml-4" (click)="openSexteto()">seleccionar sexteto</button>
+  <div class="col-6 svg">
+    <div class="rowd-flex flex-row justify-content-around align-self-center mb-5 ">
+      
     </div>
   
-    <div class="row margenarriba mb-1 pb-3 pt-3  justify-content-center">
+    <div class="row mb-3 pb-3 pt-3  justify-content-center">
  <div class="col d-flex flex-row justify-content-around align-items-center">
         <div class="p-4 sexteto1">
           <div class=" d-flex justify-content-center p-0">
@@ -152,7 +176,8 @@
       
     </div>
   </div>
-  <div class="row margenarriba pt-5 pb-5 margenabajo">
+  <div class="row py-5"></div>
+  <div class="row  pt-5 pb-5">
     
     <div class="col d-flex flex-row justify-content-around">
         <div class="p-4 sexteto1">
@@ -176,7 +201,9 @@
           </div>
         </div>
          </div>
+         
 </div>
+<div class="row justify-content-center ml-3 justify-content-center" ><div class="col-3 "><button class="btn btn-primary botonBorrar ml-4" (click)="openSexteto()">seleccionar sexteto</button> </div></div>
  <div *ngIf="qr" class="row mt-2 d-flex justify-content-center"><qrcode [qrdata]="qr"  [allowEmptyString]="true"
   [elementType]="'img'"
   [errorCorrectionLevel]="'M'"

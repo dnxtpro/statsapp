@@ -18,6 +18,7 @@ export class DetailsPageComponent implements OnInit {
   columnasAciertos: string[] = ['Ataque', 'Saque', 'Zaguero', 'Finta', 'Bloqueo', 'ErrorSaqueRival', 'ErrorAtqueRival', 'EXRival'];
   columnasFallos: string[] = ['FalloAtaque', 'FalloSaque', 'Gorro', 'Recepcion', 'EX', 'AciertoRival', 'AciertoZagueroRival', 'AciertoFintaRival'];
   
+  
   exportarExcel() {
     
     const workbook = XLSX.utils.book_new();
@@ -121,6 +122,7 @@ export class DetailsPageComponent implements OnInit {
     });
     this.showSet(1);
   }
+  
 
   organizeDataBySets(matchDetails: Match[]): any[] {
     const setsData: any[] = [];

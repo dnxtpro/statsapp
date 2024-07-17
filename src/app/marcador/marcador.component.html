@@ -1,25 +1,25 @@
-<div class="container p-5 mt-2" >
-        <div class="row cuadrado2 p-0 m-0">
+<div class="container h-100 w-100 position-absolute top-50 start-50 translate-middle" >
+        <div class="row h-100 p-0 m-0">
           <div class="row p-0 m-0">
-            <div class="col-6 backgroundperso d-flex justify-content-center azul">
-              <p class="mt-2 fw-bold">CVR</p>
+            <div class="col-6 backgroundperso d-flex align-items-center justify-content-center  align-middle azul">
+              <p class=" text-center  fw-bold">CVR</p>
             </div>
-            <div class="col-3 backgroundperso d-flex justify-content-center azul">
-              <p class="mt-2">{{ marcador?.setsLocal }}</p>
+            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle azul">
+              <p class=" text-center ">{{ marcador?.setsLocal }}</p>
             </div>
-            <div class="col-3 backgroundperso d-flex justify-content-center azulc">
-              <p class="mt-2" [@parpadeoLocal]="parpadeoLocal">{{ marcador?.scoreLocal }}</p>
+            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle azulc">
+              <p class=" text-center " [@parpadeoLocal]="parpadeoLocal">{{ marcador?.scoreLocal }}</p>
             </div>
           </div>
           <div class="row p-0 m-0">
-            <div class="col-6 backgroundperso d-flex justify-content-center rosa">
-              <p class="mt-2 fw-bold">VIS</p>
+            <div class="col-6 backgroundperso  d-flex align-items-center justify-content-center align-middle rosa">
+              <p class=" text-center  fw-bold">VIS</p>
             </div>
-            <div class="col-3 backgroundperso d-flex justify-content-center rosa">
-              <p class="mt-2">{{ marcador?.setsVisitor }}</p>
+            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center align-middle rosa">
+              <p class=" text-center ">{{ marcador?.setsVisitor }}</p>
             </div>
-            <div class="col-3 backgroundperso d-flex justify-content-center rosac">
-              <p class="mt-2" [@parpadeoVisitor]="parpadeoVisitor">{{ marcador?.scoreVisitor }}</p>
+            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle rosac">
+              <p class=" text-center " [@parpadeoVisitor]="parpadeoVisitor">{{ marcador?.scoreVisitor }}</p>
             </div>
           </div>
         </div>

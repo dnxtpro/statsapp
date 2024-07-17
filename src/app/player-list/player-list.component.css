@@ -5,5 +5,12 @@
     align-items: center;
     
 }
-p{font-size: 14px;
+p{font-size: 18px;
 align-self: center;}
+.bko{ 
+    background-color:rgba(0,0,0,0.5);
+    backdrop-filter:blur(8px);
+}
+.sss{ background-color:transparent; 
+    backdrop-filter: blur(5px);
+    border-radius:9px;/}
