@@ -8,7 +8,7 @@ import { AddPlayerComponent } from './add-player/add-player.component';
 import { MatchLiveComponent } from './match-live/match-live.component';
 import { DetailsPageComponent } from './details-page/details-page.component'; // Asumiendo que tienes un componente para los detalles de la página
 import { MarcadorComponent } from './marcador/marcador.component';
-
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,6 +20,8 @@ const routes: Routes = [
   { path: 'match-live', component: MatchLiveComponent },
   { path: 'match-details/:id', component: DetailsPageComponent },
   {path:'marcador', component:MarcadorComponent},
+  {path:'register', component:RegisterComponent},
+  
   
   
 ];

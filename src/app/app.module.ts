@@ -27,6 +27,10 @@ import { SextetoComponent } from './sexteto/sexteto.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SoniaComponent } from './sonia/sonia.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { httpInterceptorProviders} from './helpers/htttp.interceptor';
+import { ProfileComponent } from './profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +48,10 @@ import { NgxEchartsModule } from 'ngx-echarts';
     PlayerModalComponent,
     DetailsPageComponent,
     SextetoComponent,
-    SoniaComponent
+    SoniaComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfileComponent
   ],
   
   imports: [
@@ -66,7 +73,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     QRCodeModule,
     NgxEchartsModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
