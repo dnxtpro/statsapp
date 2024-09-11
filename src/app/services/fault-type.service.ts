@@ -22,7 +22,7 @@ export class FaultTypeService {
 
   getFaultTypes(): Observable<any[]> {
     console.log(environment.apiUrl)
-    return this.http.get<any[]>(`${environment.apiUrl}/api/fault-types`);
+    return this.http.get<any[]>(`${environment.apiUrl}/api/faulttypes/all`);
   }
   getPosiciones(): Observable<positions[]> {
     console.log(environment.apiUrl)

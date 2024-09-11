@@ -26,11 +26,17 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SextetoComponent } from './sexteto/sexteto.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SoniaComponent } from './sonia/sonia.component';
-import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxEchartsModule,provideEcharts,NgxEchartsDirective } from 'ngx-echarts';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { httpInterceptorProviders} from './helpers/htttp.interceptor';
 import { ProfileComponent } from './profile/profile.component';
+import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
+import { BoardUserComponent } from './board-user/board-user.component';
+import { ApexChart,NgApexchartsModule } from 'ng-apexcharts';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +57,11 @@ import { ProfileComponent } from './profile/profile.component';
     SoniaComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    BoardAdminComponent,
+    BoardModeratorComponent,
+    BoardUserComponent,
+    
   ],
   
   imports: [
@@ -71,9 +81,13 @@ import { ProfileComponent } from './profile/profile.component';
     DatePipe,
     NgxChartsModule,
     QRCodeModule,
-    NgxEchartsModule
+    NgxEchartsModule,NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
+    NgxEchartsDirective,
+    NgApexchartsModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [httpInterceptorProviders,provideEcharts()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

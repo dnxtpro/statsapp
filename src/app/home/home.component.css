@@ -6,8 +6,9 @@ button{
     align-items: start;
 }
 .custom-background {
-    background-color:transparent; 
-    backdrop-filter: blur(5px);
-    border-radius:9px;/* Puedes cambiar el color de fondo según tus preferencias */
-    /* Otros estilos personalizados si los necesitas */
+    background-color:#aba4bd; 
+   
+}
+.c-bg{
+    background-color:#d59967;
 }

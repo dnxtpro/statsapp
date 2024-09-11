@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Player } from '../models/player.model';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  withCredentials: true,
+};
+
 @Injectable({
     providedIn: 'root',
 })
@@ -13,7 +19,7 @@ export class PlayerService {
     constructor(private http: HttpClient) {}
 
     getAllPlayers(): Observable<Player[]> {
-      return this.http.get<Player[]>(`${environment.apiUrl}/api/players`).pipe(
+      return this.http.get<Player[]>(`${environment.apiUrl}/api/players/all`,httpOptions).pipe(
         tap(players => console.log('Respuesta del servidor:', players))
       );
     }
@@ -24,10 +30,10 @@ export class PlayerService {
     }
   
     addPlayer(newPlayer: Player): Observable<Player> {
-      return this.http.post<Player>(`${environment.apiUrl}/api/players`, newPlayer);
+      return this.http.post<Player>(`${environment.apiUrl}/api/players/all`, newPlayer);
     }
     getAllPositions(): Observable<any> {
-      return this.http.get(`${environment.apiUrl}/api/positions`);
+      return this.http.get(`${environment.apiUrl}/api/positions/all`);
     }
   
     // Otros métodos CRUD según sea necesario

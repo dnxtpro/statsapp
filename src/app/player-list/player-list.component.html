@@ -1,14 +1,16 @@
 <!-- player-list.component.html -->
 <div class="container-fluid">
-<div class="header sss">
-<h2>Lista de Jugadores</h2>
+<div class="row">
+<h2 class="text-center custombackground1 header ">Lista de Jugadores</h2>
 </div>
-<div class="container-fluid flex pl-5 ml-5 justify-content-center">
-<div class="flex flex-col card bko ml-5" style="width: 500px" *ngFor="let player of players">
+<div class=" d-flex flex-column text-center justify-content-center">
+<div class="d-flex flex-column col-3 card bko ml-5" *ngFor="let player of players">
     <div class="font-weight-bold text-white text-center card-body">
-    <p><strong>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</strong></p>
+    <p class="paleta1"><strong>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</strong></p>
 </div>
 </div>
 
 
-    </div>  </div><button class="position-absolute top-10 start-50" (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>
+    </div> 
+ </div>
+ <button class="col-3 paleta3" (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>

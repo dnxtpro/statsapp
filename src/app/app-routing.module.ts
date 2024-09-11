@@ -9,7 +9,9 @@ import { MatchLiveComponent } from './match-live/match-live.component';
 import { DetailsPageComponent } from './details-page/details-page.component'; // Asumiendo que tienes un componente para los detalles de la página
 import { MarcadorComponent } from './marcador/marcador.component';
 import { RegisterComponent } from './register/register.component';
-
+import { ProfileComponent } from './profile/profile.component';
+import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { LoginComponent } from './login/login.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'new-match', component: NewMatchComponent },
@@ -21,6 +23,10 @@ const routes: Routes = [
   { path: 'match-details/:id', component: DetailsPageComponent },
   {path:'marcador', component:MarcadorComponent},
   {path:'register', component:RegisterComponent},
+  {path:'admin', component:BoardAdminComponent},
+  {path:'profile',component:ProfileComponent},
+  {path:'login',component:LoginComponent},
+
   
   
   

@@ -8,9 +8,17 @@
 p{font-size: 18px;
 align-self: center;}
 .bko{ 
-    background-color:rgba(0,0,0,0.5);
+    background-color:#001B30;
     backdrop-filter:blur(8px);
 }
 .sss{ background-color:transparent; 
     backdrop-filter: blur(5px);
-    border-radius:9px;/}
+    border-radius:9px;}
+.custombackground1 {
+    background-color:#aba4bd; 
+   
+}
+button{
+    background-color:#d59967;
+    border:0px;
+  }

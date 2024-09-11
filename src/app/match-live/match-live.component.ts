@@ -530,6 +530,7 @@ deleteLastMatchEvent() {
       (Eventos) => {
         if (Eventos && Eventos.length > 0) {
           this.Eventos = Eventos;
+          console.log('eventos recibidos:',this.Eventos)
         } else {
           console.log('No hay eventos recientes.');
         }

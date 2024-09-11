@@ -3,7 +3,7 @@ button,table{
     font-size: 14px;
 }
 .custom-background {
-    background-color: #001B30; /* Puedes cambiar el color de fondo según tus preferencias */
+    background-color: #aba4bd; /* Puedes cambiar el color de fondo según tus preferencias */
     /* Otros estilos personalizados si los necesitas */
 }
 .custom-table{
@@ -12,14 +12,26 @@ button,table{
     font-weight: bold;
 }
 .custom-table2{border-collapse: collapse;
-    border: 5px solid #D09EE3;
+    
 }
 .custom-table1{
-    color: #A3D1E7;
-    background-color: #001B30;
+    color: #001B30;
+    background-color: #d59967;
     font-weight: bold;
 }
 .table-striped>tbody>tr:nth-child(odd)>td, 
 .table-striped>tbody>tr:nth-child(odd)>th {
    background-color:#0E678D; 
  }
+
+button{
+  background-color:#d59967;
+  border:0px;
+}
+::ng-deep .ngx-charts-bar {
+    opacity: 0; /* Opacidad por defecto */
+  }
+  
+  ::ng-deep .ngx-charts-bar.active {
+    opacity: 1; 
+  }

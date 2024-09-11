@@ -104,8 +104,24 @@ body,html{background-color: #001B30;
 h2{
 
     font-size:60px;
-    color:#0dbdfd;
+    color:#001B30;
     font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.persobkkk{
+    background-color:#001B30;
+}
+.paleta1{
+    color:#d59967;
+}
+.paleta2{
+    color:#bfdaec;
+}
+.palb2{
+   border-color:#aba4bd;
+}
+.paleta3{
+    color:#001B30;
+
+}

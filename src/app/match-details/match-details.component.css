@@ -1,5 +1,5 @@
 .custombackground{
-  background-color: #00365f; 
+  background-color: #aba4bd; 
 }
   
 .detalles{
@@ -7,7 +7,7 @@
     align-items: center;
     margin-left: 50px;
     border-radius: 0 20px 20px 0 ;
-    background-color: #0E678D;
+    background-color:#d59967;
     font-size: 16px;
 }
 .borderss{
@@ -15,11 +15,11 @@
   border-width: 10px;
 }
 .rosa { grid-area: Fallos;
-  color:#5AAEC3;
+  color:#bfdaec;
   font-family: "Oswald",Sans-serif;
  }
  .blanco{
-  color: white;
+  color:#001B30 ;
  }
 .titulo { 
   color: #C281E8;
@@ -42,9 +42,16 @@
   gap: 13px;
 }
 button:hover{
-    background-color:#92DCE5 ;
+    background-color:#d59967;
     color:aliceblue;
     font-weight: bold;
     padding: 4px;
     
+}
+button{
+  background-color:#d59967;
+  border:0px;
+}
+.fondonaranja{
+  background-color:#d59967;
 }

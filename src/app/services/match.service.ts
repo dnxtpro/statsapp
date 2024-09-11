@@ -22,7 +22,7 @@ export class MatchService {
 
   constructor(private http: HttpClient,private dialog: MatDialog,private modalService: ModalService,private playerService: PlayerService) {}
   getFaultTypes(): Observable<any> {
-  return this.http.get<any>(`${environment.apiUrl}/api/fault-types`).pipe(
+  return this.http.get<any>(`${environment.apiUrl}/api/faulttypes/all`).pipe(
     map((data) => {
       console.log('Datos obtenidos:', data);
 
@@ -49,10 +49,13 @@ getMarcador(): Observable<any[]>{
   return this.http.get<any[]>(`${environment.apiUrl}/api/marcador`);
 }
 getMatchDetails(): Observable<MatchDetails[]> {
-  return this.http.get<MatchDetails[]>(`${environment.apiUrl}/api/create-match/getMatches`);
+  return this.http.get<MatchDetails[]>(`${environment.apiUrl}/api/partidos/user`);
 }
 getMatchEventsByMatchId(matchId: number): Observable<any[]> {
-  return this.http.get<any[]>(`${environment.apiUrl}/api/matchevents/${matchId}`);
+  return this.http.get<any[]>(`${environment.apiUrl}/api/matchevent/${matchId}`);
+}
+getPlayerResume(matchId:number): Observable<any[]>{
+  return this.http.get<any[]>(`${environment.apiUrl}/api/resumen/jugador/${matchId}`);
 }
   getLatestMatchDetails(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/latest-match-details`);
@@ -74,12 +77,12 @@ getMatchEventsByMatchId(matchId: number): Observable<any[]> {
   }
   ultimoseventos(match1Id:number): Observable<any>{
     console.log(match1Id)
-return this.http.get<any>(`${environment.apiUrl}/api/ultimoseventos/${match1Id}`);
+return this.http.get<any>(`${environment.apiUrl}/api/lastevents/${match1Id}`);
   }
   
 
   createMatch(matchData: any): Observable<any> {
-    return this.http.post<any>(`${environment.apiUrl}/api/create-match`, matchData);
+    return this.http.post<any>(`${environment.apiUrl}/api/partidos/user`, matchData);
   } 
   getLatestMatch(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/latest-match`);
@@ -99,7 +102,7 @@ return this.http.get<any>(`${environment.apiUrl}/api/ultimoseventos/${match1Id}`
       matchEventData,
     };
   
-   return this.http.post<any>(`${environment.apiUrl}/api/match-events`, payload);
+   return this.http.post<any>(`${environment.apiUrl}/api/matchevent/user`, payload);
   }
   handleMatchEvent(event: Match & MatchEvent) {
     this.sendMatchEvent(event).subscribe(

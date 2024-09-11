@@ -1,7 +1,7 @@
 <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
 
-<div class="container custom-background">
-  <div class="row d-flex justify-content-center">
+<div class=" d-flex flex-column justify-content-center custom-background">
+  <div class="row d-flex justify-content-center align-items-center">
 <div class="col-5" >
   
       <button class="button-primary" (click)="previousSet()">
@@ -14,7 +14,7 @@
   
 <div class="row" *ngIf="selectedSet && selectedSet.setNumber">
  <div class="col-6">
-  <h3>Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h3>
+  <h2>Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
     <table class="table custom-table2">
       <thead>
         <tr>
@@ -48,7 +48,7 @@
     </table>
     </div>
     <div class="col-6">
-    <h3>Tabla de Fallos - Set {{ selectedSet.setNumber }}</h3>
+    <h2>Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
     <table class="table custom-table2">
       <thead>
         <tr>
@@ -83,8 +83,64 @@
     </table>
   </div>
   </div>
-  
-  <button class="row" (click)="exportarExcel()">Exportar a Excel</button>
+  <div class="col-3 ">
+    <button  (click)="exportarExcel()">Exportar a Excel</button>
+  </div>
+  <div>
+    
+<div>
+  <h2>Tabla Eficiencia Jugador</h2>
+<table class="table custom-table2 col-6">
+<thead>
+  <tr class="text-center">
+    <th class="custom-table text-center" scope="col">Player</th > 
+    <th class="custom-table1 text-center" scope="col">Puntos Negativos</th >
+    <th class="custom-table1 text-center" scope="col">% Negativos</th >
+    <th class="custom-table text-center" scope="col">Puntos Positivos</th >
+    <th class="custom-table text-center" scope="col">% Positivos</th >
+      <th class="custom-table1 text-center" scope="col">Eficacia Negativa</th >
+        <th class="custom-table1 text-center" scope="col">Eficacia Positiva</th >
+  </tr>
+</thead>
+<tbody >
+  <tr *ngFor="let jugador of resultadosPorJugador">
+    <td>{{jugador.name}}</td>
+    <td>{{jugador.fallos}}</td>
+    <td>{{jugador.porcentajeNegativo+"%"}}</td>
+    <td>{{jugador.aciertos}}</td>
+    <td>{{jugador.porcentajePositivo+"%"}}</td>
+    <td>{{jugador.eficaciaPositiva+"%"}}</td>
+    <td>{{jugador.eficaciaNegativa+"%"}}</td>
+
+</tbody>
+    </table> 
+  </div>
+
+  <div class="">
+    <h2>Grafico de Fallos/Aciertos</h2>
+  <ngx-charts-bar-vertical-2d
+  *ngIf="currentView == 'combinado'"
+    [scheme]="colorScheme"
+    [results]="chartData"
+    [xAxis]="true"
+    [yAxis]="true"
+    [legend]="true"
+    [showXAxisLabel]="true"
+    [showYAxisLabel]="true"
+    [showDataLabel]="true"
+    [yAxisTickFormatting]="formatYAxisTicks" 
+    [groupPadding]="10"
+    xAxisLabel="Jugadores"
+    yAxisLabel="Puntos"
+    [roundEdges]="true"
+    (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)">
+  </ngx-charts-bar-vertical-2d>
+
+ 
+  </div> 
+  </div>
 </div>
 
 

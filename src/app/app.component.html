@@ -2,21 +2,31 @@
 <!-- home.component.html -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="wrapper d-flex align-items-stretch">
-<nav id="sidebar" class="active d-flex flex-column flex-shrink-0 px-2 py-2 bg-dark text-white" [ngClass]="{'active': sidebarAbierto}" >
+<nav id="sidebar" class="active d-flex flex-column flex-shrink-0 px-2 py-2 align-items-center persobkkk text-white z-1 border-end border-5 palb2" [ngClass]="{'active': sidebarAbierto}" >
     <div class="custom-menu" [ngClass]="{'custom-menu2': sidebarAbierto}">
         <button id="sidebarCollapse" class="btn rotate mr-2" [ngClass]="{'rotate': sidebarAbierto}" (click)="toggleSidebar()" type="button">
-            <img src="../assets/logo.svg" style="width: 64px;" alt="" class="">
+            <img src="../assets/logo.svg" style="width: 64px;background-color:#d59967;" alt="" class="">
         </button>
     </div>
 <div class="p-4 pt-5 text-center">
-    <h1 class="pb-4 text-center">MENU</h1>
-        <a class="nav-link pb-2 text-center"  href="/match-details">HISTORIAL PARTIDOS</a>
-        <a class="nav-link pb-2 text-center" href="/new-match">CREAR PARTIDO NUEVO</a>
-        <a class="nav-link pb-2 text-center"  href="/player-list">PLANTILLA</a>
-        <a class="nav-link pb-2 text-center" href="/match-live">VOLVER AL PARTIDO EN CURSO</a>      
+    <h1 class="pb-4 text-center paleta2">MENU</h1>
+        <a class="nav-link pb-2 text-center paleta1"  href="/match-details">HISTORIAL PARTIDOS</a>
+        <a class="nav-link pb-2 text-center paleta1" href="/new-match">CREAR PARTIDO NUEVO</a>
+        <a class="nav-link pb-2 text-center paleta1"  href="/player-list">PLANTILLA</a>
+        <a class="nav-link pb-2 text-center paleta1" href="/match-live">VOLVER AL PARTIDO EN CURSO</a>   
+       
+       
+        
+           
+</div>
+<div class="d-flex flex-column mt-auto">
+
+    <a class="nav-link pb-2 text-center paleta2 " href="/login">INICIAR SESION</a>   
+    <a class="nav-link pb-2 text-center paleta2 " href="/register">REGISTRAR USUARIO</a>   
+    <button class="nav-link pb-2 text-center paleta2 "  (click)="logout()">CERRAR SESION</button> 
 </div>
 </nav>
-<div id="content" class="">
+<div id="content" class="z-0">
     <router-outlet></router-outlet>
 </div>
 
