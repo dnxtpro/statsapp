@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { ChoosePlayersComponent } from '../choose-players/choose-players.component';
 import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
-import { QRCodeModule } from 'angularx-qrcode';
+
 import { SoniaComponent } from '../sonia/sonia.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 

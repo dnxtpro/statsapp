@@ -5,7 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MarcadorComponent } from './marcador/marcador.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AddPlayerComponent } from './add-player/add-player.component';
 import { ChoosePlayersComponent } from './choose-players/choose-players.component';
 import { HomeComponent } from './home/home.component';
@@ -44,62 +44,53 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    MarcadorComponent,
-    AddPlayerComponent,
-    ChoosePlayersComponent,
-    HomeComponent,
-    MatchDetailsComponent,
-    MatchDetailsXddComponent,
-    MatchLiveComponent,
-    ModelsComponent,
-    NewMatchComponent,
-    PlayerDetailsDialogComponent,
-    PlayerListComponent,
-    PlayerModalComponent,
-    DetailsPageComponent,
-    SextetoComponent,
-    SoniaComponent,
-    LoginComponent,
-    RegisterComponent,
-    ProfileComponent,
-    BoardAdminComponent,
-    BoardModeratorComponent,
-    BoardUserComponent,
-    AddTeamComponent,
-    UserManagerComponent,
-    TeamsManagerComponent,
-    NewMatch1Component,
-    RoleDirective,
-    
-  ],
-  
-  imports: [
-    RouterModule,
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatDialogModule,
-    RouterModule, 
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatDialogModule, 
-    ReactiveFormsModule,
-    DatePipe,
-    NgxChartsModule,
-    QRCodeModule,
-    NgxEchartsModule,NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    }),
-    NgxEchartsDirective,
-    NgApexchartsModule
-  ],
-  providers: [httpInterceptorProviders,provideEcharts(), provideAnimationsAsync()],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        MarcadorComponent,
+        AddPlayerComponent,
+        ChoosePlayersComponent,
+        HomeComponent,
+        MatchDetailsComponent,
+        MatchDetailsXddComponent,
+        MatchLiveComponent,
+        ModelsComponent,
+        NewMatchComponent,
+        PlayerDetailsDialogComponent,
+        PlayerListComponent,
+        PlayerModalComponent,
+        DetailsPageComponent,
+        SextetoComponent,
+        SoniaComponent,
+        LoginComponent,
+        RegisterComponent,
+        ProfileComponent,
+        BoardAdminComponent,
+        BoardModeratorComponent,
+        BoardUserComponent,
+        AddTeamComponent,
+        UserManagerComponent,
+        TeamsManagerComponent,
+        NewMatch1Component,
+        RoleDirective,
+    ],
+    bootstrap: [AppComponent], imports: [RouterModule,
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatDialogModule,
+        RouterModule,
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        ReactiveFormsModule,
+        DatePipe,
+        NgxChartsModule,
+        QRCodeModule,
+        NgxEchartsModule, NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        }),
+        NgxEchartsDirective,
+        NgApexchartsModule], providers: [httpInterceptorProviders, provideEcharts(), provideAnimationsAsync(), provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
