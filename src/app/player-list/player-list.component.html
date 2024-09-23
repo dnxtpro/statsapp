@@ -1,16 +1,62 @@
 <!-- player-list.component.html -->
 <div class="container-fluid">
-<div class="row">
-<h2 class="text-center custombackground1 header ">Lista de Jugadores</h2>
-</div>
-<div class=" d-flex flex-column text-center justify-content-center">
-<div class="d-flex flex-column col-3 card bko ml-5" *ngFor="let player of players">
-    <div class="font-weight-bold text-white text-center card-body">
-    <p class="paleta1"><strong>{{ player.name }} - {{ player.dorsal }}  - {{ player.position_name }}</strong></p>
-</div>
+    <div class="row">
+      <h2 class="text-center custombackground1 header">Lista de Jugadores</h2>
+    </div>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="row col-sm-3">
+      <button class="btn-primary btn" (click)="createTeam()">Nuevo Equipo</button>
+    </div>
+    </div>
+  <div class="row px-4 gx-4"><!-- Listado de jugadores agrupados por equipo -->
+    <div class="card col-md-6" *ngFor="let equipo of getTeamNames()">  
+      <h1 class="card-header">{{ equipo }}</h1>
+  
+      <div class="card-body">
+      <div *ngFor="let player of groupedPlayers[equipo]" class="d-flex flex-column justify-content-between mb-4 border-bottom border-secondary">
+        
+          <div class=" d-flex align-items-center flex-shrink-0 me-3">
+            <div class="d-flex flex-column fw-bold">
+            <div class="text-dark line-height-normal mb-1">{{ player.name }}</div>  
+            <div class="small text-muted line-height-normal">
+              {{ player.dorsal }} - {{ player.position_name }}
+            </div>
+            </div>
+            <button *ngIf="!player.mainUser" class="btn btn-light ms-auto" (click)="openAssignUserForm(player)">Asignar Usuario<img class="ml-2"   src="../../assets/person-add.svg"></button>
+            <button  *ngIf="player.mainUser" class="btn btn-success ms-auto" > {{player.mainUser}}</button>
+          </div>
+          
+          <div *ngIf="selectedPlayer && selectedPlayer.player_id === player.player_id" class="assign-user-form" >
+            <h3 class="text-primary">Asignar Usuario a {{ selectedPlayer.name }}</h3>
+            <form (ngSubmit)="assignUser()" class="d-flex flex-shrink-0 justify-content-between align-items-center">
+              <select [(ngModel)]="selectedUserId" name="userId" class="form-select" required>
+                <option *ngFor="let user of users" [value]="user.id">{{ user.username }}</option>
+              </select>
+              <button class="btn btn-success" type="submit">Asignar Usuario</button>
+              <button class="btn btn-warning" type="button" (click)="closeAssignUserForm()">Cancelar</button>
+            </form>
+          </div>
+      </div>
+    </div>
+    <ng-template #noPlayersMessage>
+      <p>No hay jugadores en este equipo.</p>
+    </ng-template>
+  
+      <!-- Botón para abrir el formulario de agregar jugador -->
+      <button class="btn btn-primary col-sm-3" (click)="toggleForm(equipo)">Agregar Jugador</button>
+  
+      <!-- Formulario para agregar jugador -->
+      <div *ngIf="activeTeamForm === equipo">
+        <form [formGroup]="matchForm" (ngSubmit)="onSubmit(equipo)">
+          <input formControlName="name" placeholder="Nombre del Jugador" />
+          <input formControlName="dorsal" type="number" placeholder="Dorsal" />
+          <select formControlName="positionId">
+            <option *ngFor="let position of positions" [value]="position.id">{{ position.name }}</option>
+          </select>
+          <button type="submit">Guardar Jugador</button>
+        </form>
+      </div>
+    
+  </div>
 </div>
 
-
-    </div> 
- </div>
- <button class="col-3 paleta3" (click)="navigateToAddPlayer()">Agregar Nuevo Jugador</button>

@@ -7,25 +7,32 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-new-match',
   templateUrl: './new-match.component.html',
-  styleUrls: ['./new-match.component.css']
+
 })
 export class NewMatchComponent implements OnInit {
   matchForm!: FormGroup;
-
+ data=[]
+ teams: any[] = [];
   constructor(private fb: FormBuilder, private matchService: MatchService,private router: Router) {}
 
   ngOnInit(): void {
+    
     this.matchForm = this.fb.group({
       rivalTeam: ['', Validators.required],
       date: ['', Validators.required],
       location: ['', Validators.required],
+      equipoId:[''],
     });
+    this.matchService.obtenerEquipos().subscribe(data=>{
+      this.teams = data;
+      console.log(this.teams)
+       },)
   }
 
   onSubmit() {
     if (this.matchForm.valid) {
       const datosPartido = this.matchForm.value;
-
+console.log(datosPartido)
       this.matchService.createMatch(datosPartido).subscribe(
         (response) => {
           console.log('Partido creado:', response);

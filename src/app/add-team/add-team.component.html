@@ -1,0 +1,24 @@
+
+<section class="container-fluid d-flex justify-content-center"> 
+    <div class="card col-sm-6 align-self-center">
+    <h2 class="card-header">Nuevo Equipo</h2>
+    <div class="card-body border-bottom" *ngFor="let team of teams">
+      <div class=" d-flex align-items-center flex-shrink-0 me-3">
+        <div class="d-flex flex-column fw-bold">
+        <div class="text-dark line-height-normal mb-1">{{ team.nombre }}</div>  
+        <div class="small text-muted line-height-normal">
+          {{team.id}}
+        </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="card-body">
+    <form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
+      <label class="form-label" for="rivalTeam">Nombre</label>
+      <input class="form-input" type="text" id="rivalTeam" formControlName="team">
+      <button class="btn btn-primary" type="submit" [disabled]="!matchForm.valid">+</button>
+    </form>
+    </div>
+  </div>
+</section>  

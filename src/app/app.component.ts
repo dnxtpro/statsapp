@@ -14,12 +14,15 @@ export class AppComponent {
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
+  currentUser:any;
+  isAdmin=false;
 
 
 
   sidebarAbierto = false;
   constructor(private storageService: StorageService, private authService: AuthService) { }
   ngOnInit(): void {
+    this.currentUser = this.storageService.getUser();
     this.isLoggedIn = this.storageService.isLoggedIn();
 
     if (this.isLoggedIn) {
@@ -27,7 +30,7 @@ export class AppComponent {
       this.roles = user.roles;
 
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
-      this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
+      this.showModeratorBoard = this.roles.includes('ROLE_ENTRENADOR');
 
       this.username = user.username;
     }

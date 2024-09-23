@@ -25,6 +25,10 @@ export class StorageService {
 
     return {};
   }
+  public hasRole(role: string): boolean {
+    const user = this.getUser();
+    return user.roles && user.roles.includes(role);
+  }
 
   public isLoggedIn(): boolean {
     const user = window.sessionStorage.getItem(USER_KEY);

@@ -1,25 +1,25 @@
 <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
 
-<div class=" d-flex flex-column justify-content-center custom-background">
-  <div class="row d-flex justify-content-center align-items-center">
-<div class="col-5" >
+<div class=" d-flex flex-column justify-content-center align-items-center">
+  <div class="row ">
+<div @fadeIn class="d-flex justify-content-around align-items-around" >
   
-      <button class="button-primary" (click)="previousSet()">
+      <button class="btn btn-primary" (click)="previousSet()">
         <i class="lni lni-shift-left"></i>
       </button>
-      <button (click)="showSet(1)">Mostrar Set 1</button>
-      <button class="button-primary" (click)="nextSet()"><i class="lni lni-shift-right"></i></button>
+      <button class="btn btn-secondary" (click)="showSet(1)">Mostrar Set 1</button>
+      <button class="btn btn-primary" (click)="nextSet()"><i class="lni lni-shift-right"></i></button>
 </div>
 </div>
   
 <div class="row" *ngIf="selectedSet && selectedSet.setNumber">
  <div class="col-6">
-  <h2>Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
-    <table class="table custom-table2">
+  <h2 class="text-white">Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
+    <table class="table rounded-table custom-table2">
       <thead>
         <tr>
-          <th class="custom-table" scope="col">Player</th > 
-          <th class="custom-table1" scope="col">Saque</th >
+          <th class="custom-table text-center" scope="col">Player</th > 
+          <th class="custom-table1 " scope="col">Saque</th >
           <th class="custom-table" scope="col">Ataque</th >
           <th class="custom-table1" scope="col">Zaguero</th >
           <th class="custom-table" scope="col">Finta</th >
@@ -34,21 +34,21 @@
         <tr >
           <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
           
-          <td>{{ selectedSet.data[player_name]?.Saque || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Ataque || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Zaguero || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Finta || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Bloqueo || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.ErrorSaqueRival || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.ErrorAtaqueRival || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.EXRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Saque || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Ataque || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Zaguero || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Finta || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Bloqueo || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.ErrorSaqueRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.ErrorAtaqueRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.EXRival || 0 }}</td>
           <!-- Agrega otras celdas según sea necesario -->
         </tr>
       </tbody>
     </table>
     </div>
     <div class="col-6">
-    <h2>Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
+    <h2 class="text-white">Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
     <table class="table custom-table2">
       <thead>
         <tr>
@@ -69,27 +69,24 @@
         <tr >
           <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
          
-          <td>{{ selectedSet.data[player_name]?.FalloSaque || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.FalloAtaque || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Gorro || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.Recepcion || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.EX || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.AciertoRival || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.AciertoZagueroRival || 0 }}</td>
-          <td>{{ selectedSet.data[player_name]?.AciertoFintaRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.FalloSaque || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.FalloAtaque || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Gorro || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.Recepcion || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.EX || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoZagueroRival || 0 }}</td>
+          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoFintaRival || 0 }}</td>
 
         </tr>
       </tbody>
     </table>
   </div>
   </div>
-  <div class="col-3 ">
-    <button  (click)="exportarExcel()">Exportar a Excel</button>
-  </div>
-  <div>
+ 
     
-<div>
-  <h2>Tabla Eficiencia Jugador</h2>
+<div class="row" @fadedIn>
+  <h2 class="text-white">Tabla Eficiencia Jugador</h2>
 <table class="table custom-table2 col-6">
 <thead>
   <tr class="text-center">
@@ -98,26 +95,29 @@
     <th class="custom-table1 text-center" scope="col">% Negativos</th >
     <th class="custom-table text-center" scope="col">Puntos Positivos</th >
     <th class="custom-table text-center" scope="col">% Positivos</th >
-      <th class="custom-table1 text-center" scope="col">Eficacia Negativa</th >
-        <th class="custom-table1 text-center" scope="col">Eficacia Positiva</th >
+    <th class="custom-table1 text-center" scope="col">Eficacia Negativa</th >
+    <th class="custom-table1 text-center" scope="col">Eficacia Positiva</th >
   </tr>
 </thead>
 <tbody >
   <tr *ngFor="let jugador of resultadosPorJugador">
-    <td>{{jugador.name}}</td>
-    <td>{{jugador.fallos}}</td>
-    <td>{{jugador.porcentajeNegativo+"%"}}</td>
-    <td>{{jugador.aciertos}}</td>
-    <td>{{jugador.porcentajePositivo+"%"}}</td>
-    <td>{{jugador.eficaciaPositiva+"%"}}</td>
-    <td>{{jugador.eficaciaNegativa+"%"}}</td>
+    <td scope="row" class="text-center custom-table">{{jugador.name}}</td>
+    <td class="text-center">{{jugador.fallos}}</td>
+    <td class="text-center">{{jugador.porcentajeNegativo+"%"}}</td>
+    <td class="text-center">{{jugador.aciertos}}</td>
+    <td class="text-center">{{jugador.porcentajePositivo+"%"}}</td>
+    <td class="text-center">{{jugador.eficaciaPositiva+"%"}}</td>
+    <td class="text-center">{{jugador.eficaciaNegativa+"%"}}</td>
 
 </tbody>
     </table> 
   </div>
 
-  <div class="">
-    <h2>Grafico de Fallos/Aciertos</h2>
+  <div class="row col-8" @fadedIn>
+    <div class="card">
+      <div class="card-header"><h2 >Grafico de Fallos/Aciertos</h2>
+      </div>
+    <div class="card-body  ">
   <ngx-charts-bar-vertical-2d
   *ngIf="currentView == 'combinado'"
     [scheme]="colorScheme"
@@ -127,19 +127,20 @@
     [legend]="true"
     [showXAxisLabel]="true"
     [showYAxisLabel]="true"
-    [showDataLabel]="true"
     [yAxisTickFormatting]="formatYAxisTicks" 
-    [groupPadding]="10"
+    
     xAxisLabel="Jugadores"
     yAxisLabel="Puntos"
-    [roundEdges]="true"
+     [roundEdges]="true"
+  [groupPadding]="10"
     (select)="onSelect($event)"
   (activate)="onActivate($event)"
   (deactivate)="onDeactivate($event)">
   </ngx-charts-bar-vertical-2d>
+</div>
 
+</div>
  
-  </div> 
   </div>
 </div>
 

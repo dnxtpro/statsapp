@@ -61,12 +61,12 @@ getPlayerResume(matchId:number): Observable<any[]>{
     return this.http.get<any>(`${environment.apiUrl}/api/latest-match-details`);
   }
   getLatestMatchEvent(): Observable<any> {
-    const url = `${environment.apiUrl}/api/matchevent/getLatest`;
+    const url = `${environment.apiUrl}/api/matchevents/getLatest`;
     return this.http.get(url);
   }
   deleteLastMatchEvent(matchId: number): Observable<any> {
     console.log(matchId,'enviado')
-    const url = `${environment.apiUrl}/api/matchevent/delete-last`;
+    const url = `${environment.apiUrl}/api/matchevents/delete-last`;
 
     // Enviar el matchId al backend para borrar el último evento específico
     return this.http.delete(url, { params: { matchId: matchId.toString() } });
@@ -80,7 +80,12 @@ getPlayerResume(matchId:number): Observable<any[]>{
 return this.http.get<any>(`${environment.apiUrl}/api/lastevents/${match1Id}`);
   }
   
-
+obtenerEquipos():Observable<any>{
+  return this.http.get<any>(`${environment.apiUrl}/api/getTeams`)
+}
+addTeam(team:any): Observable<any>{
+  return this.http.post<any>(`${environment.apiUrl}/api/team`, team);
+}
   createMatch(matchData: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/api/partidos/user`, matchData);
   } 
@@ -96,6 +101,18 @@ return this.http.get<any>(`${environment.apiUrl}/api/lastevents/${match1Id}`);
   getMatchById(id: number): Observable<Match> {
     // Reemplaza la implementación actual con una solicitud GET al backend por ID
     return this.http.get<Match>(`${environment.apiUrl}/${id}`);
+  }
+  resumenTemporada(): Observable<any> {
+    // Reemplaza la implementación actual con una solicitud GET al backend por ID
+    return this.http.get<any>(`${environment.apiUrl}/api/resumenTemporada`);
+  }
+  resumenTemporadaPorFallos(): Observable<any> {
+    // Reemplaza la implementación actual con una solicitud GET al backend por ID
+    return this.http.get<any>(`${environment.apiUrl}/api/resumenTemporadaPorFallos`);
+  }
+  resumenTemporadaPorPartido(): Observable<any> {
+    // Reemplaza la implementación actual con una solicitud GET al backend por ID
+    return this.http.get<any>(`${environment.apiUrl}/api/resumenTemporadaPorPartido`);
   }
   saveMatchEvent(matchEventData: MatchEvent, eventId: number): Observable<any> {
       const payload = {
@@ -119,7 +136,8 @@ return this.http.get<any>(`${environment.apiUrl}/api/lastevents/${match1Id}`);
                   name: player.name,
                   dorsal: player.dorsal,
                   positionId: player.positionId,
-                  position_name: player.position_name,  
+                  position_name: player.position_name, 
+                  equipoId:player.equipoId 
                 };
                 this.modalService.openPlayerModal([playerInfo]);
               },

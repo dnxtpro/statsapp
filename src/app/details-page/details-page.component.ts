@@ -6,6 +6,7 @@ import { Player } from '../models/player.model';
 import { PlayerService } from '../services/player.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { colorSets } from '@swimlane/ngx-charts';
+import { trigger, transition, style, animate } from '@angular/animations';
 import * as XLSX from 'xlsx';
 import {
   ChartComponent,
@@ -37,6 +38,21 @@ interface Jugador{
   selector: 'app-details-page',
   templateUrl: './details-page.component.html',
   styleUrls: ['./details-page.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }), // Estado inicial
+        animate('750ms', style({ opacity: 1 })) // Animación
+      ])
+    ]),
+    trigger('fadedIn', [
+      transition(':enter', [
+        style({ opacity: 0 }), // Estado inicial
+        animate('500ms 500ms', style({ opacity: 1 })) // Animación
+      ])
+    ])
+  ]
+
 })
 export class DetailsPageComponent implements OnInit {
 

@@ -35,6 +35,13 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
 import { BoardUserComponent } from './board-user/board-user.component';
 import { ApexChart,NgApexchartsModule } from 'ng-apexcharts';
+import { AddTeamComponent } from './add-team/add-team.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { TeamsManagerComponent } from './teams-manager/teams-manager.component';
+import { NewMatch1Component } from './new-match1/new-match1.component';
+import { RoleDirective } from './role.directive';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
 
 
 @NgModule({
@@ -61,6 +68,11 @@ import { ApexChart,NgApexchartsModule } from 'ng-apexcharts';
     BoardAdminComponent,
     BoardModeratorComponent,
     BoardUserComponent,
+    AddTeamComponent,
+    UserManagerComponent,
+    TeamsManagerComponent,
+    NewMatch1Component,
+    RoleDirective,
     
   ],
   
@@ -87,7 +99,7 @@ import { ApexChart,NgApexchartsModule } from 'ng-apexcharts';
     NgxEchartsDirective,
     NgApexchartsModule
   ],
-  providers: [httpInterceptorProviders,provideEcharts()],
+  providers: [httpInterceptorProviders,provideEcharts(), provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

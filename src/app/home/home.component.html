@@ -1,9 +1,102 @@
 <!-- home.component.html -->
 
 <div class=" text-center custom-background">
-        <h2>ESTADISITCAS VOLLEYBALL</h2>
-        <p class="text-dark font-weight-bold">Bienvenido a la pagina de inicio para realizar las estadisticas en directo, estas preaprado/a?, <a href="/login" class="text-dark"><strong >INICIA SESION</strong></a></p>
+        <h2>PIPE STATS</h2>
+</div>
+<hr class="dark mb-2">
+<div class="main-content bkkkk">
         
+    <div class="row " @fadeIn>
+        <div class="card p-2">
+                <div class="card-header">
+                        <h2>Hola {{currentUser.username}}</h2>
+                        
+                </div>
+                <div  class="card-body">
+                        <p class="text-dark font-weight-bold" *ngIf="!isLoggedIn">Bienvenido a la pagina de inicio para realizar las estadisticas en directo, estas preparado/a?, <a href="/login" class="text-dark"><strong >INICIA SESION</strong></a></p>
+       
+                        <p *ngIf="isLoggedIn">Estas conectado como <span class="fw-bold text-secondary" *ngFor="let role of currentUser.roles" [ngSwitch]="role">
+                        
+                        <span *ngSwitchDefault>{{ role }}</span> 
+                        <span *ngSwitchCase="'ROLE_ADMIN'">ADMIN </span>
+                        <span *ngSwitchCase="'ROLE_ENTRENADOR'">ENTRENADOR/A </span>
+                        <span *ngSwitchCase="'ROLE_USER'">JUGADOR </span>
+                        </span></p>
+                </div>
+        </div>
+</div>
+<div @fadedIn class="row">
+        <div class=" col-6 vh-30">
+                <div class="card ">
+                       <div class="card-header">
+                        <h2 class="fs-3">Resumen Temporada <span class="text-secondary fs-5">Acierto/Fallo = {{resumentemporada[0].event_count}} / {{resumentemporada[1].event_count}} </span></h2>
+                        
+                       </div>
+                       <div class="card-body d-flex ca flex-column">
+                       
+                                <div class="mb-4">
+                                        <ngx-charts-advanced-pie-chart
+                                        *ngIf="pieChartData && pieChartData.length > 0"
+                                        [results]="pieChartData2"
+                                        [animations]="true"
+                                
+                                        [gradient]="false"
+                                        [tooltipDisabled]="false"
+                                        
+                                      >
+                                      </ngx-charts-advanced-pie-chart>
+                                      
+                                </div>
+                                
+                               <div class=" mt-4">
+                                
+                                <ngx-charts-advanced-pie-chart
+                                        *ngIf="pieChartData && pieChartData.length > 0"
+                                        [results]="pieChartData"
+                                        [animations]="true"
+                                
+                                        [gradient]="false"
+                                        [tooltipDisabled]="false"
+                                        
+                                      >
+                                      </ngx-charts-advanced-pie-chart>
+                               </div>
+                        
+                        
+                       
+                       </div>
+                      
+                </div>
+        </div>
+        <div class=" col-6">
+                <div class="card ">
+                       <div class="card-header">
+                         <h2 class="fs-3">Grafico Temporal Aciertos y Fallos</h2>
+                         
+                        </div>
+                        <div class="card-body">
+                                <ngx-charts-line-chart
+  
+  
+  [results]="chartData"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="true"
+  [showXAxisLabel]="true"
+  [showYAxisLabel]="true"
+  [yAxisTickFormatting]="formatYAxisTicks"
+  xAxisLabel="Fecha"
+  yAxisLabel="Eventos"
+
+>
+</ngx-charts-line-chart>
+
+                        
+                       
+                       </div>
+                      
+                </div>
+        </div>
 </div>
 <div class="c-bg py-2 mt-1">
 

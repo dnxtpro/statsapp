@@ -25,4 +25,13 @@ export class UserService {
   getAdminBoard(): Observable<any> {
     return this.http.get(API_URL + 'admin', { responseType: 'text' });
   }
+  getAllUsers():Observable<any>{
+    return this.http.get('http://localhost:4001/api/users/getAll')
+  }
+  assignUserToPlayer(userId:number,playerId:number):Observable<any>{
+    return this.http.put('http://localhost:4001/api/users/assignUserToPlayer',{userId,playerId})
+  }
+  updateRole(userId:number,roles:any[]){
+    return this.http.put(`http://localhost:4001/api/users/updaterole/${userId}`,{roles})
+  }
 }

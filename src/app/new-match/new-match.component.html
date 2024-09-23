@@ -1,19 +1,43 @@
-<section class="layout"> 
-<div class="header">
-<h2>Nuevo Partido</h2>
-</div>
-<div class="main">
+<div class="container-fluid d-flex justify-content-center vh-100">
+
+
+ <div class="card col-md-6 align-self-center bg-body justify-content-center d-flex">
+   
+  <h1 class="card-header">Nuevo Partido</h1>
+  <div class="card-body">
 <form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
-  <label for="rivalTeam">Equipo Rival:</label>
-  <input type="text" id="rivalTeam" formControlName="rivalTeam">
+  <div class="form-group">
+    <label class="form-label" for="rivalTeam">Equipo Rival:</label>
+    <input class="form-control" type="text" id="rivalTeam" formControlName="rivalTeam">
+  </div>
+  <div class="form-group">
 
-  <label for="date">Fecha:</label>
-  <input type="date" id="date" formControlName="date">  
+    <label class="form-label" for="date">Fecha:</label>
+    <input class="form-control" type="date" id="date" formControlName="date">  
+  </div>
+  <div class="form-group">
 
-  <label for="location">Ubicación:</label>
-  <input type="text" id="location" formControlName="location">
+    <label class="form-label" for="location">Ubicación:</label>
+    <input class="form-control" type="text" id="location" formControlName="location">
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="equipo">Equipo:</label>
+    <select class="form-select" type="text" id="equipo" formControlName="equipoId">
+     <option *ngFor="let team of teams " [value]="team.id">
+       {{team.nombre}}{{team.id}}
+     </option>
+   
+    </select>
+   
+  </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="!matchForm.valid">Empezar Partido</button>
 
-  <button type="submit" [disabled]="!matchForm.valid">Empezar Partido</button>
+
+
+
 </form>
+
 </div>
-</section>
+</div>
+</div>

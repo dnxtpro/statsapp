@@ -7,3 +7,7 @@
 .palb2{
    border-color:#aba4bd;
 }
+.bdr{
+    background: rgba(0, 0, 0, 0.1); /* Color de fondo semi-transparente */
+    backdrop-filter: blur(10px);
+}

@@ -4,6 +4,7 @@ export interface Player {
     dorsal: number;
     positionId: number;
     position_name: string;
+    equipoId:number;
     // Otros datos relevantes del jugador
   }
   

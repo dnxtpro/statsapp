@@ -1,19 +1,21 @@
-<!-- add-player.component.html -->
-<form (submit)="onSubmit()" #playerForm="ngForm">
+<form [formGroup]="matchForm" (ngSubmit)="onSubmit()" #playerForm="ngForm">
   <div class="fjugador">
-    <label class="text-white" for="newPlayer.name">Nombre del Jugador:</label>
-    <input type="text" id="playerName" name="playerName" [(ngModel)]="newPlayer.name" required>
-
-    <label class="text-white" for="posicion">Posición:</label>
-    <select id="posicion" name="posicion" [(ngModel)]="selectedPositionId" required>
+    <label class="text-white" for="playerName">Nombre del Jugador:</label>
+    <input type="text" id="playerName" formControlName="name" required>
+    
+    <label class="text-white" for="positionId">Posición:</label>
+    <select id="posicion" formControlName="positionId" required>
       <option *ngFor="let position of positions" [value]="position.id">{{ position.name }}</option>
     </select>
 
-    <label class="text-white" for="newPlayer.dorsal">Dorsal:</label>
-    <input id="dorsal" name="dorsal" [(ngModel)]="newPlayer.dorsal" type="number" required>
+    <label class="text-white" for="dorsal">Dorsal:</label>
+    <input id="dorsal" formControlName="dorsal" type="number" required>
+  
+    <label class="text-white" for="team">Equipo:</label>
+    <select id="equipo" formControlName="equipoId" required>
+      <option *ngFor="let team of teams" [value]="team.id">{{ team.nombre }}</option>
+    </select>
   </div>
 
-  <!-- Otros campos del jugador, si es necesario -->
-
-  <button type="submit">Crear Jugador</button>
+  <button [disabled]="!matchForm.valid" type="submit">Crear Jugador</button>
 </form>

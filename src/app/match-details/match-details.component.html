@@ -1,25 +1,40 @@
-<div class="container-fluid ">
-  <div class="row ">
-  <h2 class="text-center custombackground header">Previous Matches</h2>
-</div>
-<div class="row ">
-  <div class="col-4"></div>
-<div class="col-4 " *ngIf="previousMatches.length > 0; else noMatchesTemplate">
-  
-  <div class="detalles" *ngFor="let match of previousMatches; let i = index">
-    <p class="blanco">PARTIDO {{ i + 1 }}:</p>
-    <ul class=" borderss persobkkk">
-      <li class="rosa">Equipo Local: {{ match.equipo_local }}</li>
-      <li class="rosa">Rival Team: {{ match.rivalTeam }}</li>
-      <li class="rosa">Date: {{ match.date | date:'fullDate' }}</li>
-      <li class="rosa">Location: {{ match.location }}</li>
-      <button [routerLink]="['/match-details', match.id]">Ver Detalles</button>
-    </ul>
+<div class="container-fluid bkdrop">
+  <div class="row">
+    <h2 class="text-center text-white">Previous Matches</h2>
+    <div class="col-12 d-flex flex-row justify-content-evenly mb-4 ">
+      <div class="d-flex flex-row mx-2 " *ngFor="let team of teamKeys">
+        <input
+          type="checkbox"
+          class="btn-check"
+          [id]="team"
+          [value]="team"
+          (change)="onCheckboxChange($event)"
+          autocomplete="off"
+        />
+        <label class="btn btn-light " [for]="team">{{ team }}</label>
+      </div>
+    </div>
   </div>
-</div>  
-<div class="col-4"></div>
-<ng-template #noMatchesTemplate>
-  <p>No previous matches found.</p>
-</ng-template>
-</div>
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-4 gap-3 d-flex flex-column" *ngIf="previousMatches.length > 0; else noMatchesTemplate">
+      <div class="d-flex row" *ngFor="let category of filteredData | keyvalue">
+        <h2 class="alert alert-danger">{{ category.key }}</h2>
+        <div class="card px-2 d-flex justify-content-center" *ngFor="let match of category.value; let i = index">
+          <p class="card-header">PARTIDO {{ i + 1 }}:</p>
+          <ul class="card-body list-group list-group-flush">
+            <li class="list-group-item"><span class="fw-semibold">Equipo Local:</span> {{ match.equipo_local }}</li>
+            <li class="list-group-item"><span class="fw-semibold">Rival Team:</span> {{ match.rivalTeam }}</li>
+            <li class="list-group-item"><span class="fw-semibold">Date:</span> {{ match.date | date:'fullDate' }}</li>
+            <li class="list-group-item"><span class="fw-semibold">Location:</span> {{ match.location }}</li>
+            <button class="btn btn-primary" [routerLink]="['/match-details', match.id]">Ver Detalles</button>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-4"></div>
+    <ng-template #noMatchesTemplate>
+      <p class="col-4 text-center alert-heading alert alert-info">No previous matches found.</p>
+    </ng-template>
+  </div>
 </div>

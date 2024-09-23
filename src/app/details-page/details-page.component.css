@@ -24,14 +24,17 @@ button,table{
    background-color:#0E678D; 
  }
 
-button{
-  background-color:#d59967;
-  border:0px;
-}
+
 ::ng-deep .ngx-charts-bar {
     opacity: 0; /* Opacidad por defecto */
   }
   
   ::ng-deep .ngx-charts-bar.active {
     opacity: 1; 
+  }
+  .card{
+    max-width: 95%;
+  }
+  .card-body{
+    min-height:25vh ;
   }

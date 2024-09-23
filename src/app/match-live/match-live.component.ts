@@ -12,6 +12,8 @@ import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SoniaComponent } from '../sonia/sonia.component';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 
 
 
@@ -64,7 +66,31 @@ interface MatchEvent {
 @Component({
   selector: 'app-match-live',
   templateUrl: './match-live.component.html',
-  styleUrls: ['./match-live.component.css']
+  styleUrls: ['./match-live.component.css'],
+  animations: [
+    trigger('cambiarFondo', [
+      state('0', style({
+        backgroundColor: '#f8f9fa'
+      })),
+      state('1', style({
+        backgroundColor: 'lightcoral'
+      })),
+      transition('0 <=> 1', [
+        animate('500ms ease-in-out')
+      ])
+    ]),
+    trigger('punto', [
+      state('0', style({
+        backgroundColor: '#f8f9fa'
+      })),
+      state('1', style({
+        backgroundColor: 'lightcoral'
+      })),
+      transition('0 <=> 1', [
+        animate('500ms ease-in-out')
+      ])
+    ])
+  ]
 })
 export class MatchLiveComponent implements OnInit,DoCheck {
   player_name:string|undefined;
@@ -77,7 +103,8 @@ export class MatchLiveComponent implements OnInit,DoCheck {
   tieneSaque: boolean = true;
   previousTieneSaque: boolean=true;
   latestMatchId=0;
-  latestMatchRival: string | undefined;
+  latestMatchEquipo=0;
+    latestMatchRival: string | undefined;
   latestMatchDate: Date | undefined;
   latestMatchLocation: string | undefined;
   selectedFaultType: string = '';
@@ -160,12 +187,13 @@ export class MatchLiveComponent implements OnInit,DoCheck {
 
     this.matchService.getLatestMatchDetails().subscribe(
       (latestMatchDetails) => {
-        console.log('Detalles del partido más reciente:', latestMatchDetails);
+        console.log('Detalles del partido más reciente:', latestMatchDetails,latestMatchDetails.id);
         // Aquí puedes asignar los detalles a las propiedades de tu componente
         this.latestMatchRival = latestMatchDetails.rivalTeam;
       this.latestMatchDate = latestMatchDetails.date;
       this.latestMatchLocation = latestMatchDetails.location;
       this.latestMatchId=latestMatchDetails.id;
+      this.latestMatchEquipo=latestMatchDetails.equipoNombre;
       
       },
       (error) => {
@@ -221,8 +249,13 @@ export class MatchLiveComponent implements OnInit,DoCheck {
   
   handleAcierto(aciertoType: string): void {
     this.selectedFaultType = aciertoType;
-    console.log('Acierto Type:', aciertoType);   
-    this.openPlayerModal('acierto', aciertoType);
+    console.log('Acierto Type:', aciertoType); 
+    if(this.selectedFaultType !== 'ErrorSaqueRival' && this.selectedFaultType !== 'ErrorAtaqueRival' && this.selectedFaultType !== 'EXRival')  {
+      this.openPlayerModal('acierto', aciertoType);
+    }
+    else{
+      this.openPlayerModal('acierto', aciertoType);
+    }
   }
   
   

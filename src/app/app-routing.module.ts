@@ -12,20 +12,33 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { LoginComponent } from './login/login.component';
+import { AddTeamComponent } from './add-team/add-team.component';
+import { UserManagerComponent } from './user-manager/user-manager.component';
+import { NewMatch1Component } from './new-match1/new-match1.component';
+import { TeamsManagerComponent } from './teams-manager/teams-manager.component';
+
+
+import { EntrenadorGuard } from './entrenador.guard';
+import { RoleGuard } from './auth/role.guard';
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'new-match', component: NewMatchComponent },
+  { path: 'new-match', component: NewMatchComponent,canActivate:[EntrenadorGuard] },
+  {path:'new-match1',component:NewMatch1Component},
   { path: 'match-details', component: MatchDetailsComponent },
-  { path: 'player-list', component: PlayerListComponent },
-  { path: 'add-player', component: AddPlayerComponent },
+  { path: 'player-list', component: PlayerListComponent,canActivate:[EntrenadorGuard] },
+  { path: 'add-player', component: AddPlayerComponent,canActivate:[EntrenadorGuard] },
   { path: 'match-details', component: MatchDetailsComponent },
-  { path: 'match-live', component: MatchLiveComponent },
+  { path: 'match-live', component: MatchLiveComponent,canActivate:[EntrenadorGuard] },
   { path: 'match-details/:id', component: DetailsPageComponent },
   {path:'marcador', component:MarcadorComponent},
   {path:'register', component:RegisterComponent},
   {path:'admin', component:BoardAdminComponent},
   {path:'profile',component:ProfileComponent},
   {path:'login',component:LoginComponent},
+  {path:'add-team',component:AddTeamComponent,canActivate:[EntrenadorGuard]},
+  {path:'users',component:UserManagerComponent,canActivate: [RoleGuard] },
+  {path:'error-505',component:TeamsManagerComponent}
+
 
   
   

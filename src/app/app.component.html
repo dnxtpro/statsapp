@@ -1,33 +1,34 @@
 
 <!-- home.component.html -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="wrapper d-flex align-items-stretch">
-<nav id="sidebar" class="active d-flex flex-column flex-shrink-0 px-2 py-2 align-items-center persobkkk text-white z-1 border-end border-5 palb2" [ngClass]="{'active': sidebarAbierto}" >
+<div class="wrapper">
+<div class="sidebar d-flex align-items-stretch">
+<nav id="sidebar" class="active d-flex flex-column flex-shrink-0 px-2 py-2 align-items-stretch persobkkk text-white z-1 border-end border-5 palb2" [ngClass]="{'active': sidebarAbierto}" >
     <div class="custom-menu" [ngClass]="{'custom-menu2': sidebarAbierto}">
         <button id="sidebarCollapse" class="btn rotate mr-2" [ngClass]="{'rotate': sidebarAbierto}" (click)="toggleSidebar()" type="button">
-            <img src="../assets/logo.svg" style="width: 64px;background-color:#d59967;" alt="" class="">
+            <img src="../assets/list.svg" style="width: 32px;background-color:#ffffff;" alt="" class="">
         </button>
     </div>
-<div class="p-4 pt-5 text-center">
-    <h1 class="pb-4 text-center paleta2">MENU</h1>
-        <a class="nav-link pb-2 text-center paleta1"  href="/match-details">HISTORIAL PARTIDOS</a>
-        <a class="nav-link pb-2 text-center paleta1" href="/new-match">CREAR PARTIDO NUEVO</a>
-        <a class="nav-link pb-2 text-center paleta1"  href="/player-list">PLANTILLA</a>
-        <a class="nav-link pb-2 text-center paleta1" href="/match-live">VOLVER AL PARTIDO EN CURSO</a>   
-       
-       
-        
-           
+<div class="lg:p-4 lg:pt-5 sidebar-wrapper d-flex justify-content-start flex-column">
+    <a  class="nav-link " href="/"><h2 class="pb-4 text-center paleta2">PIPE STATS</h2></a>
+    <hr class="horizontal dark mt-0">
+        <a  class="nav-link pb-3 pt-2 paleta1"  href="/match-details"><span class="fw-semibold pr-2 paleta2">HISTORIAL </span>PARTIDOS</a>
+        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1" href="/new-match"><span class="fw-semibold pr-2 paleta2">PARTIDO</span>NUEVO</a>
+        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1"  href="/player-list"><span class="fw-semibold pr-2 paleta2">GESTION</span>PLANTILLA</a>
+        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1" href="/match-live"><span class="fw-semibold pr-2 paleta2">VOLVER AL </span>PARTIDO</a>   
+                
 </div>
-<div class="d-flex flex-column mt-auto">
 
-    <a class="nav-link pb-2 text-center paleta2 " href="/login">INICIAR SESION</a>   
-    <a class="nav-link pb-2 text-center paleta2 " href="/register">REGISTRAR USUARIO</a>   
-    <button class="nav-link pb-2 text-center paleta2 "  (click)="logout()">CERRAR SESION</button> 
+<div class="lg:p-4 mt-5 sidebar-wrapper d-flex justify-content-start flex-column" ngClass="{'mt-auto':showAdminBoard || showModeratorBoard}">
+    <a class="nav-link pb-2  paleta2 "*ngIf="currentUser.username" ><span class="fw-semibold pr-2 paleta1">BIENVENIDO/A</span> {{currentUser.username}}</a>   
+    <a class="nav-link pb-2  paleta2 "*ngIf="!isLoggedIn" href="/login">INICIAR SESION</a>   
+    <a class="nav-link pb-2  paleta2 "  href="/register">REGISTRARSE</a>   
+    <button class="nav-link pb-2  paleta2 " *ngIf="isLoggedIn" (click)="logout()">CERRAR SESION</button> 
 </div>
 </nav>
-<div id="content" class="z-0">
+<div id="content" class="z-0 container-fluid bdr">
     <router-outlet></router-outlet>
 </div>
 
 </div>
+</div>  

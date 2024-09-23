@@ -39,29 +39,29 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#ffd700;stroke-width:1.8;stroke-dasharray:none;stroke:none;stroke-opacity:1;fill-opacity:1"
+       style="fill:#cfe2ff;stroke-width:1.8;stroke-dasharray:none;stroke:none;stroke-opacity:1;fill-opacity:1"
        id="rect1"
        width="180"
        height="180"
        x="16.126698"
        y="34.941174" />
     <rect
-       style="fill:#ff0000;stroke-width:1.865;stroke:none;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#cfe2ff;stroke-width:1.865;stroke:none;stroke-opacity:1;stroke-dasharray:none"
        id="rect2"
        width="180"
        height="60"
        x="16.126698"
        y="34.941177" />
     <path
-       style="fill:#ff5733;stroke:none;stroke-width:1.8;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       style="fill:#00182b;stroke:none;stroke-width:1.8;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
        d="M 16.395475,94.878733 V 35.075566 H 195.40181 l 0.40976,-0.109794 v 59.778571 z"
        id="path2" />
     <path
-       style="fill:#ffaaaa;stroke:#ffffff;stroke-width:1.8;stroke-dasharray:none;stroke-opacity:1;stroke-dashoffset:0"
+       style="fill:#cfe2ff;stroke:#ffffff;stroke-width:1.8;stroke-dasharray:none;stroke-opacity:1;stroke-dashoffset:0"
        d="M 15.992308,95.14751 H 196.20814 Z"
        id="path3" />
     <path
-       style="fill:#333333;fill-opacity:1;stroke:#000000;stroke-width:1.79462;stroke-dasharray:14.357, 14.357;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#cfe2ff;fill-opacity:1;stroke:#000000;stroke-width:1.79462;stroke-dasharray:14.357, 14.357;stroke-dashoffset:0;stroke-opacity:1"
        d="M 15.960706,35.842079 H 195.10143 Z"
        id="path3-2" />
   </g>
