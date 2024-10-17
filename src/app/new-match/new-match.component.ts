@@ -21,7 +21,7 @@ export class NewMatchComponent implements OnInit {
       rivalTeam: ['', Validators.required],
       date: ['', Validators.required],
       location: ['', Validators.required],
-      equipoId:[''],
+      equipoId:['',Validators.required],
     });
     this.matchService.obtenerEquipos().subscribe(data=>{
       this.teams = data;

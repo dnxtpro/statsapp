@@ -6,6 +6,7 @@ import { UserService } from '../_services/user.service';
 import { StorageService } from '../_services/storage.service';
 import { MatchService } from '../services/match.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Form } from '@angular/forms';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -26,6 +27,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class HomeComponent implements OnInit {
+  equipos:any[]=[]
   matches: any[] = []; 
   content?: string;
   isLoggedIn:any;
@@ -38,6 +40,7 @@ export class HomeComponent implements OnInit {
   aciertos1:any[]=[];
   fallos1:any[]=[];
   chartData: any[] = [];
+  clasificacion:any[]=[];
   
   pieChartData: any[] = [];
   pieChartData2: any[] = [];
@@ -70,6 +73,15 @@ export class HomeComponent implements OnInit {
         console.log('Datos recibidos:', data);
         this.resumentemporada2=data;
         this.separarEvento2(data);
+      },
+      error => {
+        console.error('Error al obtener los datos:', error);
+      }
+    );
+    this.matchService.obtenerEquipos().subscribe(
+      data => {
+        console.log('Datos recibidos:', data);
+        this.equipos=data;
       },
       error => {
         console.error('Error al obtener los datos:', error);
@@ -110,6 +122,18 @@ sidebarAbierto = false;
 toggleSidebar() {
   console.log('h')
   this.sidebarAbierto = !this.sidebarAbierto;
+}
+getclasification(equipoId:any){
+  this.matchService.clasificacion(equipoId).subscribe({
+next:data=>{
+  this.clasificacion=data;
+},
+error : err =>
+ { if(err.error){
+    this.clasificacion =JSON.parse(err.error).message;
+  }
+}
+  })
 }
 separarEvento(data: any[]) {
   console.log('Datos a separar:', data); // Verifica la estructura del array

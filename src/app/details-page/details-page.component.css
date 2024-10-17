@@ -1,28 +1,4 @@
 
-button,table{
-    font-size: 14px;
-}
-.custom-background {
-    background-color: #aba4bd; /* Puedes cambiar el color de fondo según tus preferencias */
-    /* Otros estilos personalizados si los necesitas */
-}
-.custom-table{
-    background-color: #A3D1E7;
-    color: #001B30;
-    font-weight: bold;
-}
-.custom-table2{border-collapse: collapse;
-    
-}
-.custom-table1{
-    color: #001B30;
-    background-color: #d59967;
-    font-weight: bold;
-}
-.table-striped>tbody>tr:nth-child(odd)>td, 
-.table-striped>tbody>tr:nth-child(odd)>th {
-   background-color:#0E678D; 
- }
 
 
 ::ng-deep .ngx-charts-bar {
@@ -38,3 +14,111 @@ button,table{
   .card-body{
     min-height:25vh ;
   }
+
+  
+  .mat-h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .mat-mdc-form-field {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .mat-mdc-table {
+    width: 100%;
+    background-color: #fff;
+  }
+  
+  .mat-mdc-header-cell {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: uppercase;
+    font-size: 0.9em;
+  }
+  
+  .mat-mdc-cell {
+    color: rgba(0, 0, 0, 0.87);
+  }
+  
+  .mat-mdc-row:hover {
+    background-color: #eee9e9;
+  }
+  
+  @media (max-width: 600px) {
+    .mat-mdc-table {
+      font-size: 0.8em;
+    }
+  }
+ .mat-mdc-header-row{
+background-color: aliceblue;
+ }
+
+ .mat-column-positivo,.mat-column-positivo100,.mat-column-efpositiva{
+ color: #114a48;
+ }
+ .mat-column-negativo,.mat-column-negativo100,.mat-column-efnegativa{
+  color: #9c2e7b;
+ }
+ .mat-mdc-cell{
+  text-align: center;
+ }
+ .mat-mdc-table{
+  border-collapse: collapse;
+ }
+ .mat-button-toggle-group{
+  background-color: aliceblue;
+ 
+ }
+      
+       
+        .tables-container {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+        .table-wrapper {
+          width: 48%;
+          margin-bottom: 20px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .table-wrapper.positive {
+          background-color: #e8f5e9;
+        }
+        .table-wrapper.negative {
+          background-color: #ffebee;
+        }
+        .table-title {
+          text-align: center;
+          padding: 15px;
+          margin: 0;
+          font-size: 1.2em;
+        }
+        .table-wrapper.positive,.table-title {
+          background-color: #4CAF50;
+          color: white;
+        }
+        .table-wrapper.negative,.table-title {
+          background-color: #F44336;
+          color: white;
+        }
+      
+        .table-wrapper.positive{
+          background-color: #c8e6c9;
+          color: #2e7d32;
+        }
+        .table-wrapper.negative {
+          background-color: #ffcdd2;
+          color: #c62828;
+        }
+        .table{
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+        @media (max-width: 768px) {
+          .table-wrapper {
+            width: 100%;
+          }
+        }

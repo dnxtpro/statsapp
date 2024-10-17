@@ -6,3 +6,59 @@
   .margenabajo{
     border-bottom: 4px solid black;
   }
+  .court-container {
+    max-width: 50vw;
+    margin: auto;
+    margin-top: 20px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .court-container1 {
+    max-width: auto;
+    margin: auto;
+    margin-top: 20px;
+    aspect-ratio:1/1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .front-zone {
+    height: 33.33%;
+    border-bottom: 2px solid #1976d2;
+    background-color: #bbdefb;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .back-zone {
+    height: 66.67%;
+    background-color: #e0e0ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  
+  .court-info {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .position-box {
+    width: 10vh;
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 90%;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  }
+  .primary{
+    background-color: #2196f3;
+  }
+  .secondary{
+    background-color: hwb(240 50% 0%);
+  }

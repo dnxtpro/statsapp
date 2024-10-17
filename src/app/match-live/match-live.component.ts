@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { ChoosePlayersComponent } from '../choose-players/choose-players.component';
 import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
-
+import {MatButtonModule} from '@angular/material/button';
 import { SoniaComponent } from '../sonia/sonia.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
@@ -67,6 +67,7 @@ interface MatchEvent {
   selector: 'app-match-live',
   templateUrl: './match-live.component.html',
   styleUrls: ['./match-live.component.css'],
+ 
   animations: [
     trigger('cambiarFondo', [
       state('0', style({
@@ -93,6 +94,8 @@ interface MatchEvent {
   ]
 })
 export class MatchLiveComponent implements OnInit,DoCheck {
+  primaryColor = '#2196f3'; // Blue
+  secondaryColor = '#ff9800'; // Orange
   player_name:string|undefined;
   Eventos:any[]=[];
   latestMatchLocalscore=0;
@@ -298,7 +301,8 @@ export class MatchLiveComponent implements OnInit,DoCheck {
         this.matchScore.awayTeam.points = 0;
         this.tieneSaque=true;
         this.selectedPlayers=[{ dorsal: '0', position: 1 }, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1 },{ dorsal: '0', position: 1}, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1}];
-        },100);
+        this.openSexteto();
+      },100);
       } else {
         setTimeout(() => {
           console.log('sexo')
@@ -307,6 +311,7 @@ export class MatchLiveComponent implements OnInit,DoCheck {
         this.matchScore.awayTeam.points = 0;
         this.tieneSaque=true;
         this.selectedPlayers=[{ dorsal: '0', position: 1 }, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1 },{ dorsal: '0', position: 1}, { dorsal: '0', position: 1 }, { dorsal: '0', position: 1}];
+        this.openSexteto();
       },100);
       }
       
@@ -435,7 +440,7 @@ openSonia():void{
 openSexteto():void{
   const dialogRef = this.dialog.open(SextetoComponent,{
     backdropClass: 'backdropBackground',
-    width: 'auto',
+    width: '50vw',
     height:'auto',
     data: {
       players: this.currentPlayers,
@@ -503,7 +508,7 @@ console.log(this.positions,'mondongonfofofo')
   openPlayerModal(actionType: string, faultType: string): void {
     const dialogRef = this.dialog.open(PlayerModalComponent, {
       backdropClass: 'backdropBackground',
-      width: '80%',
+      width: 'auto',
       height:'auto',
       data: {
         players: this.currentPlayers,

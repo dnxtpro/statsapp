@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://www.nervagest.ma:4001'
+    apiUrl: 'https://backend-zk82.onrender.com'
     
 };

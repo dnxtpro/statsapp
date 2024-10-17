@@ -2,92 +2,92 @@
 <div class="col justify-content-around p-5">
     <div class="row py-2 mb-4 d-flex">
         <div class="col-5 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="lado" (ngModelChange)="cambiarLado()">
-            <label class="form-check-label" for="flexSwitchCheckDefault">
-                {{ lado === 'A' ? 'Lado A' : 'Lado B' }}
-            </label>
+          
+            <mat-slide-toggle
+    [(ngModel)]="lado"
+    (change)="cambiarLado()"
+    [color]="'primary'">
+    {{ lado === 'A' ? 'Lado A' : 'Lado B' }}
+  </mat-slide-toggle>
         </div>
+
         
         <div class="col-5 row form-range mb-2 pb-2">
             <label for="customRange3" class="form-label align-self">{{sliderValue}}</label>
             <input type="range" class="form-range" min="1" max="5" step="1" id="customRange3" (ngModelChange)="cambiarSet()" [(ngModel)]="sliderValue">
         </div>
     </div>
+    <div class="row w-full">
+      <mat-card class="court-container">
+        <div class="front-zone">
+          <div class="position-box mx-4 primary">
+            <mat-form-field>
+              <mat-select class="form-select" [(ngModel)]="selectedPlayers[0].player_id" (ngModelChange)="updateSelectedPlayer(0, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId" [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="position-box mx-4 primary">
+            <mat-form-field>
+              <mat-select class="form-select" [(ngModel)]="selectedPlayers[1].player_id" (ngModelChange)="updateSelectedPlayer(1, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="position-box mx-4 primary">
+            <mat-form-field>
+              <mat-select class="form-select" [(ngModel)]="selectedPlayers[2].player_id" (ngModelChange)="updateSelectedPlayer(2, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
   
-      <div class="row margenarriba mb-1 pt-3">
-        <div class="col-4">
-          <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
+        <div class="back-zone">
+          <mat-grid-list cols="3" rowHeight="20vh">
+            <mat-grid-tile>
+              <div class="position-box mx-4 secondary">
+                <mat-form-field>
+                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[3].player_id" (ngModelChange)="updateSelectedPlayer(3, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <div class="position-box mx-4 secondary">
+                <mat-form-field>
+                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[4].player_id" (ngModelChange)="updateSelectedPlayer(4, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <div class="position-box mx-4 secondary" [ngClass]="{ 'saque': tieneSaque }">
+                <mat-form-field>
+                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[5].player_id"  (ngModelChange)="updateSelectedPlayer(5, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
         </div>
-        <div class="col-4">
-            <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
-        </div>
-        <div class="col-4">
-            <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
-        </div>
-      </div>
-      
-    <div class="row margenarriba mb-5 pt-5 margenabajo">
-      
-        <div class="col-4 pt-4 pb-5">
-            <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
-          </div>
-        
-        <div class="col-4 pt-4 pb-5">
-            <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
-        </div>
-        <div class="col-4 pt-4 pb-5">
-            <div class="card">
-           
-                <div class="form-floating">
-                    <select class="form-select" aria-label="Floating label disabled select example">
-                        <option *ngFor="let player of players" [value]="player.player_id + ':' +player.dorsal">{{ player.name }}</option>
-                    </select>
-                </div>
-          </div>
-        </div>
-           
-              
-            </div>
+      </mat-card>
+    </div>
+  
+  
+    
             <div class="row">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" [(ngModel)]="tieneSaque">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Tiene Saque: {{ tieneSaque ? 'Sí' : 'No' }}</label>
-                </div>
+                <div class="form-group">
+                    <mat-slide-toggle
+                      [(ngModel)]="tieneSaque"
+                      [color]="'primary'">
+                      Tiene Saque: {{ tieneSaque ? 'Sí' : 'No' }}
+                    </mat-slide-toggle>
+                  </div>
+                  
                 
             </div>
       <button mat-button (click)="onSubmit()">Guardar</button>

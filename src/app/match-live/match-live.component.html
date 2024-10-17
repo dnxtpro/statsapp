@@ -1,119 +1,116 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
 <section class="container-fluid container drop">
 <div class="container-fluid">
-  <div class="">
-    <!-- Detalles del Partido más Reciente -->
-    <div class="row d-flex justify-content-left bkdrop px-5">
-      
-        <div class="col">
-      <h2 class="small-font1">Rival:</h2>
-      <p class="small-font">{{ latestMatchRival }}</p>
+    
+    <div >
+      <mat-card class="row d-flex flex-column flex-sm-row justify-content-between align-items-start py-3 fondo1">
+        <div class="col d-flex flex-wrap">
+      <span class="fs-5 fw-medium mx-3">Rival:</span>
+      <p >{{ latestMatchRival }}</p>
     </div>
-    <div class="col">
-      <p class="small-font1">Fecha:</p>
-      <p class="small-font">{{ latestMatchDate | date: 'dd/MM/yyyy' }}</p>
+    <div class="col d-flex flex-wrap">
+      <mat-icon>event</mat-icon>
+      <span class="fs-5 fw-medium mx-3" >Fecha:</span>
+      <span >{{ latestMatchDate | date: 'dd/MM/yyyy' }}</span>
       </div>
-      <div class="col">
-      <p class="small-font1">Ubicación:</p>
-      <p class="small-font">{{ latestMatchLocation }}</p>
+      <div class="col d-flex flex-wrap">
+        <mat-icon>location_on</mat-icon>
+      <span class="fs-5 fw-medium mx-3" >Ubicación:</span>
+      <span >{{ latestMatchLocation }}</span>
       </div>  
-      <div class="col">
-        <p class="small-font1">Hora</p>
-        <p class="small-font">{{ latestMatchLocation }}</p>
+      <div class="col d-flex flex-wrap">
+        <mat-icon>schedule</mat-icon>
+        <span class="fs-5 fw-medium mx-3" >Hora:</span>
+        <span >{{ latestMatchLocation }}</span>
         </div>  
-        <div class="col">
-          <p class="small-font1">Equipo</p>
-          <p class="small-font">{{ latestMatchEquipo }}</p>
+        <div class="col d-flex flex-wrap">
+          <mat-icon>groups_2</mat-icon>
+          <span class="fs-5 fw-medium mx-3" >Equipo:</span>
+          <span >{{ latestMatchEquipo }}</span>
           </div>  
-      
+        </mat-card>
        
   </div>
     <hr class="border border-dark border-3 opacity-75 mb-4">
-    <div class="row">
-      
-    <div class="d-flex justify-content-left marcadorVisitante col-4">
-   
-    <div class="row orderL">
-      <div class=" equipo1 fs-2 fw-semibold  marito border border-5 py-2">
-        <p>Roche</p>
-      </div>
-    </div>
-    <div class="row orderLS ">
-      
-    <div class="score-boxL m-auto border border-3">      
-      <figcaption class="nomargen"> {{ matchScore.homeTeam.points }}</figcaption>
-      </div>
-    </div>
-    <div class="row orderLSS">
-    <div class=" sets-boxL fs-4 m-auto border border-3 ">
-      <p class="nomargen"> {{ matchScore.homeTeam.sets }}</p>
-    </div>
-  </div>
- 
-
-    
-      
-  </div>
-    <div class="col-1 d-flex justify-content-center align-items-center">
-      <i *ngIf="tieneSaque" style="font-size: 1.5em;" class="blanco lni lni-arrow-left-circle"></i>
-      
-    </div>
-    <div class="col-2"></div>
-    <div class="col-1  d-flex justify-content-center align-items-center"><i *ngIf="!tieneSaque" style="font-size: 1.5em;" class="blanco lni lni-arrow-right-circle "></i></div>   
- 
-  
-  
-
-    <div class="marcadorVisitante col-4 "  >
-    <div class="row orderVSS">
-      <p class="nomargen sets-box fs-4 ">   {{ matchScore.awayTeam.sets }} </p>
-    </div>
-    <div class="row orderVS">
-      <p class="nomargen score-box mt-1 ">   {{ matchScore.awayTeam.points }} </p>
-    </div>
-    <div class="row orderV h-50">
-      <div class="equipo2 fs-2 fw-semibold  marito border border-5 py-2 ">
-        <p >{{ latestMatchRival }}</p>  
-      </div>
-    </div>
-    
-         </div>
+    <div class="row d-flex justify-content-center">
+      <mat-card class="col fondo1 d-flex justify-content-center">
+        <mat-progress-bar mode="determinate" max="25" [value]="matchScore.homeTeam.points"></mat-progress-bar>
+        <div class="d-flex flexp  align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-between">
+             <mat-progress-bar mode="determinate" max="25" [value]="matchScore.homeTeam.points"></mat-progress-bar>
+            <span class="fs-5 fw-medium mx-3">Roche</span>
+            <div class="d-flex align-items-baseline">
+              <span class="display-4 fw-bold">{{ matchScore.homeTeam.points }}</span>
+             
+            </div>
+            <div class="d-flex align-items-center mx-5">
+              <span class="fs-5 fw-medium mx-2">{{ matchScore.homeTeam.sets }}</span>
+             
+            </div>
+            
+          </div>
+          
+          <div class="d-flex align-items-center">
+            <div class="border-end d-none d-sm-block" style="height: 2rem;"></div>
+            <mat-icon class="dis" *ngIf="tieneSaque">arrow_back_ios</mat-icon>
+            <span class="fs-2 fw-bold mx-2">VS</span>
+            <mat-icon class="dis" *ngIf="!tieneSaque" >arrow_forward_ios</mat-icon>
+            <div class="border-start d-none d-sm-block" style="height: 2rem;"></div>
+          </div>
+          <div class="d-flex flex1 align-items-center justify-content-between">
+            <mat-progress-bar mode="determinate" max="25" [value]="matchScore.awayTeam.points"></mat-progress-bar>
+            <div class="d-flex align-items-center mx-5">
+           
+              <span class="fs-5 fw-medium mx-2">{{ matchScore.awayTeam.sets }}</span>
+            </div>
+            <div class="d-flex align-items-baseline">
+           
+              <span class="display-4 fw-bold">{{ matchScore.awayTeam.points }}</span>
+            </div>
+            
+            <span class="fs-5 fw-medium mx-3">{{latestMatchRival}}</span>
+            
+          </div>
         </div>
+      </mat-card>
+    </div>
   
 <div class="row d-flex flex-row justify-content-between  mt-3">
    
-    <div class=" Aciertos card col-4 col-sm-5 ">
+    <div class=" Aciertos d-flex flex-column col-4 col-sm-5 ">
   
-        <h1 class="card-header">ACIERTOS</h1>
+        <h3 class="display-4 fw-bold text-center" >ACIERTOS</h3>
         <div class="btn-group-vertical" *ngFor="let acierto of aciertos">
-          <button type="button" class="btn btn-primary" role="button" (click)="handleAcierto(acierto.type)" [ngClass]="{ 'btn-success': acierto.type !== 'ErrorSaqueRival' && acierto.type !== 'ErrorAtaqueRival' && acierto.type !== 'EXRival'   }" 
-       
+          <button  mat-fab extended type="button" class="btn btn-primary" role="button" (click)="handleAcierto(acierto.type)" [ngClass]="{ 'btn-success': acierto.type !== 'ErrorSaqueRival' && acierto.type !== 'ErrorAtaqueRival' && acierto.type !== 'EXRival'   }" >
+
            <ng-container [ngSwitch]="acierto.type">
             <span *ngSwitchDefault>{{ acierto.type }}</span>
             <span *ngSwitchCase="'ErrorSaqueRival'">Error Saque Rival</span>
             <span *ngSwitchCase="'ErrorAtaqueRival'">Error Ataque Rival</span>
             <span *ngSwitchCase="'EXRival'">EX Rival</span>
           </ng-container> 
-          </button>
+        
+        </button>
         </div>
      
     </div>
       <!-- Fallos -->
-      <div class="Fallos card col-4 col-sm-5">
-        <h1 class="card-header"  >FALLOS</h1>
+      <div class="Fallos d-flex flex-column col-4 col-sm-5">
+        <h3 class="display-4 fw-bold text-center" >FALLOS</h3>
         <div class="btn-group-vertical" *ngFor="let fallo of fallos">
-          <button type="button" class="btn " role="button" (click)="handleFallo(fallo.type)"  
+          <button mat-fab extended  type="button" class="btn btn-primary" role="button" (click)="handleFallo(fallo.type)"  
           [ngClass]="{
             'btn-primary': fallo.type === 'AciertoRival' ||'AciertoZagueroRival '|| 'AciertoFintaRival',
             'btn-danger': fallo.type !== 'AciertoRival' && fallo.type !== 'AciertoZagueroRival' && fallo.type !== 'AciertoFintaRival'
           }"
-          mat-raised-button>
+        >
             <ng-container [ngSwitch]="fallo.type">
               <span *ngSwitchDefault>{{ fallo.type }}</span> 
               <span *ngSwitchCase="'AciertoRival'">Acierto Rival</span>
               <span *ngSwitchCase="'AciertoZagueroRival'">Acierto Zaguero Rival</span>
               <span *ngSwitchCase="'AciertoFintaRival'">Acierto Finta Rival</span><!-- Valor por defecto si no coincide con ningún caso -->
             </ng-container>
+          
           </button>
         </div>
         
@@ -127,86 +124,74 @@
 <div class="col-4"></div>
 
     </div>
-  </div>
-    <div class="row gx-3 d-flex justify-content-around mt-3 h-50 "style="height: 100px;">
+
+    <div class="row gx-3 d-flex justify-content-around mt-3 h-50 ">
 
       
-      <div class="col-6">
-    <ul class="h-50 list-group list-group-flush ">
-      <li class="list-group-item list-group-item-primary  mb-4 d-flex justify-content-center">ULTIMOS PUNTOS</li>
-      <li class="list-group-item   list-group-item-info mb-2 d-flex justify-content-center  " *ngFor="let player_name of Eventos " >
-        <p class="">{{player_name.dorsal}}  {{player_name.player_name}} {{player_name.type}}     {{player_name.scoreLocal}}-{{player_name.scoreVisitor}}  </p>
-     
-      </li>
-    </ul>
-  </div>
-  <div class="col-6 svg">
-    <div class="rowd-flex flex-row justify-content-around align-self-center mb-5 ">
-      
-    </div>
-  
-    <div class="row mb-3 pb-3 pt-3  justify-content-center">
- <div class="col d-flex flex-row justify-content-around align-items-center">
-        <div class="p-4 bg-body-tertiary shadow-lg">
-          <div class=" d-flex justify-content-center p-0">
-            {{selectedPlayers[3].dorsal
-            }}
-          </div>
-        </div>
-     
-        <div class=" p-4 bg-body-tertiary shadow-lg">
-          <div class="  d-flex justify-content-center p-0">
-            {{selectedPlayers[2].dorsal
-            }}
-          </div>
-        </div>
-      
-        <div class="p-4 bg-body-tertiary shadow-lg">
-          <div class=" d-flex justify-content-center p-0">
-            {{selectedPlayers[1].dorsal
-            }}
-          </div>
-        </div>
-      
-    </div>
-  </div>
-  <div class="row py-5"></div>
-  <div class="row  pt-5 pb-5">
+      <div class="col-6 ">
+        <mat-card class="court-container1 fondo1">
+          <mat-card-header>
+         <mat-card-title class="mb-2">ULTIMOS PUNTOS</mat-card-title>
+          </mat-card-header>
+          <mat-card-content  >
+            <ul class="d-flex flex-column justify-content-center px-0 ">
+              <li class=" mb-2 d-flex justify-content-center fondo2 py-4 rounded-pill align-items-center h-50 " *ngFor="let player_name of Eventos " >
+                <div class="d-flex justify-content-center align-items-center mx-2">
+                  <mat-chip matBadge class="mx-2">{{player_name.dorsal}}</mat-chip>
+                  <span>{{player_name.player_name}}</span>
+                </div>
+                <strong class="d-flex justify-content-center">
+                  {{player_name.scoreLocal}}-{{player_name.scoreVisitor}} 
+
+                </strong>
+                    
+             
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
     
-    <div class="col d-flex flex-row justify-content-around">
-        <div class="p-4 bg-body-tertiary shadow-lg">
-          <div class=" d-flex justify-content-center p-0 d-flex justify-content-center">
-            {{selectedPlayers[4].dorsal
-            }}
-          </div>
+  </div>
+  <div class="col-6">
+    <mat-card class="court-container">
+      <div class="front-zone">
+        <div class="position-box primary" >
+          <span class="position-number ">{{selectedPlayers[3].dorsal}}</span>
+    
         </div>
-           
-        <div class="p-4 bg-body-tertiary shadow-lg">
-          <div class=" d-flex justify-content-center p-0">
-            {{selectedPlayers[5].dorsal
-            }}
-          </div>
+        <div class="position-box primary">
+          <span class="position-number ">{{selectedPlayers[2].dorsal}}</span>
         </div>
-           
-        <div class="p-4 shadow-lg" [@cambiarFondo]="tieneSaque" > 
-          <div class=" d-flex justify-content-center p-0">
-            {{selectedPlayers[0].dorsal
-            }}
-          </div>
-        </div>
-         </div>
+        <div class="position-box primary" >
          
-</div>
-<div class="row justify-content-center ml-3 justify-content-center" ><div class="col-3 "><button class="btn btn-primary botonBorrar ml-4" (click)="openSexteto()">seleccionar sexteto</button> </div></div>
- <div *ngIf="qr" class="row mt-2 d-flex justify-content-center"><qrcode [qrdata]="qr"  [allowEmptyString]="true"
-  [elementType]="'img'"
-  [errorCorrectionLevel]="'M'"
-  [margin]="0"
-  [scale]="1"
-  [width]="150">
-</qrcode></div>
+          <span class="position-number ">{{selectedPlayers[1].dorsal}}</span>
+        </div>
+      </div>
+      <div class="back-zone">
+        <mat-grid-list cols="3" rowHeight="20vh">
+          <mat-grid-tile>
+            <div class="position-box secondary">
+            <span class="position-number">{{selectedPlayers[4].dorsal}}</span>
+            </div>
+            </mat-grid-tile>
+          <mat-grid-tile>
+            <div class="position-box secondary">
+            <span class="position-number">{{selectedPlayers[5].dorsal}}</span>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile >
+            <div class="position-box secondary "[ngClass]="{ 'saque': tieneSaque }">
+            <span class="position-number">{{selectedPlayers[0].dorsal}}</span>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-card>
+ 
+<div class="row justify-content-center" >
+  <div class="col-5">
+    <button mat-fab extended (click)="openSexteto()"><mat-icon>open_in_full</mat-icon>Seleccionar Sexteto</button> </div></div>
     </div >
-   
   </div>
 
 </div>

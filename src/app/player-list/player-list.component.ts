@@ -25,7 +25,7 @@ export class PlayerListComponent implements OnInit {
   selectedUserId: number | null = null;
 
 
-  constructor(private userService:UserService,private fb: FormBuilder,private playerService: PlayerService, private router: Router,private matchService: MatchService) {}
+  constructor(private userService:UserService,private fb: FormBuilder,private playerService: PlayerService, private router: Router,private matchService: MatchService) {this.getPlayers();}
   navigateToAddPlayer(equipo:string): void {
     this.router.navigate(['/add-player'],{ queryParams: { equipo: equipo }});
   }
@@ -41,6 +41,9 @@ export class PlayerListComponent implements OnInit {
       positionId: ['', Validators.required],
     });
     this.getPlayers();
+    this.loadPositions();
+    this.loadTeams();
+    this.loadUsers();
   }
 
   getPlayers() {

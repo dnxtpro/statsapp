@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
-const API_URL = 'http://localhost:4001/api/test/';
+
+const API_URL = `${environment.apiUrl}/api/test/`;
 
 @Injectable({
   providedIn: 'root',
@@ -26,12 +28,12 @@ export class UserService {
     return this.http.get(API_URL + 'admin', { responseType: 'text' });
   }
   getAllUsers():Observable<any>{
-    return this.http.get('http://localhost:4001/api/users/getAll')
+    return this.http.get(`${environment.apiUrl}/api/users/getAll`)
   }
   assignUserToPlayer(userId:number,playerId:number):Observable<any>{
-    return this.http.put('http://localhost:4001/api/users/assignUserToPlayer',{userId,playerId})
+    return this.http.put(`${environment.apiUrl}/api/users/assignUserToPlayer`,{userId,playerId})
   }
   updateRole(userId:number,roles:any[]){
-    return this.http.put(`http://localhost:4001/api/users/updaterole/${userId}`,{roles})
+    return this.http.put(`${environment.apiUrl}/api/users/updaterole/${userId}`,{roles})
   }
 }

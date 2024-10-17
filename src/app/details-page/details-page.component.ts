@@ -8,13 +8,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { colorSets } from '@swimlane/ngx-charts';
 import { trigger, transition, style, animate } from '@angular/animations';
 import * as XLSX from 'xlsx';
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexTitleSubtitle
-} from "ng-apexcharts";
+
 
 interface Resume {
   eventId: number;
@@ -181,14 +175,14 @@ cambiarColoR(){
   playerData: any[] = []; 
   selectedSet:any;
   playerResume:any[]=[];
-  
+  sets: number[] = [];
 
   constructor(
     private matchService: MatchService,
     private playerService: PlayerService,
     private route: ActivatedRoute,
    
-  ) {}
+  ) {this.sets = Array(5).fill(0).map((x, i) => i + 1);}
   selectSet(setNum: number) {
     this.selectedSet = this.setsData.find(set => set.setNumber === setNum);
   }
@@ -241,9 +235,9 @@ cambiarColoR(){
       this.matchService.getMatchEventsByMatchId(this.matchId).subscribe((matches) => {
         this.matchDetails = matches;
         console.log(matches,'partidos que he recibido');
-console.log(this.matchDetails,'this.matchdetails')
+        console.log(this.matchDetails,'this.matchdetails')
         
-        this.setsData = this.organizeDataBySets(this.matchDetails);
+        this.setsData = this.organizeDataBySets(this.matchDetails,this.players);
         this.showSet(1);
       });
     });
@@ -252,34 +246,50 @@ console.log(this.matchDetails,'this.matchdetails')
    
 
   }
-
-   contarFallosYAciertos(resumen: Resume[],players:Player[]): { name:string,aciertos: number; fallos: number,porcentajePositivo:string,porcentajeNegativo:string,eficaciaPositiva:string,eficaciaNegativa:string }[] {
-    const resultadosPorJugador : {name:string, aciertos: number; fallos: number,porcentajePositivo:string,porcentajeNegativo:string,eficaciaPositiva:string,eficaciaNegativa:string }[] = [];
-  players.forEach(player=>{
-    resultadosPorJugador.push({
-      name:player.name,
-      aciertos:0,
-      fallos:0,
-      porcentajePositivo:"0,00",
-      porcentajeNegativo:"0,00",
-      eficaciaPositiva:"0,00",
-      eficaciaNegativa:"0,00", 
-    })
-  });
+  contarFallosYAciertos(
+    resumen: { player_name: string, isSuccess: number, event_count: number }[], 
+    players: { name: string }[]
+  ): { name: string, aciertos: number, fallos: number, porcentajePositivo: string, porcentajeNegativo: string, eficaciaPositiva: string, eficaciaNegativa: string }[] {
+    
+    const resultadosPorJugador: { name: string, aciertos: number, fallos: number, porcentajePositivo: string, porcentajeNegativo: string, eficaciaPositiva: string, eficaciaNegativa: string }[] = [];
+    
+    // Inicializamos el arreglo con cada jugador
+    players.forEach(player => {
+      resultadosPorJugador.push({
+        name: player.name,
+        aciertos: 0,
+        fallos: 0,
+        porcentajePositivo: "0.00",
+        porcentajeNegativo: "0.00",
+        eficaciaPositiva: "0.00",
+        eficaciaNegativa: "0.00"
+      });
+    });
+    
+    // Recorremos el resumen para acumular aciertos y fallos usando event_count
     resumen.forEach(item => {
-      const { player_name, isSuccess } = item;
-      const jugador =resultadosPorJugador.find(j => j.name === player_name);
-      if(jugador){
-        jugador[isSuccess?'aciertos':'fallos']++;
+      const { player_name, isSuccess, event_count } = item;
+      const jugador = resultadosPorJugador.find(j => j.name === player_name);
+      
+      if (jugador) {
+        if (isSuccess === 1) {
+          jugador.aciertos += event_count; // Sumamos los aciertos
+        } else {
+          jugador.fallos += event_count; // Sumamos los fallos
+        }
       }
     });
+  
+    // Calculamos los porcentajes y eficacias
     const totalAciertos = resultadosPorJugador.reduce((total, jugador) => total + jugador.aciertos, 0);
     const totalFallos = resultadosPorJugador.reduce((total, jugador) => total + jugador.fallos, 0);
+  
     resultadosPorJugador.forEach(jugador => {
+      const totalPos = jugador.aciertos + jugador.fallos;
+      
       jugador.porcentajePositivo = totalAciertos > 0 ? ((jugador.aciertos / totalAciertos) * 100).toFixed(2) : '0.00';
       jugador.porcentajeNegativo = totalFallos > 0 ? ((jugador.fallos / totalFallos) * 100).toFixed(2) : '0.00';
-    
-      const totalPos= jugador.aciertos + jugador.fallos;
+      
       if (totalPos > 0) {
         jugador.eficaciaPositiva = ((jugador.aciertos / totalPos) * 100).toFixed(2);
         jugador.eficaciaNegativa = ((jugador.fallos / totalPos) * 100).toFixed(2);
@@ -288,13 +298,11 @@ console.log(this.matchDetails,'this.matchdetails')
         jugador.eficaciaNegativa = '0.00';
       }
     });
-   
-
-  console.log(resultadosPorJugador,'antes')
-  return resultadosPorJugador;
+  
+    return resultadosPorJugador;
   }
 
-  organizeDataBySets(matchDetails: Match[]): any[] {
+  organizeDataBySets(matchDetails: Match[],players: Player[]): any[] {
     const setsData: any[] = [];
 
     // Iterar sobre los detalles del partido y organizar por sets
@@ -307,17 +315,23 @@ console.log(this.matchDetails,'this.matchdetails')
           setNumber,
           data: {},
         };
+        players.forEach((player) => {
+          setsData[setNumber - 1].data[player.name] = {}; // Inicializar el jugador con un objeto vacío
+        });
       }
 
-      // Crear un objeto para el jugador si aún no existe
-      if (!setsData[setNumber - 1].data[event.player_name]) {
-        setsData[setNumber - 1].data[event.player_name] = {};
-      }
 
       // Agregar el repetitionCount al jugador y faultTypeName correspondientes
       if (event.type) {
         setsData[setNumber - 1].data[event.player_name][event.type] = event.event_count;
       }
+    });
+    setsData.forEach((set) => {
+      players.forEach((player) => {
+        if (!set.data[player.name]) {
+          set.data[player.name] = {}; // Inicializar jugadores sin estadísticas con un objeto vacío
+        }
+      });
     });
     console.log('sets',setsData)
     return setsData;

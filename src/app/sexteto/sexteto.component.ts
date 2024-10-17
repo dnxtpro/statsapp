@@ -31,7 +31,7 @@ export class SextetoComponent {
   players: Player[];
   position_name:string;
   dorsal:string;
-  selectedPlayers: SextetoPlayer[] = [];
+  selectedPlayers:SextetoPlayer[] = Array(6).fill(null).map(() => ({ dorsal: '', position: 0, player_id: 0 })); 
   tieneSaque: boolean = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -47,49 +47,35 @@ export class SextetoComponent {
     return desiredIndices[columnIndex]; // Adjust for 1-based positioning
   }
   onSubmit() {
-    // Combine player name and position into a SextetoPlayer object
-    this.selectedPlayers = this.selectedPlayers.concat(
-      this.getSelections().map((data,index) => ({
-        dorsal: data.dorsal,
-        position: this.getPosition(index),
-        player_id: data.playerId // Use playerId directly
-      }))
-    );
-    const jsonObject = this.generateJSONObject();
+   
+    console.log(this.selectedPlayers)
     
-    
-
    
     const newOrder = [5, 2, 1, 0, 3, 4];
     const reorderedPlayers = newOrder.map(index => this.selectedPlayers[index]);
     console.log(reorderedPlayers);
     
-    this.dialogRef.close({ selectedPlayers: reorderedPlayers, tieneSaque: this.tieneSaque,jsonObject: jsonObject });
+    this.dialogRef.close({ selectedPlayers: reorderedPlayers, tieneSaque: this.tieneSaque });
 
   }
+  updateSelectedPlayer(index: number, selectedPlayer: { player_id: number; dorsal: string }) {
+    this.selectedPlayers[index] = {
+      player_id: selectedPlayer.player_id,
+      dorsal: selectedPlayer.dorsal,
+      position: this.getPosition(index), // Asegúrate de tener este método que devuelva la posición adecuada
+    };
+  }
   cambiarLado() {
-    if(this.lado)
-      {
-        this.lado='B'
-      }
-      else{this.lado='A'}
+    this.lado = this.lado === 'A' ? 'B' : 'A';
     console.log(this.lado);
+    
   }
   cambiarSet(){
     this.qrset = this.sliderValue;
     console.log("QR set value updated:", this.qrset);
 
   }
-  getSelections(): { playerId: number, dorsal: string }[] {
-    const selectElements = document.querySelectorAll('.form-select') as NodeListOf<HTMLSelectElement>; // Type assertion for clarity
-    const selectedData = Array.from(selectElements)
-      .filter(element => element instanceof HTMLSelectElement) // Filter for select elements
-      .map(select => {
-        const [playerId, dorsal] = select.value.split(':');
-        return { playerId: parseInt(playerId), dorsal };
-      });
-    return selectedData;
-  }
+ 
   toggleTieneSaque() {
     this.tieneSaque = !this.tieneSaque;
     if(this.tieneSaque===true){
@@ -98,22 +84,11 @@ export class SextetoComponent {
     else{console.log('desactivado')}
   }
 
-  generateJSONObject(): any {
-    const selectedPlayerObject: any = {};
-  selectedPlayerObject['ZN1'] = this.selectedPlayers.find(player => player.position === 1)?.dorsal || "";
-  selectedPlayerObject['ZN2'] = this.selectedPlayers.find(player => player.position === 2)?.dorsal || "";
-  selectedPlayerObject['ZN3'] = this.selectedPlayers.find(player => player.position === 3)?.dorsal || "";
-  selectedPlayerObject['ZN4'] = this.selectedPlayers.find(player => player.position === 4)?.dorsal || "";
-  selectedPlayerObject['ZN5'] = this.selectedPlayers.find(player => player.position === 5)?.dorsal || "";
-  selectedPlayerObject['ZN6'] = this.selectedPlayers.find(player => player.position === 6)?.dorsal || "";
-
-  const jsonObject = [
-    this.club,
-    this.lado,
-    JSON.stringify(selectedPlayerObject),
-    this.qrset
-  ];
-  return jsonObject;
+  trackByPlayerId(playerId: number): number { 
+    return playerId;
   }
-
+  getDorsalFromSelect(value: string): string {
+    const dorsal = value[1];
+    return dorsal || '';
+  }
 }

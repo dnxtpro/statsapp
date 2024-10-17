@@ -1,9 +1,8 @@
 
-
-<div class="dialogo" mat-dialog-content>
-  <h1 class="h11">{{ modalTitle }}</h1>
+  <h1 mat-dialog-title>{{ modalTitle }}</h1>
+  <mat-dialog-content>
   <div class="grid-container">
-    <button (click)="onPlayerClick(player)" on *ngFor="let player of players" type="button" class="btn btn-primary">
+    <button mat-fab extended (click)="onPlayerClick(player)" on *ngFor="let player of players" >
       <div class="dorsal">{{ player.dorsal }}</div>
       <div class="name">{{ player.name }}</div>
     </button>
@@ -11,5 +10,4 @@
   <div mat-dialog-actions>
     <button mat-button (click)="onClose()">Close</button> 
   </div>
-</div>
-
+</mat-dialog-content>

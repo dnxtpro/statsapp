@@ -1,119 +1,164 @@
-<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
 
-<div class=" d-flex flex-column justify-content-center align-items-center">
-  <div class="row ">
-<div @fadeIn class="d-flex justify-content-around align-items-around" >
-  
-      <button class="btn btn-primary" (click)="previousSet()">
-        <i class="lni lni-shift-left"></i>
-      </button>
-      <button class="btn btn-secondary" (click)="showSet(1)">Mostrar Set 1</button>
-      <button class="btn btn-primary" (click)="nextSet()"><i class="lni lni-shift-right"></i></button>
-</div>
+
+<div class=" d-flex flex-column justify-content-center align-items-center container-fluid">
+
+<div class="row">
+ <mat-button-toggle-group [value]="selectedSet" (change)="showSet($event.value)" appearance="standard">
+    <mat-button-toggle *ngFor="let set of setsData; let i = index" [value]="i + 1">
+      Set {{ i + 1 }}
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
   
-<div class="row" *ngIf="selectedSet && selectedSet.setNumber">
- <div class="col-6">
-  <h2 class="text-white">Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
-    <table class="table rounded-table custom-table2">
-      <thead>
-        <tr>
-          <th class="custom-table text-center" scope="col">Player</th > 
-          <th class="custom-table1 " scope="col">Saque</th >
-          <th class="custom-table" scope="col">Ataque</th >
-          <th class="custom-table1" scope="col">Zaguero</th >
-          <th class="custom-table" scope="col">Finta</th >
-          <th  class="custom-table1" scope="col">Bloqueo</th >
-          <th class="custom-table" scope="col">Error Saque Rival</th >
-          <th class="custom-table1" scope="col">Error Ataque Rival</th >
-          <th class="custom-table" scope="col">EX Rival</th >
-          <!-- Agrega otras columnas según sea necesario -->
-        </tr>
-      </thead>
-      <tbody *ngFor="let player_name of getObjectKeys(selectedSet.data)">
-        <tr >
-          <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
-          
-          <td class="text-center">{{ selectedSet.data[player_name]?.Saque || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Ataque || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Zaguero || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Finta || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Bloqueo || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.ErrorSaqueRival || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.ErrorAtaqueRival || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.EXRival || 0 }}</td>
-          <!-- Agrega otras celdas según sea necesario -->
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    <div class="col-6">
-    <h2 class="text-white">Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
-    <table class="table custom-table2">
-      <thead>
-        <tr>
-          <th class="custom-table" scope="col">Player</th >
-          <th class="custom-table1"scope="col">FalloSaque</th >
-          <th class="custom-table"scope="col">Fallo Ataque</th >
-          
-          <th class="custom-table1" scope="col">Gorro</th >
-          <th class="custom-table"scope="col">Recepcion</th >
-          <th class="custom-table1"scope="col">EX</th >
-          <th class="custom-table"scope="col">Acierto Rival</th >
-          <th class="custom-table1"scope="col">Acierto Zaguero Rival</th >  
-          <th class="custom-table"scope="col">Acierto Finta Rival</th >
-          <!-- Agrega otras columnas según sea necesario -->
-        </tr>
-      </thead>
-      <tbody *ngFor="let player_name of getObjectKeys(selectedSet.data)">
-        <tr >
-          <td class="custom-table" scope="row">{{ player_name || 'Nombre Desconocido' }}</td>
-         
-          <td class="text-center">{{ selectedSet.data[player_name]?.FalloSaque || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.FalloAtaque || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Gorro || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.Recepcion || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.EX || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoRival || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoZagueroRival || 0 }}</td>
-          <td class="text-center">{{ selectedSet.data[player_name]?.AciertoFintaRival || 0 }}</td>
 
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
- 
+    <div class="row row-cols-2 gx-5" *ngIf="selectedSet && selectedSet.setNumber">
+      <!-- Tabla de Aciertos -->
+      <div class="col">
+      
+        <h2 class="text-white">Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
+        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8 table-responsive">
+          <!-- Definir las columnas -->
+          <ng-container matColumnDef="player_name">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Player</th>
+            <td mat-cell *matCellDef="let element" class="custom-table">{{ element || 'Nombre Desconocido' }}</td>
+          </ng-container>
     
-<div class="row" @fadedIn>
-  <h2 class="text-white">Tabla Eficiencia Jugador</h2>
-<table class="table custom-table2 col-6">
-<thead>
-  <tr class="text-center">
-    <th class="custom-table text-center" scope="col">Player</th > 
-    <th class="custom-table1 text-center" scope="col">Puntos Negativos</th >
-    <th class="custom-table1 text-center" scope="col">% Negativos</th >
-    <th class="custom-table text-center" scope="col">Puntos Positivos</th >
-    <th class="custom-table text-center" scope="col">% Positivos</th >
-    <th class="custom-table1 text-center" scope="col">Eficacia Negativa</th >
-    <th class="custom-table1 text-center" scope="col">Eficacia Positiva</th >
-  </tr>
-</thead>
-<tbody >
-  <tr *ngFor="let jugador of resultadosPorJugador">
-    <td scope="row" class="text-center custom-table">{{jugador.name}}</td>
-    <td class="text-center">{{jugador.fallos}}</td>
-    <td class="text-center">{{jugador.porcentajeNegativo+"%"}}</td>
-    <td class="text-center">{{jugador.aciertos}}</td>
-    <td class="text-center">{{jugador.porcentajePositivo+"%"}}</td>
-    <td class="text-center">{{jugador.eficaciaPositiva+"%"}}</td>
-    <td class="text-center">{{jugador.eficaciaNegativa+"%"}}</td>
+          <ng-container matColumnDef="Saque">
+            <th mat-header-cell *matHeaderCellDef class="custom-table1">Saque</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{  selectedSet.data[element]?.Saque || 0 }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="Ataque">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Ataque</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Ataque || 0 }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="Zaguero">
+            <th mat-header-cell *matHeaderCellDef class="custom-table1">Zaguero</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Zaguero || 0 }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="Finta">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Finta</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Finta || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Bloqueo">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Bloqueo</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Bloqueo || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="esrival">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Error Saque RIval</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.ErrorSaqueRival || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="earival">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Error Ataque Rival</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.ErrorAtaqueRival || 0 }}</td>
+          </ng-container>
+            <ng-container matColumnDef="exrival">
+              <th mat-header-cell *matHeaderCellDef class="custom-table">EX Rival</th>
+              <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.EXRival || 0 }}</td>
+            </ng-container>
+    
+          <!-- Agrega las demás columnas según sea necesario -->
+    
+          <!-- Cabecera y Cuerpo de la Tabla -->
+          <tr mat-header-row *matHeaderRowDef="['player_name', 'Saque', 'Ataque', 'Zaguero', 'Finta','Bloqueo','esrival','earival','exrival']"></tr>
+          <tr mat-row *matRowDef="let row; columns:['player_name', 'Saque', 'Ataque', 'Zaguero', 'Finta','Bloqueo','esrival','earival','exrival']"></tr>
+        </table>
+      </div>
+    
+      <!-- Tabla de Fallos -->
+      <div class="col">
+        <h2 class="text-white">Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
+        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8 table-responsive">
+          <ng-container matColumnDef="player_name">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Player</th>
+            <td mat-cell *matCellDef="let element" class="custom-table">{{ element|| 'Nombre Desconocido' }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="FalloSaque">
+            <th mat-header-cell *matHeaderCellDef class="custom-table1">Fallo Saque</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.FalloSaque || 0 }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="FalloAtaque">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Fallo Ataque</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.FalloAtaque || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Gorro">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Gorro</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Gorro || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="Recepcion">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Recpcion</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.Recepcion || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="EX">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">EX</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.EX || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="arival">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Acierto Rival</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.AciertoRival || 0 }}</td>
+          </ng-container>
+          <ng-container matColumnDef="azrival">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Acierto Zaguero Rival</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.AciertoZagueroRIval || 0 }}</td>
+          </ng-container>
+    
+          <ng-container matColumnDef="afrival">
+            <th mat-header-cell *matHeaderCellDef class="custom-table">Acierto Finta Rival</th>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.AciertoFintaRival || 0 }}</td>
+          </ng-container>
+    
+          <!-- Agrega las demás columnas según sea necesario -->
+    
+          <!-- Cabecera y Cuerpo de la Tabla -->
+          <tr mat-header-row *matHeaderRowDef=" ['player_name', 'FalloSaque', 'FalloAtaque', 'Gorro', 'Recepcion','EX','arival','azrival','afrival']"></tr>
+          <tr mat-row *matRowDef="let row; columns:  ['player_name', 'FalloSaque', 'FalloAtaque', 'Gorro', 'Recepcion','EX','arival','azrival','afrival']"></tr>
+        </table>
+      </div>
+    </div>
 
-</tbody>
-    </table> 
-  </div>
 
-  <div class="row col-8" @fadedIn>
+ <div class="row my-3" >
+  <table mat-table [dataSource]="resultadosPorJugador" class="mat-elevation-z8">
+    <ng-container matColumnDef="jugador">
+      <th mat-header-cell *matHeaderCellDef> Jugador </th>
+      <td mat-cell *matCellDef="let user"> {{user.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="positivo">
+      <th mat-header-cell *matHeaderCellDef> Positivo </th>
+      <td mat-cell *matCellDef="let user"> {{user.aciertos}} </td>
+    </ng-container>
+    <ng-container matColumnDef="positivo100">
+      <th mat-header-cell *matHeaderCellDef> % Positivo </th>
+      <td mat-cell *matCellDef="let user"> {{user.porcentajePositivo+"%"}} </td>
+    </ng-container>
+    <ng-container matColumnDef="negativo">
+      <th mat-header-cell *matHeaderCellDef> Negativo </th>
+      <td mat-cell *matCellDef="let user"> {{user.fallos}} </td>
+    </ng-container>
+    <ng-container matColumnDef="negativo100">
+      <th mat-header-cell *matHeaderCellDef> % Negativo </th>
+      <td mat-cell *matCellDef="let user"> {{user.porcentajeNegativo+"%"}} </td>
+    </ng-container>
+    <ng-container matColumnDef="efpositiva">
+      <th mat-header-cell *matHeaderCellDef> Eficacia Positiva </th>
+      <td mat-cell *matCellDef="let user"> {{user.eficaciaPositiva+"%"}} </td>
+    </ng-container>
+    <ng-container matColumnDef="efnegativa">
+      <th mat-header-cell *matHeaderCellDef> Eficacia Negativa </th>
+      <td mat-cell *matCellDef="let user"> {{user.eficaciaNegativa+"%"}}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['jugador','positivo','positivo100','negativo','negativo100','efpositiva','efnegativa']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['jugador','positivo','positivo100','negativo','negativo100','efpositiva','efnegativa']"></tr>
+     
+  </table>
+ </div>
+
+
+  <div class="row col-8 d-flex justify-content-center" @fadedIn>
     <div class="card">
       <div class="card-header"><h2 >Grafico de Fallos/Aciertos</h2>
       </div>
@@ -132,7 +177,7 @@
     xAxisLabel="Jugadores"
     yAxisLabel="Puntos"
      [roundEdges]="true"
-  [groupPadding]="10"
+  [groupPadding]="5"
     (select)="onSelect($event)"
   (activate)="onActivate($event)"
   (deactivate)="onDeactivate($event)">

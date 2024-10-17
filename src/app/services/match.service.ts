@@ -83,6 +83,9 @@ return this.http.get<any>(`${environment.apiUrl}/api/lastevents/${match1Id}`);
 obtenerEquipos():Observable<any>{
   return this.http.get<any>(`${environment.apiUrl}/api/getTeams`)
 }
+obtenerEquipos1():Observable<any>{
+  return this.http.get<any>(`${environment.apiUrl}/api/getTeams1`)
+}
 addTeam(team:any): Observable<any>{
   return this.http.post<any>(`${environment.apiUrl}/api/team`, team);
 }
@@ -114,6 +117,11 @@ addTeam(team:any): Observable<any>{
     // Reemplaza la implementación actual con una solicitud GET al backend por ID
     return this.http.get<any>(`${environment.apiUrl}/api/resumenTemporadaPorPartido`);
   }
+ clasificacion(equipoId:any): Observable<any> {
+    // Reemplaza la implementación actual con una solicitud GET al backend por ID
+    return this.http.get<any>(`${environment.apiUrl}/api/clasificacion`,equipoId);
+  }
+  
   saveMatchEvent(matchEventData: MatchEvent, eventId: number): Observable<any> {
       const payload = {
       matchEventData,

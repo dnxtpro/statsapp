@@ -14,11 +14,14 @@
       </div>
     </div>
     <div class="card-body">
-    <form [formGroup]="matchForm" (ngSubmit)="onSubmit()">
-      <label class="form-label" for="rivalTeam">Nombre</label>
-      <input class="form-input" type="text" id="rivalTeam" formControlName="team">
-      <button class="btn btn-primary" type="submit" [disabled]="!matchForm.valid">+</button>
-    </form>
+      <form>
+    <mat-form-field [formGroup]="matchForm" (ngSubmit)="onSubmit()">
+      <mat-label  class="form-label" for="rivalTeam">Nombre</mat-label>
+      <input matInput class="form-input" type="text" id="rivalTeam" formControlName="team">
+      
+    </mat-form-field>
+  </form>
+    <button mat-fab (click)="onSubmit()" type="submit" [disabled]="!matchForm.valid"><mat-icon>add</mat-icon></button>
     </div>
   </div>
 </section>  
