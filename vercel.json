@@ -1,13 +1,18 @@
 {
     "builds": [
       {
-        "src": "src/main.ts",
-        "use": "@vercel/angular"
+        "src": "angular.json",
+        "use": "@vercel/static-build",
+        "config": {
+          "distDir": "dist/lawea"
+        }
       }
     ],
     "routes": [
-      { "handle": "filesystem" },
-      { "src": "/(.*)", "dest": "/" }
-    ],
-    "outputDirectory": "dist/lawea"
+      {
+        "src": "/(.*)",
+        "dest": "/index.html"
+      }
+    ]
   }
+  
