@@ -1,0 +1,137 @@
+.toolbar {
+  background: #111827;
+  border-radius: 0.375rem;
+  padding: 0.5rem; /* reduced */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* reduced */
+  color: #d1d5db;
+  font-family: sans-serif;
+  font-size: 13px; /* slightly smaller base font */
+}
+
+.undo-redo {
+  display: flex;
+  gap: 0.4rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #1f2937;
+}
+
+.icon-btn {
+  padding: 0.35rem; /* smaller */
+  border-radius: 0.375rem;
+  background: none;
+  transition: background 0.15s;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-btn:hover {
+  background: #1f2937;
+}
+.icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-top: 1px solid #1f2937;
+  padding-top: 0.5rem;
+}
+
+.section-title {
+  font-size: 0.65rem; /* smaller */
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* more compact grid */
+  gap: 0.35rem;
+}
+
+/* Responsive toolbar: horizontal compact toolbar on small screens */
+@media (max-width: 700px) {
+  .toolbar {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .section { border-top: none; padding-top: 0; }
+  .section-title { display: none; }
+  .tools-grid { display: flex; gap: 0.5rem; }
+  .tool-btn { padding: 0.5rem; min-width: 48px; }
+  .colors { grid-template-columns: repeat(6, 1fr); }
+  .color-picker { width: 40px; height: 40px; }
+}
+
+.tool-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.45rem; /* smaller */
+  border-radius: 0.375rem;
+  border: none;
+  background: #1f2937;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: 0.15s;
+  font-size: 12px;
+  min-height: 36px;
+  min-width: 36px;
+}
+.tool-btn.active {
+  background: #2563eb;
+  color: white;
+}
+.tool-btn:hover {
+  background: #374151;
+}
+
+.colors {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* more compact */
+  gap: 0.35rem;
+}
+
+.color-btn {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.35rem;
+  border: 2px solid #374151;
+  transition: 0.12s;
+  cursor: pointer;
+  width: 28px; /* explicit smaller size */
+  height: 28px;
+}
+.color-btn.selected {
+  border-color: white;
+  transform: scale(1.08);
+}
+
+.color-picker {
+  width: 40px; /* smaller square */
+  height: 40px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+/* Make lucide icons inside toolbar smaller */
+.tool-btn lucide-icon, .icon-btn lucide-icon, .icon-btn > lucide-icon, .tool-btn > lucide-icon {
+  width: 18px;
+  height: 18px;
+}
+.tool-btn span { font-size: 11px; }

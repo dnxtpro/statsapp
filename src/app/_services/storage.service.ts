@@ -25,6 +25,16 @@ export class StorageService {
 
     return {};
   }
+  public saveToken(token: string): void {
+    const user = this.getUser();
+    user.token = token;
+    this.saveUser(user);
+  }
+  public getToken(): string | null {
+    const user = this.getUser();
+    return user?.token || null;
+  }
+
   public hasRole(role: string): boolean {
     const user = this.getUser();
     return user.roles && user.roles.includes(role);

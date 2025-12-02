@@ -1,0 +1,11 @@
+<mat-dialog-content>
+	<div class="ratings-list" *ngIf="data?.saque?.length">
+		<button class="rating-button" *ngFor="let rating of data.saque" (click)="onActionClick(rating)" [attr.data-symbol]="rating[1]" title="{{ rating[3] }}">
+			<div class="rating-symbol" [ngClass]="getRatingClass(rating[1])">{{ rating[1] }}</div>
+			<div class="rating-content">
+				<div class="rating-label">{{ rating[2] }}</div>
+				<div class="rating-description">{{ rating[3] }}</div>
+			</div>
+		</button>
+	</div>
+</mat-dialog-content>

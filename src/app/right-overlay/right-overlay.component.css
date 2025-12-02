@@ -1,0 +1,145 @@
+.right-overlay {
+  position: absolute;
+  right: 0px;
+  top: 10%;
+  width: 64px;
+  background: rgba(7, 11, 14, 0.6);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tool-btn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+}
+.tool-btn.active {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.selected-tool {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.selected-header {
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+  align-items:center;
+}
+.selected-name {
+  color: #cbd5e1;
+  font-size: 13px;
+  text-transform: capitalize;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.selected-name lucide-icon {
+  width:22px;
+  height:22px;
+}
+
+.overlay-controls {
+  display:flex;
+  justify-content:center;
+  margin-top:6px;
+}
+.overlay-controls .small-btn {
+  padding:6px;
+}
+.small-btn {
+  background: rgba(255,255,255,0.04);
+  color: #e2e8f0;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.popup {
+  position: relative;
+  background: rgba(2,6,23,0.9);
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+.swatches {
+  display:flex;
+  gap:6px;
+}
+.swatches-vertical {
+  display:flex;
+  flex-direction: column;
+  gap:8px;
+}
+/* color button style copied from annotation-toolbar */
+.color-btn {
+  aspect-ratio: 1 / 1;
+  border-radius: 0.35rem;
+  border: 2px solid #374151;
+  transition: 0.12s;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+}
+.color-btn.selected {
+  border-color: white;
+  transform: scale(1.08);
+}
+
+.swatch { display:none; }
+
+/* native color picker matching toolbar */
+.color-picker {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+/* Vertical slider (native input rotated avoided) */
+.vertical-range-vertical {
+  display:none; /* legacy - no longer used; keep for backward compatibility */
+}
+.icon-btn lucide-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.undo-redo {
+  display:flex;
+  gap:6px;
+}

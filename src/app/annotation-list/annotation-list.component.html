@@ -1,0 +1,117 @@
+<div class="annotation-list">
+  <div class="header">
+    <h3>Annotations</h3>
+    <div style="display:flex; align-items:center; gap:8px">
+      <span>{{ annotations.length }} items</span>
+      <button class="icon-btn" (click)="onToggleAsidePin($event)" [attr.aria-pressed]="asidePinned" title="Pin aside">
+        <lucide-icon [name]="asidePinned ? 'pin' : 'pin'"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="annotations-container">
+    <div *ngIf="annotations.length === 0" class="empty">
+      No annotations yet. Start drawing on the video!
+    </div>
+
+    <div *ngFor="let annotation of annotations" class="annotation-wrapper">
+      <div
+        (click)="onSelect(annotation.id)"
+        [class.annotation-item]="true"
+        [class.selected]="selectedAnnotationId === annotation.id"
+      >
+        <div class="annotation-main">
+          <div class="left">
+            <ng-container *ngIf="annotation.data?.frameSnapshot">
+              <div class="thumbnail">
+                <img [src]="annotation.data.frameSnapshot" alt="Frame" />
+                <div class="ts-badge">{{ formatTime(annotation.timestamp) }}</div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="center">
+            <div class="row-top">
+              <lucide-icon [name]="getAnnotationIcon(annotation.type)" class="icon-big"></lucide-icon>
+              <span class="type">{{ annotation.type | titlecase }}</span>
+              <span class="timestamp-small" *ngIf="!annotation.data?.frameSnapshot">{{ formatTime(annotation.timestamp) }}</span>
+            </div>
+
+            <div *ngIf="annotation.data?.category" class="category-pill">{{ annotation.data.category }}</div>
+
+            <div *ngIf="annotation.data?.tags?.length" class="tags">
+              <span *ngFor="let t of annotation.data.tags" class="tag">{{ t }}</span>
+            </div>
+
+            <div *ngIf="annotation.data?.players?.length" class="players">
+              <ng-container *ngFor="let p of annotation.data.players; let i = index">
+                <span *ngIf="i < 3" class="player-pill">#{{ p.number }}</span>
+              </ng-container>
+              <span *ngIf="annotation.data.players.length > 3" class="more">+{{ annotation.data.players.length - 3 }} more</span>
+            </div>
+
+            <div *ngIf="annotation.description || annotation.data?.description" class="desc">📝 {{ annotation.description || annotation.data?.description }}</div>
+
+            <div *ngIf="annotation.data?.notes?.length" class="note-preview">{{ annotation.data.notes[0].text }}</div>
+
+            <div class="meta-row">
+              <div class="color-dot" [style.backgroundColor]="annotation.color"></div>
+              <span class="meta">{{ annotation.strokeWidth }}px • {{ (annotation.opacity * 100) | number:'1.0-0' }}%</span>
+            </div>
+          </div>
+
+          <div class="right">
+            <div class="top-actions">
+             
+              <!-- Move visibility and delete actions to top-actions (replacing the three-dot menu) -->
+              <button (click)="onToggle(annotation.id, $event)" title="Toggle visibility" class="icon-btn">
+                <lucide-icon [name]="annotation.visible ? 'eye' : 'eye-off'"></lucide-icon>
+              </button>
+              <button (click)="onDelete(annotation.id, $event)" title="Delete" class="icon-btn">
+                <lucide-icon name="trash-2"></lucide-icon>
+              </button>
+               <button (click)="toggleExpanded(annotation.id, $event)" class="icon-btn" title="Expand">
+                <lucide-icon [name]="isExpanded(annotation.id) ? 'chevron-up' : 'chevron-down'"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotation-footer" *ngIf="isExpanded(annotation.id)">
+        <div class="footer-content">
+          <div class="footer-left">
+            <button (click)="onEdit(annotation.id, $event)" title="Edit" class="icon-btn">
+              <lucide-icon name="edit-2"></lucide-icon>
+            </button>
+            <button (click)="onToggle(annotation.id, $event)" title="Toggle visibility" class="icon-btn">
+              <lucide-icon [name]="annotation.visible ? 'eye' : 'eye-off'"></lucide-icon>
+            </button>
+            <button (click)="onDelete(annotation.id, $event)" title="Delete" class="icon-btn">
+              <lucide-icon name="trash-2"></lucide-icon>
+            </button>
+          </div>
+
+          <div class="footer-right">
+            <div *ngIf="annotation.description || annotation.data?.description" class="full-desc">
+              <p class="label">Description</p>
+              <div class="desc-box">{{ annotation.description || annotation.data?.description }}</div>
+            </div>
+
+            <div *ngIf="annotation.data?.notes?.length" class="notes-list">
+              <p class="label">Notes</p>
+              <div *ngFor="let note of annotation.data.notes" class="note-item">{{ note.text }}</div>
+            </div>
+
+            <div *ngIf="annotation.data?.players?.length > 3" class="tagged-players">
+              <p class="label">Tagged Players</p>
+              <div class="tagged-grid">
+                <div *ngFor="let p of annotation.data.players" class="tagged-player">#{{ p.number }} {{ p.name || '' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

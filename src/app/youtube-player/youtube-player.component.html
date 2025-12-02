@@ -1,0 +1,50 @@
+<div class="player-container">
+  <div id="player" class="player-iframe"></div>
+  
+  <div class="custom-overlay">
+    <div class="playback-controls">
+      <button 
+        class="control-button" 
+        [class.active]="currentPlaybackRate === 0.5"
+        (click)="changePlaybackRate(0.5)">
+        0.5x
+      </button>
+      <button 
+        class="control-button"
+        [class.active]="currentPlaybackRate === 1"
+        (click)="changePlaybackRate(1)">
+        1x
+      </button>
+      <button 
+        class="control-button"
+        [class.active]="currentPlaybackRate === 1.5"
+        (click)="changePlaybackRate(1.5)">
+        1.5x
+      </button>
+      <button 
+        class="control-button"
+        [class.active]="currentPlaybackRate === 2"
+        (click)="changePlaybackRate(2)">
+        2x
+      </button>
+      <button class="control-button" (click)="playVideo()">
+       <mat-icon>play_arrow</mat-icon>
+      </button>
+      <button class="control-button" (click)="pauseVideo()">
+        <mat-icon>pause</mat-icon>
+      </button>
+    </div>
+
+    <div class="progress-bar">
+      <span class="time-display">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
+      <input 
+        type="range" 
+        class="progress-input"
+        min="0" 
+        [max]="duration" 
+        [value]="currentTime" 
+        (change)="seekTo(currentTime)"
+      >
+    </div>
+  </div>
+</div>

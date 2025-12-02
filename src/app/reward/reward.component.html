@@ -1,0 +1,73 @@
+<mat-card class="mat-elevation-z8 card card1">
+  <mat-card-header>
+    <p class="felipes"><img src="../../assets/felipe.svg"  alt="">  {{ totalPoints }} Felipes Disponibles</p>
+    </mat-card-header>
+
+</mat-card>
+
+<div class="rec">
+  <h1>Recompensas Disponibles</h1>
+</div>
+
+<div class="lol">
+  <mat-card *ngFor="let reward of rewards" class="mat-elevation-z8 card">
+    <div class="texto">
+      <h3>
+        {{ reward.title }}
+      </h3>
+      <p>
+        {{ reward.description }}
+      </p>
+    </div>
+    <div class="felipes">
+        <p><img src="../../assets/felipe.svg"  alt=""> 
+            {{ reward.pointsRequired }} Felipes
+        </p>
+    </div>
+    <div class="canjear">
+        <button
+            (click)="onCanjear(reward)"
+            mat-flat-button
+        >
+            Canjear
+        </button>
+    </div>
+  </mat-card>
+</div>
+
+<mat-card class="mat-elevation-z8 card">
+  <mat-card-header> Historial Recompensas </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="pointsLogs" class="transparent-table">
+      <ng-container matColumnDef="Fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.dateAwarded | date : "dd/MM/yyyy" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Recompensa">
+        <th mat-header-cell *matHeaderCellDef>Puntos</th>
+        <td mat-cell *matCellDef="let element" class="failure">
+          {{ element.points }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Reason">
+        <th mat-header-cell *matHeaderCellDef>Razón</th>
+        <td mat-cell *matCellDef="let element" class="success">
+          {{ element.reason }}
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="['Fecha', 'Recompensa', 'Reason']"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: ['Fecha', 'Recompensa', 'Reason']"
+      ></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

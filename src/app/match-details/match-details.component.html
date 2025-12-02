@@ -1,43 +1,119 @@
-<div class="container-fluid bkdrop">
+<div class="container-fluid ">
   <div class="row">
-    <mat-card><mat-card-header class="text-center"><h2 class="text-center">Previous Matches</h2></mat-card-header></mat-card>
     
-    <div class="col-12 d-flex flex-row justify-content-evenly mb-4 ">
-      <div class="d-flex flex-row mx-2 " *ngFor="let team of teamKeys">
-        <input
-          type="checkbox"
-          class="btn-check"
-          [id]="team"
+
+    <div class="col-12 d-flex flex-row justify-content-center flex-wrap gap-3 mb-4">
+      <mat-button-toggle-group
+        multiple
+        (change)="onCheckboxChange($event)"
+        class="d-flex flex-row flex-wrap gap-3"
+      >
+        <mat-button-toggle
+          *ngFor="let team of teamKeys"
           [value]="team"
-          (change)="onCheckboxChange($event)"
-          autocomplete="off"
-        />
-        <label  class="" [for]="team"><button mat-fab extended >{{ team }}</button></label>
-      </div>
+          class="mat-button-toggle"
+        >
+          {{ team }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
   </div>
-  <div class="row">
-    <div class="col-4"></div>
-    <div class="col-4 gap-3 d-flex flex-column" *ngIf="previousMatches.length > 0; else noMatchesTemplate">
-      <div class="d-flex row" *ngFor="let category of filteredData | keyvalue">
-        <h2 class="alert alert-danger">{{ category.key }}</h2>
-        <mat-card class="mb-5 px-2 d-flex justify-content-center" *ngFor="let match of category.value; let i = index">
-          <mat-card-header ><h3>PARTIDO {{ i + 1 }}:</h3></mat-card-header>
-          <mat-card-content>
-          <mat-list class="">
-            <mat-list-item class=""><span matListItemTitle class="fw-bold">Equipo Local:</span> {{ match.equipo_local }}</mat-list-item>
-            <mat-list-item class=""><span matListItemTitle class="fw-bold">Rival Team:</span> {{ match.rivalTeam }}</mat-list-item>
-            <mat-list-item class=""><span matListItemTitle class="fw-bold">Date:</span> {{ match.date | date:'fullDate' }}</mat-list-item>
-            <mat-list-item class=""><span matListItemTitle class="fw-bold">Location:</span> {{ match.location }}</mat-list-item>
-            <button mat-fab extended class="" [routerLink]="['/match-details', match.id]"><mat-icon>add</mat-icon>Ver Detalles</button>
-          </mat-list>
-        </mat-card-content>
-        </mat-card>
+  <div class="row justify-content-center">
+
+    <div
+      class=""
+      *ngIf="previousMatches.length > 0; else noMatchesTemplate"
+    >
+      <div
+        class="d-flex flex-column"
+        *ngFor="let category of filteredData | keyvalue"
+      >
+      <div class="cat">
+        <div class="categorias"></div>
+        <h2>{{ category.key }}</h2>
       </div>
-    </div>
-    <div class="col-4"></div>
+        
+        <div class="match-card-container">
+          <mat-card
+            class="mb-5 px-2 d-flex justify-content-center"
+            *ngFor="let match of category.value; let i = index"
+          >
+           
+              <mat-card-header>
+                <h3>{{ match.rivalTeam }}:</h3>
+                
+              </mat-card-header>
+              <mat-card-content>
+                <mat-list>
+                  <mat-list-item
+                    ><span matListItemTitle class="fw-bold">Equipo Local:</span>
+                    <span matListItemLine>
+                      {{ match.equipo_local }}
+                    </span>
+                  </mat-list-item>
+                  <mat-list-item
+                    ><span matListItemTitle class="fw-bold">Rival Team:</span>
+                    <span matListItemLine>
+                      {{ match.rivalTeam }}
+                    </span>
+                  </mat-list-item>
+                  <mat-list-item
+                    ><span matListItemTitle class="fw-bold">Date:</span>
+                    <span matListItemLine>
+                      {{ match.date | date : "fullDate" }}
+                    </span>
+                    </mat-list-item
+                  >
+                  <mat-list-item
+                    ><span matListItemTitle class="fw-bold">Location:</span>
+                    <span matListItemLine>
+                      {{ match.location }}
+                    </span>
+                  </mat-list-item>
+                  
+                </mat-list>
+              </mat-card-content>
+              <mat-card-footer>
+                <div class="button-row">
+                  <button
+                    class="button button-primary"
+                    [routerLink]="['/match-details', match.id]"
+                  >
+                    <mat-icon>visibility</mat-icon>Ver Detalles
+                  </button>
+                  <button
+                    *ngIf="showModeratorBoard"
+                    class="button button-secondary"
+                    [routerLink]="['/editor', match.id]"
+                  >
+                    <mat-icon>edit</mat-icon>Editar 
+                  </button>
+                  <button
+                    *ngIf="!showModeratorBoard"
+                    class="button button-secondary"
+                    [routerLink]="['/editor', match.id]"
+                  >
+                    <mat-icon>edit</mat-icon>Ver Anotaciones
+                  </button>
+                  <button
+                  *ngIf="showModeratorBoard"
+                      
+                      class="button-outline button button-full-width"
+                      (click)="deleteMatch(match.id)"
+                    >
+                      <mat-icon>delete</mat-icon>Borrar
+                    </button>
+                </div>
+              </mat-card-footer>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    
     <ng-template #noMatchesTemplate>
-      <p class="col-4 text-center alert-heading alert alert-info">No previous matches found.</p>
+      <p class="col-4 text-center alert-heading alert alert-info">
+        No previous matches found.
+      </p>
     </ng-template>
   </div>
 </div>

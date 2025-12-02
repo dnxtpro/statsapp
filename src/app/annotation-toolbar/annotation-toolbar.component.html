@@ -1,0 +1,86 @@
+<div class="toolbar">
+  <!-- Undo / Redo -->
+  <div class="undo-redo">
+    <button
+      (click)="undo.emit()"
+      [disabled]="!canUndo"
+      title="Undo"
+      class="icon-btn"
+    >
+      <lucide-icon name="Undo"></lucide-icon>
+    </button>
+
+    <button
+      (click)="redo.emit()"
+      [disabled]="!canRedo"
+      title="Redo"
+      class="icon-btn"
+    >
+      <lucide-icon name="Redo"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- Tools -->
+  <div class="section">
+    <div class="section-title">Tools</div>
+    <div class="tools-grid">
+      <button
+        *ngFor="let tool of tools"
+        (click)="toolSelect.emit(tool.id)"
+        [class.active]="selectedTool === tool.id"
+        class="tool-btn"
+        [title]="tool.label"
+      >
+        <lucide-icon [name]="tool.icon"></lucide-icon>
+        <span>{{ tool.label }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Color selector -->
+  <div class="section">
+    <div class="section-title">Color</div>
+    <div class="colors">
+      <button
+        *ngFor="let presetColor of presetColors"
+        (click)="colorChange.emit(presetColor)"
+        class="color-btn"
+        [style.backgroundColor]="presetColor"
+        [class.selected]="color === presetColor"
+      ></button>
+    </div>
+    <input
+      type="color"
+      [value]="color"
+      (input)="onColorInput($event)"
+      class="color-picker"
+    />
+  </div>
+
+  <!-- Stroke width -->
+  <div class="section">
+    <label class="section-title"> Stroke Width: {{ strokeWidth }}px </label>
+    <input
+      type="range"
+      min="1"
+      max="20"
+      [value]="strokeWidth"
+      (input)="strokeWidthChange.emit($any($event.target).valueAsNumber)"
+    />
+  </div>
+
+  <!-- Opacity -->
+  <div class="section">
+    <label class="section-title">
+      Opacity: {{ opacity * 100 | number : "1.0-0" }}%
+    </label>
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [value]="opacity"
+      (input)="opacityChange.emit($any($event.target).valueAsNumber)"
+    />
+  </div>
+</div>

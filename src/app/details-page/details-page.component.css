@@ -15,7 +15,15 @@
     min-height:25vh ;
   }
 
-  
+  .mat-table .mat-cell {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 1em;
+    text-align: right;
+    font-weight: bold;
+    height:30px;
+    margin-bottom: 4%;
+  }
   .mat-h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -25,35 +33,50 @@
     width: 100%;
     max-width: 300px;
   }
-  
-  .mat-mdc-table {
-    width: 100%;
-    background-color: #fff;
-  }
+
   
   .mat-mdc-header-cell {
     font-weight: bold;
-    color: rgba(0, 0, 0, 0.87);
+    color:white !important;
     text-transform: uppercase;
     font-size: 0.9em;
+  }
+  .mat-mdc-header-row{
+    background-color: #001b30;
+    backdrop-filter: blur(4px);
+    color:white;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .mat-column-jugador{
+    font-weight:600;
+  }
+  .mat-column-player_name{
+    font-weight:600;
   }
   
   .mat-mdc-cell {
     color: rgba(0, 0, 0, 0.87);
   }
+  .respo{
+    max-width:100vw;
+  }
+  .cdk-column-jugador,.cdk-column-player_name,.sticky-column {
+    position: sticky;
+    left: 0;
+    z-index: 1;  /* Asegura que la columna fija quede encima de las otras columnas durante el scroll */
+  }
+  .sticky{  position: sticky;
+    left: 0; 
+  }
+  .hola{
+ max-width: 100vw;
+
+  }
   
   .mat-mdc-row:hover {
     background-color: #eee9e9;
   }
-  
-  @media (max-width: 600px) {
-    .mat-mdc-table {
-      font-size: 0.8em;
-    }
-  }
- .mat-mdc-header-row{
-background-color: aliceblue;
- }
 
  .mat-column-positivo,.mat-column-positivo100,.mat-column-efpositiva{
  color: #114a48;
@@ -122,3 +145,6 @@ background-color: aliceblue;
             width: 100%;
           }
         }
+.advance-pie-legend-wrapper{
+  width:50%:
+}

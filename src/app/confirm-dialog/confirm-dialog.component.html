@@ -1,0 +1,23 @@
+
+
+    <div class="dialog-container overflow-x-hidden overflow-y-hidden">
+        <div class="dialog-header">
+          <mat-icon class="warning-icon">warning</mat-icon>
+          <h2 mat-dialog-title>Borrar Partido</h2>
+        </div>
+        
+        <mat-dialog-content>
+          <p class="dialog-message">Esta seguro/a de querer borrar el partido seleccionado?</p>
+        </mat-dialog-content>
+        
+        <mat-dialog-actions align="end">
+          <button mat-button class="cancel-button" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancelar
+          </button>
+          <button mat-raised-button color="warn" (click)="onConfirm()" cdkFocusInitial>
+            <mat-icon>delete</mat-icon>
+            Eliminar
+          </button>
+        </mat-dialog-actions>
+        </div>  

@@ -1,0 +1,67 @@
+<div class="right-overlay">
+  <!-- Show full tools list only when no tool or the 'select' tool is active -->
+  <div class="tools" *ngIf="!selectedTool || selectedTool === 'select'">
+    <button *ngFor="let t of tools" class="tool-btn" [class.active]="selectedTool === t.key" (click)="selectTool(t.key)" [title]="t.title">
+      <lucide-icon [name]="t.icon"></lucide-icon>
+    </button>
+  </div>
+
+  <!-- When a drawing tool is selected (not 'select'), show a compact header with a button to return to select -->
+  <div class="selected-tool" *ngIf="selectedTool && selectedTool !== 'select'">
+    <div class="selected-header">
+      <button class="tool-btn" (click)="selectTool('select')" title="Volver a seleccionar">
+        <lucide-icon name="MousePointer"></lucide-icon>
+      </button>
+      <div class="selected-name">
+        <lucide-icon [name]="getIconFor(selectedTool)"></lucide-icon>
+      </div>
+    </div>
+    <!-- Back button removed: layout toggle lives in the editor controls -->
+  </div>
+
+  <!-- Controls area: only visible when a non-'select' tool is chosen -->
+  <div class="controls" *ngIf="selectedTool && selectedTool !== 'select'">
+    <div class="control-row">
+      <button class="small-btn icon-btn" (click)="toggleColorPopup()" title="Color">
+        <lucide-icon name="Droplet"></lucide-icon>
+      </button>
+      <button class="small-btn icon-btn" (click)="toggleWidthPopup()" title="Width">
+        <lucide-icon name="Minus"></lucide-icon>
+      </button>
+      <button class="small-btn icon-btn" (click)="toggleOpacityPopup()" title="Opacity">
+        <lucide-icon name="Eye"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- Color popup -->
+    <div class="popup color-popup" *ngIf="showColorPopup">
+      <!-- Copy design from annotation-toolbar: swatches + native color picker -->
+      <div class="swatches">
+        <button
+          *ngFor="let c of ['#3B82F6','#EF4444','#F59E0B','#10B981','#8B5CF6','#FFFFFF','#000000']"
+          class="color-btn"
+          [style.backgroundColor]="c"
+          [class.selected]="color === c"
+          (click)="onColorPick(c)">
+        </button>
+      </div>
+      <input type="color" [value]="color" (input)="onColorPick($any($event.target).value)" class="color-picker" />
+    </div>
+
+    <!-- Width popup (vertical range) -->
+    <div class="popup width-popup" *ngIf="showWidthPopup">
+      <!-- Use same style/behaviour as annotation-toolbar -->
+      <label class="section-title" style="margin-bottom:6px;">Grosor: {{ strokeWidth }}px</label>
+      <input type="range" min="1" max="20" [value]="strokeWidth" (input)="onWidthChange($any($event.target).valueAsNumber)" />
+    </div>
+
+    <!-- Opacity popup (vertical range) -->
+    <div class="popup opacity-popup" *ngIf="showOpacityPopup">
+      <!-- Use same style/behaviour as annotation-toolbar -->
+      <label class="section-title" style="margin-bottom:6px;">Opacidad: {{ (opacity * 100) | number:'1.0-0' }}%</label>
+      <input type="range" min="0" max="1" step="0.01" [value]="opacity" (input)="onOpacityChange($any($event.target).valueAsNumber)" />
+    </div>
+
+    <!-- Undo/Redo removed per request -->
+  </div>
+</div>

@@ -1,34 +1,83 @@
-
 <!-- home.component.html -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="wrapper">
-<div class="sidebar d-flex align-items-stretch">
-<nav id="sidebar" class="active d-flex flex-column flex-shrink-0 px-2 py-2 align-items-stretch persobkkk text-white z-1 border-end border-5 palb2" [ngClass]="{'active': sidebarAbierto}" >
-    <div class="custom-menu" [ngClass]="{'custom-menu2': sidebarAbierto}">
-        <button id="sidebarCollapse" class="btn rotate mr-2" [ngClass]="{'rotate': sidebarAbierto}" (click)="toggleSidebar()" type="button">
-            <img src="../assets/list.svg" style="width: 32px;background-color:#ffffff;" alt="" class="">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<mat-sidenav-container *ngIf="!isLandingPage" autosize   class="sidenav-container" >
+    <mat-sidenav [ngClass]="!isCollapsed ? 'expanded' : ''" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'" class="sidenav"  >
+        <div style="padding: 24px 16px;">
+          <a *ngIf="isCollapsed"   class="text-decoration-none " href="/voley">
+            <h2  style="text-align: center; margin: 16px 0 0;color:white">Pipe Stats</h2>
+          </a>
+        </div>
+   
+<mat-nav-list class="blanqiuto">
+    <a mat-list-item  class="nav-list-item "  href="/voley/match-details">
+        <mat-icon>analytics</mat-icon>
+        <span *ngIf="!isCollapsed" class="fw-semibold paleta2">HISTORIAL </span> <span class="blanqiuto">PARTIDOS</span></a>
+    <a mat-list-item  *ngIf="showAdminBoard || showModeratorBoard" class="nav-list-item" href="/voley/new-match">
+        <mat-icon>sports_volleyball</mat-icon>
+        <span *ngIf="!isCollapsed" class="fw-semibold paleta2">PARTIDO</span><span class="blanqiuto">NUEVO</span></a>
+    <a mat-list-item  *ngIf="showAdminBoard || showModeratorBoard" class="nav-list-item"  href="/voley/player-list">
+        <mat-icon>people</mat-icon>
+        <span *ngIf="!isCollapsed" class="fw-semibold paleta2">GESTION</span><span class="blanqiuto">PLANTILLA</span></a>
+    <a mat-list-item  *ngIf="showAdminBoard || showModeratorBoard" class="nav-list-item" href="/voley/match-live">
+        <mat-icon>login</mat-icon>
+        <span  *ngIf="!isCollapsed" class="fw-semibold paleta2">VOLVER AL </span><span class="blanqiuto">PARTIDO</span></a>   
+    <a mat-list-item *ngIf="reward" class="nav-list-item" href="/voley/reward">
+      <mat-icon>trophy</mat-icon>
+      <span *ngIf="!isCollapsed" class="fw-semibold paleta2">FELIPES</span>
+    </a>   
+  </mat-nav-list>
+<div class="auth-container">
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item *ngIf="!isLoggedIn" href="/voley/login" class="nav-list-item auth-item">
+        <mat-icon>login</mat-icon>
+        <span class="blanqiuto"> Login</span>
+       
+      </a>
+      <a mat-list-item href="/voley/register" class="nav-list-item auth-item">
+        <mat-icon>person_add</mat-icon>
+        <span class="blanqiuto">Register</span>
+        
+      </a>
+      <a mat-list-item *ngIf="isLoggedIn" (click)="logout()" class="nav-list-item auth-item">
+        <mat-icon>logout</mat-icon>
+        <span class="blanqiuto"> Logout</span>
+       
+      </a>
+    </mat-nav-list>
+  </div>
+</mat-sidenav>
+
+
+
+<mat-sidenav-content class="sidenav-content">
+    <mat-toolbar class="toolbar">
+        <button mat-icon-button class="menu-button" (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
         </button>
-    </div>
-<div class="lg:p-4 lg:pt-5 sidebar-wrapper d-flex justify-content-start flex-column">
-    <a  class="nav-link " href="/"><h2 class="pb-4 text-center paleta2">PIPE STATS</h2></a>
-    <hr class="horizontal dark mt-0">
-        <a  class="nav-link pb-3 pt-2 paleta1"  href="/match-details"><span class="fw-semibold pr-2 paleta2">HISTORIAL </span>PARTIDOS</a>
-        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1" href="/new-match"><span class="fw-semibold pr-2 paleta2">PARTIDO</span>NUEVO</a>
-        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1"  href="/player-list"><span class="fw-semibold pr-2 paleta2">GESTION</span>PLANTILLA</a>
-        <a *ngIf="showAdminBoard || showModeratorBoard" class="nav-link pb-3 paleta1" href="/match-live"><span class="fw-semibold pr-2 paleta2">VOLVER AL </span>PARTIDO</a>   
-                
+       
+        <h2 class="display-6 fw-bold "><span *ngIf="currentUser.username" class="fw-semibold pr-2 paleta1"><span class="blanqiuto">BIENVENIDO/A </span>{{currentUser.username}}</span>  PIPE STATS</h2>
+         
+
+
+      </mat-toolbar>
+      <div class=" z-0 container-fluid bdr">
+          <div [@routeAnimations]="o.isActivated ? o.activatedRoute : ''">
+            <router-outlet #o="outlet"></router-outlet>
+          </div>
+      </div>
+     
+    
+
+
+</mat-sidenav-content>
+</mat-sidenav-container>
+
+<div class="pipestats" *ngIf="isLandingPage">
+
+  <router-outlet></router-outlet>
 </div>
 
-<div class="lg:p-4 mt-5 sidebar-wrapper d-flex justify-content-start flex-column" ngClass="{'mt-auto':showAdminBoard || showModeratorBoard}">
-    <a class="nav-link pb-2  paleta2 "*ngIf="currentUser.username" ><span class="fw-semibold pr-2 paleta1">BIENVENIDO/A</span> {{currentUser.username}}</a>   
-    <a class="nav-link pb-2  paleta2 "*ngIf="!isLoggedIn" href="/login">INICIAR SESION</a>   
-    <a class="nav-link pb-2  paleta2 "  href="/register">REGISTRARSE</a>   
-    <button class="nav-link pb-2  paleta2 " *ngIf="isLoggedIn" (click)="logout()">CERRAR SESION</button> 
-</div>
-</nav>
-<div id="content" class="z-0 container-fluid bdr">
-    <router-outlet></router-outlet>
-</div>
 
-</div>
-</div>  

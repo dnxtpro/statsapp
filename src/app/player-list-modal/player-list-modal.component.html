@@ -1,13 +1,30 @@
 
-  <h1 mat-dialog-title>{{ modalTitle }}</h1>
+  <h1 mat-dialog-title>Elija Jugador para {{modalTitle}}</h1>
   <mat-dialog-content>
-  <div class="grid-container">
-    <button mat-fab extended (click)="onPlayerClick(player)" on *ngFor="let player of players" >
-      <div class="dorsal">{{ player.dorsal }}</div>
-      <div class="name">{{ player.name }}</div>
-    </button>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onClose()">Close</button> 
-  </div>
-</mat-dialog-content>
+    <div class="typing-hint">
+      <small>Teclea dorsal (1-2 cifras) y pulsa <strong>Enter</strong> para seleccionar.</small>
+      <div class="typed">Buscando: <span class="pill">{{ currentKeys || '-' }}</span></div>
+    </div>
+
+    <!-- Capture keyboard events on this container. allowKeyboard controla si se procesa. -->
+    <div class="grid-container" #gridContainer tabindex="0" (keydown)="handleKeyDown($event)">
+      <ng-container *ngIf="(currentKeys && currentKeys.length) ? playersFiltered.length > 0 : players.length > 0">
+        <button
+          mat-fab
+          class="player-btn"
+          *ngFor="let player of (currentKeys && currentKeys.length ? playersFiltered : players)"
+          (click)="onPlayerClick(player)">
+          <div class="dorsal">{{ player.dorsal }}</div>
+          <div class="name">{{ player.name }}</div>
+        </button>
+      </ng-container>
+
+      <div *ngIf="currentKeys && currentKeys.length && playersFiltered.length === 0" class="no-results">
+        No se encontraron jugadores para "{{ currentKeys }}"
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onClose()">Cerrar</button>
+    </div>
+  </mat-dialog-content>

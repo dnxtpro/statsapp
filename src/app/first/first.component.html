@@ -1,0 +1,130 @@
+<div class="entero">
+    <header>
+        <div class="content-fit">
+            <div class="logo">PIPE STATS</div>
+            <nav>
+                <ul>
+                    <li>Iniciar Sesión</li>
+                    <li>Detalles</li>
+                    <li ><a (click)="scrollToLogin()">Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="cuerpo">
+    <div class="section" id="banner">
+        <div class="content-fit">
+            <div class="title1 mar" data-before="WEBSITEDESIGN">ESTADÍSTICAS PARA TU EQUIPO? </div>
+            <p>Si ya tienes cuenta, <a class="subrayado" (click)="scrollToLogin()">Inicia Sesión</a></p>
+        </div>
+      
+        
+    </div>
+     <div *ngIf="!isHorizontal" class="section" id="login">
+        <div class="content-fit2">
+            <div class="form-container2 responsive-form-container">
+                <p class="title">HOLA DE NUEVO, INICIAS SESIÓN</p>
+                <div *ngIf="!isRegister" class="logins">
+                    <app-login></app-login>
+                </div>
+                <div *ngIf="isRegister" class="registers">
+                    <app-register></app-register>
+                </div>
+                    <div class="social-message">
+                    <div class="line"></div>
+                  
+                    <div class="line"></div>
+                  </div>
+                  
+                  <p *ngIf="!isRegister" class="signup">
+                    ¿No tienes cuenta aún?
+                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
+                  </p>
+                  
+        
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="section" id="intro">
+        <div class="content-fit">
+            <div class="number">01</div>
+            <div class="des">
+                <div class="title1">CREA TU EQUIPO</div>
+                <p>Diseña tu equipo de forma sencilla. Añade a cada jugador con sus datos, posición y rol dentro del grupo. Podrás organizar tu plantilla como quieras, tenerla siempre a mano y preparar tus entrenamientos y partidos con toda la información bien estructurada.</p>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="description">
+        <div class="content-fit">
+            <div class="number">02</div>
+            <div class="des">
+                <div class="title1">Graba tus estadísticas</div>
+                <p>Lleva el control de todo lo que ocurre en la pista. Anota puntos, errores, aciertos y acciones clave mientras el partido se desarrolla. La aplicación está pensada para que registrar estadísticas sea rápido, claro y práctico, sin perderte nada de lo que sucede en el juego.</p>
+            </div>
+        </div>
+        <img src="img/leaf1.png" class="decorate" alt="" style="width: 70vw; bottom: 0; right: 0; z-index: 101;">
+    </div>
+    <div class="section" id="final">
+        <div class="content-fit">
+            <div class="number">03</div>
+            <div class="des">
+                <div class="title1">VISUALIZA LOS RESULTADOS</div>
+                <p>Analiza el rendimiento de tu equipo de un vistazo. Obtén gráficos, informes y resúmenes que te ayudarán a ver la evolución de tus jugadores, identificar fortalezas y detectar aspectos a mejorar. Convierte los datos en información útil para crecer y competir mejor en cada encuentro.</p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isHorizontal" class="section" id="login">
+        <div class="content-fit">
+            <div class="form-container responsive-form-container">
+                <p class="title">HOLA DE NUEVO, INICIA SESIÓN</p>
+                <div *ngIf="!isRegister" class="logins">
+                    <app-login></app-login>
+                </div>
+                <div *ngIf="isRegister" class="registers">
+                    <app-register></app-register>
+                </div>
+                    <div class="social-message">
+                    <div class="line"></div>
+                  
+                    <div class="line"></div>
+                  </div>
+                  
+                  <p *ngIf="!isRegister" class="signup">
+                    ¿No tienes cuenta aún?
+                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
+                  </p>
+                  
+        
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isHorizontal" class="section" id="login">
+        <div class="content-fit2">
+            <div class="form-container2 responsive-form-container">
+                <p class="title">HOLA DE NUEVO, INICIAS SESIÓN</p>
+                <div *ngIf="!isRegister" class="logins">
+                    <app-login></app-login>
+                </div>
+                <div *ngIf="isRegister" class="registers">
+                    <app-register></app-register>
+                </div>
+                    <div class="social-message">
+                    <div class="line"></div>
+                  
+                    <div class="line"></div>
+                  </div>
+                  
+                  <p *ngIf="!isRegister" class="signup">
+                    ¿No tienes cuenta aún?
+                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
+                  </p>
+                  
+        
+            </div>
+        </div>
+    
+    </div>
+    <canvas id="canvas-box" ></canvas>
+</div>

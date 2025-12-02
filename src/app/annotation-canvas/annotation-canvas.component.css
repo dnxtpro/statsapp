@@ -1,0 +1,12 @@
+.annotation-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: crosshair;
+  /* ensure touch drawing doesn't trigger scrolling/gestures */
+  touch-action: none;
+  -ms-touch-action: none;
+}

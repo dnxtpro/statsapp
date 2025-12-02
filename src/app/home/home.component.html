@@ -1,120 +1,258 @@
 <!-- home.component.html -->
-<div class="container-fluid">
-        <header className="bg-dark text-white p-4 rounded shadow mb-4">
-                <div class="container">
-                        <h2 class="display-6 fw-bold text-white"> PIPE STATS</h2>
+
+<hr class="dark mb-2" />
+<div class="bkkkk h-100vh">
+  <div class="overflow-hidden mb-5" @fadeIn>
+    <mat-card class="card mx-2">
+      <mat-card-header>
+        <h2>
+          <mat-card-title> Hola {{ currentUser.username }}</mat-card-title>
+        </h2>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="text-dark font-weight-bold" *ngIf="!isLoggedIn">
+          Bienvenido a la pagina de inicio para realizar las estadisticas en
+          directo, estas preparado/a?,
+          <a href="/voley/login" class="text-dark">
+            <strong>INICIA SESION</strong></a
+          >
+        </p>
+
+        <p *ngIf="isLoggedIn">
+          Estas conectado como
+          <span
+            class="fw-bold text-secondary"
+            *ngFor="let role of currentUser.roles"
+            [ngSwitch]="role"
+          >
+            <span *ngSwitchDefault>{{ role }}</span>
+            <span *ngSwitchCase="'ROLE_ADMIN'">ADMIN </span>
+            <span *ngSwitchCase="'ROLE_ENTRENADOR'">ENTRENADOR/A </span>
+            <span *ngSwitchCase="'ROLE_USER'">JUGADOR</span>
+          </span>
+        </p>
+        <p class="fw-bold">PROXIMOS PARTIDOS:</p>
+        <div class="match-list1 overflow-auto">
+          <div class="match-item" *ngFor="let event of upcomingEvents">
+            <div
+              class="match-info"
+              [ngClass]="{
+                'imd-event': event.summary.includes('IMD'),
+                'favb-event': event.summary.includes('FAVB')
+              }"
+            >
+              <div class="match-date">
+                <div class="pl-2 pr-2" *ngIf="event.summary.includes('FAVB')">
+                  <img class="imagens" src="/assets/favb.png" alt="" />
                 </div>
-        </header>
 
-
-        <hr class="dark mb-2">
-        <div class=" bkkkk">
-
-                <div class="row mb-5 " @fadeIn>
-                        <mat-card>
-                                <mat-card-header>
-                                        <h2><mat-card-title> Hola {{currentUser.username}}</mat-card-title></h2>
-
-                                </mat-card-header>
-                                <mat-card-content>
-                                        <p class="text-dark font-weight-bold" *ngIf="!isLoggedIn">Bienvenido a la pagina
-                                                de inicio para realizar las estadisticas en directo, estas preparado/a?,
-                                                <a href="/login" class="text-dark"><strong>INICIA SESION</strong></a>
-                                        </p>
-
-                                        <p *ngIf="isLoggedIn">Estas conectado como <span class="fw-bold text-secondary"
-                                                        *ngFor="let role of currentUser.roles" [ngSwitch]="role">
-
-                                                        <span *ngSwitchDefault>{{ role }}</span>
-                                                        <span *ngSwitchCase="'ROLE_ADMIN'">ADMIN </span>
-                                                        <span *ngSwitchCase="'ROLE_ENTRENADOR'">ENTRENADOR/A </span>
-                                                        <span *ngSwitchCase="'ROLE_USER'">JUGADOR </span>
-                                                </span></p>
-                                </mat-card-content>
-                        </mat-card>
+                <div class="pl-2 pr-2" *ngIf="event.summary.includes('IMD')">
+                  <img class="imagens" src="/assets/imd.png" alt="" />
                 </div>
-                <div @fadedIn class="row mb-5">
-                        <div class=" col-6">
-                                <mat-card class=" h-100">
-                                        <mat-card-header class="">
-                                                <h2 class="fs-3">
-                                                        Resumen Temporada
-                                                        <span *ngIf="resumentemporada!=null"
-                                                                class="text-secondary fs-5">Acierto/Fallo =
-                                                                {{resumentemporada[0].event_count || 0}} /
-                                                                {{resumentemporada[1].event_count || 0}} </span>
-                                                        <span *ngIf="resumentemporada===null"
-                                                                class="text-secondary fs-5">Acierto/Fallo = 0/0 </span>
-                                                </h2>
 
-                                        </mat-card-header>
-                                        <mat-card-content class="align-self-stretch h-100">
-
-
-                                                <ngx-charts-advanced-pie-chart
-                                                        *ngIf="pieChartData && pieChartData.length > 0"
-                                                        [results]="pieChartData2" [animations]="true" [gradient]="false"
-                                                        [tooltipDisabled]="false">
-                                                </ngx-charts-advanced-pie-chart>
-                                                <span *ngIf="pieChartData && pieChartData.length <= 0">NO SE HAN
-                                                        ENCONTRADO DATOS</span>
-
-
-                                        </mat-card-content>
-                                        <mat-card-content class="align-self-stretch h-100">
-
-                                                <ngx-charts-advanced-pie-chart
-                                                        *ngIf="pieChartData && pieChartData.length > 0"
-                                                        [results]="pieChartData" [animations]="true" [gradient]="false"
-                                                        [tooltipDisabled]="false">
-                                                </ngx-charts-advanced-pie-chart>
-                                               
-
-
-
-                                        </mat-card-content>
-
-
-                                </mat-card>
-                        </div>
-                        <div class=" col-6">
-                                <mat-card class="h-100">
-                                        <mat-card-header class="">
-                                                <h2 class="fs-3">Grafico Temporal Aciertos y Fallos</h2>
-
-                                        </mat-card-header>
-                                        <mat-card-content class="align-self-stretch h-100">
-                                                <span *ngIf="pieChartData && pieChartData.length <= 0">NO SE HAN
-                                                        ENCONTRADO DATOS</span>
-                                                <ngx-charts-line-chart [results]="chartData" [xAxis]="true"
-                                                        [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
-                                                        [showYAxisLabel]="true" [yAxisTickFormatting]="formatYAxisTicks"
-                                                        xAxisLabel="Fecha" yAxisLabel="Eventos" *ngIf="chartData && chartData.length > 0">
-                                                </ngx-charts-line-chart>
-
-
-
-                                        </mat-card-content>
-
-                                </mat-card>
-                        </div>
+                <span class="fs-4">
+                  {{ event.start.dateTime | date : " d " }} de
+                  {{ event.start.dateTime | date : "MMMM" }}
+                </span>
+                <div class="text-secondary">
+                  {{ event.start.dateTime | date : "HH:mm" }} -
+                  {{ event.end.dateTime | date : "HH:mm" }}
                 </div>
-                <mat-card >
-                        <mat-card-content>
-                                
-                                <form>
-                                        <mat-form-field>
-                                                <mat-select (ngModelChange)="getclasification($event)">
-                                                        @for (team of equipos; track team) {
-                                                                <mat-option [value]="team.id">{{team.nombre}}</mat-option>
-                                                        }
-                                                </mat-select>
-                                        </mat-form-field>
-                                </form>
-
-                        </mat-card-content>
-                </mat-card>
-
-
-
+              </div>
+              <div class="match-teams">
+                {{ event.summary }}
+              </div>
+              <div class="match-venue">
+                {{ event.description }}
+              </div>
+            </div>
+          </div>
         </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div @fadedIn class="row mb-5">
+    <div class="col-md-6 col-auto marginado">
+      <mat-card class="card card1 h-50vh">
+        <mat-card-header class="">
+          <h2 class="fs-3">
+            Resumen Temporada
+            <span
+              *ngIf="resumentemporada && resumentemporada.length > 1"
+              class="text-secondary fs-5"
+              >Acierto/Fallo = {{ resumentemporada[0].event_count || 0 }} /
+              {{ resumentemporada[1].event_count || 0 }}
+            </span>
+            <span *ngIf="resumentemporada === null" class="text-secondary fs-5">
+              Acierto/Fallo = 0/0
+            </span>
+          </h2>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+          <span *ngIf="pieChartData && pieChartData.length <= 0"
+            >NO SE HAN ENCONTRADO DATOS</span
+          >
+
+          <ngx-charts-advanced-pie-chart
+            *ngIf="pieChartData && pieChartData.length > 0"
+            [results]="pieChartData2"
+            [animations]="true"
+            [gradient]="false"
+            [tooltipDisabled]="false"
+          >
+          </ngx-charts-advanced-pie-chart>
+        </mat-card-content>
+        <mat-card-content class="card-content">
+          <ngx-charts-advanced-pie-chart
+            *ngIf="pieChartData && pieChartData.length > 0"
+            [results]="pieChartData"
+            [animations]="true"
+            [gradient]="false"
+            [tooltipDisabled]="false"
+          >
+          </ngx-charts-advanced-pie-chart>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-6 col-auto">
+      <mat-card class="card card1">
+        <mat-card-header class="">
+          <h2 class="fs-3">Grafico Temporal Aciertos y Fallos</h2>
+        </mat-card-header>
+        <mat-card-content class="card-content1">
+          <span *ngIf="chartData && chartData.length <= 0"
+            >NO SE HAN ENCONTRADO DATOS</span
+          >
+          <ngx-charts-line-chart
+          [customColors]="customColors"
+            [results]="chartData"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="true"
+            [yAxisTickFormatting]="formatYAxisTicks"
+            xAxisLabel="Fecha"
+            yAxisLabel="Eventos"
+            *ngIf="chartData && chartData.length > 0"
+          >
+          </ngx-charts-line-chart>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <mat-card class="card">
+    <mat-card-content>
+      <div class="ranking-table-container mat-elevation-z8" matSort>
+        <table mat-table [dataSource]="clasificacion">
+          <ng-container matColumnDef="indice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+            <td
+              mat-cell
+              *matCellDef="let element; let i = index"
+              [ngClass]="{
+                primero: element.indice >= 0,
+                segundo: element.indice === 2,
+                tercero: element.indice === 3
+              }"
+            >
+              {{ i + 1 }}
+            </td>
+            <!-- Índice + 1 -->
+          </ng-container>
+
+          <ng-container matColumnDef="player_name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.player_name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fallo">
+            <th mat-header-cell *matHeaderCellDef>Fallos</th>
+            <td mat-cell *matCellDef="let element" class="failure">
+              
+              {{ element.fallo }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acierto">
+            <th mat-header-cell *matHeaderCellDef>Aciertos</th>
+            <td mat-cell *matCellDef="let element" class="success">
+              {{ element.acierto }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="diferencia">
+            <th mat-header-cell *matHeaderCellDef>Diferencia</th>
+            <td
+              mat-cell
+              *matCellDef="let element"
+              [ngClass]="{
+                positive: element.diferencia > 0,
+                negative: element.diferencia < 0
+              }"
+            >
+              {{ element.diferencia > 0 ? "+" : "" }}{{ element.diferencia }}
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="[
+              'indice',
+              'player_name',
+              'fallo',
+              'acierto',
+              'diferencia'
+            ]"
+          ></tr>
+          <tr
+            mat-row
+            [ngClass]="{
+              'even-row': isEvenRow(row),
+              'odd-row': !isEvenRow(row)
+            }"
+            *matRowDef="
+              let row;
+              columns: [
+                'indice',
+                'player_name',
+                'fallo',
+                'acierto',
+                'diferencia'
+              ]
+            "
+          ></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- <mat-card class="match-card">
+    <mat-card-header>
+      <mat-card-title>Próximos Partidos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="match-list">
+        <div class="match-item" *ngFor="let event of events">
+          <div class="match-info">
+            <div class="match-date">
+              <mat-icon>event</mat-icon>
+
+              {{ event.start.dateTime | date : "EEEE d " }}de
+              {{ event.start.dateTime | date : "MMMM" }} de
+              {{ event.start.dateTime | date : "HH:mm" }} a
+              {{ event.end.dateTime | date : "HH:mm" }}
+            </div>
+            <div class="match-teams">
+              {{ event.summary }}
+            </div>
+            <div class="match-venue">
+              {{ event.description }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card> -->
+</div>

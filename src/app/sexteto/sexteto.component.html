@@ -22,22 +22,24 @@
         <div class="front-zone">
           <div class="position-box mx-4 primary">
             <mat-form-field>
-              <mat-select class="form-select" [(ngModel)]="selectedPlayers[0].player_id" (ngModelChange)="updateSelectedPlayer(0, $event)">
-                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId" [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              <mat-select  [(ngModel)]="selectedPlayers[0].player_id" (ngModelChange)="updateSelectedPlayer(0, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId" [value]="player.player_id">
+                  {{ player.name }}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
           <div class="position-box mx-4 primary">
             <mat-form-field>
-              <mat-select class="form-select" [(ngModel)]="selectedPlayers[1].player_id" (ngModelChange)="updateSelectedPlayer(1, $event)">
-                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              <mat-select  [(ngModel)]="selectedPlayers[1].player_id"  [compareWith]="comparePlayers" (ngModelChange)="updateSelectedPlayer(1, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="player.player_id">{{ player.name }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
           <div class="position-box mx-4 primary">
             <mat-form-field>
-              <mat-select class="form-select" [(ngModel)]="selectedPlayers[2].player_id" (ngModelChange)="updateSelectedPlayer(2, $event)">
-                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+              <mat-select  [(ngModel)]="selectedPlayers[2].player_id" (ngModelChange)="updateSelectedPlayer(2, $event)">
+                <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="player.player_id">{{ player.name }}</mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -48,8 +50,8 @@
             <mat-grid-tile>
               <div class="position-box mx-4 secondary">
                 <mat-form-field>
-                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[3].player_id" (ngModelChange)="updateSelectedPlayer(3, $event)">
-                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  <mat-select [(ngModel)]="selectedPlayers[3].player_id" (ngModelChange)="updateSelectedPlayer(3, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="player.player_id">{{ player.name }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -57,8 +59,8 @@
             <mat-grid-tile>
               <div class="position-box mx-4 secondary">
                 <mat-form-field>
-                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[4].player_id" (ngModelChange)="updateSelectedPlayer(4, $event)">
-                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  <mat-select  [(ngModel)]="selectedPlayers[4].player_id" (ngModelChange)="updateSelectedPlayer(4, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="player.player_id">{{ player.name }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>
@@ -66,8 +68,8 @@
             <mat-grid-tile>
               <div class="position-box mx-4 secondary" [ngClass]="{ 'saque': tieneSaque }">
                 <mat-form-field>
-                  <mat-select class="form-select" [(ngModel)]="selectedPlayers[5].player_id"  (ngModelChange)="updateSelectedPlayer(5, $event)">
-                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="{ player_id: player.player_id, dorsal: player.dorsal }">{{ player.name }}</mat-option>
+                  <mat-select  [(ngModel)]="selectedPlayers[5].player_id"  (ngModelChange)="updateSelectedPlayer(5, $event)">
+                    <mat-option *ngFor="let player of players; trackBy: trackByPlayerId"  [value]="player.player_id">{{ player.name }}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatchService } from '../services/match.service';
-
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { StorageService } from '../_services/storage.service';
+import { Router } from '@angular/router';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 @Component({
   selector: 'app-match-details',
   templateUrl: './match-details.component.html',
@@ -15,16 +19,35 @@ export class MatchDetailsComponent implements OnInit {
   filteredData: { [key: string]: any[] } = {};
   selectedTeams: string[] = [];
   teamKeys: string[] = [];
+  isLoggedIn = false;
+  showAdminBoard = false;
+  showModeratorBoard = false;
+  roles: string[] = [];
+  username?: string;
 
   constructor(
     private route: ActivatedRoute,
-    private matchService: MatchService
+    private matchService: MatchService,
+    public dialog: MatDialog,
+    private router: Router,
+    private storageService:StorageService,
   ) {
     this.matchId = +this.route.snapshot.params['id'];
   }
 
   ngOnInit() {
     this.fetchPreviousMatches();
+    
+    this.isLoggedIn = this.storageService.isLoggedIn();
+    if (this.isLoggedIn) {
+      const user = this.storageService.getUser();
+      this.roles = user.roles;
+
+      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+      this.showModeratorBoard = this.roles.includes('ROLE_ENTRENADOR');
+
+      this.username = user.username;
+    }
   }
 
   // Método para agrupar por 'parequi.nombre'
@@ -45,17 +68,28 @@ export class MatchDetailsComponent implements OnInit {
   resolveKey(obj: any, key: string): string {
     return key.split('.').reduce((o, k) => (o ? o[k] : null), obj) || '';
   }
-  onCheckboxChange(event: any) {
-    const checkbox = event.target;
-    const team = checkbox.value;
-    
-    if (checkbox.checked) {
-      this.selectedTeams.push(team);
-    } else {
-      this.selectedTeams = this.selectedTeams.filter(t => t !== team);
-    }
 
+  onCheckboxChange(event: MatButtonToggleChange) {
+    const selectedTeams = event.value;
+    this.selectedTeams = selectedTeams;
     this.filterByTeams();
+  }
+
+  deleteMatch(matchId: any) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,{ width: '350px',});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.matchService.deleteMatch(matchId).subscribe({
+          next: (response) => {
+            console.log('Respuesta:', response);
+            this.fetchPreviousMatches();  // Actualizar la lista de partidos después de eliminar
+          },
+          error: (error) => console.error('Error:', error),
+        });
+        console.log('deleteMatch llamado con matchId:', matchId);
+      }
+    });
   }
 
   // Llamada para obtener los detalles de los partidos anteriores

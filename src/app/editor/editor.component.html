@@ -1,0 +1,953 @@
+<div class="tabs">
+  <div class="tabs-list">
+    <button
+      (click)="setActiveTab('editor')"
+      [class.active]="activeTab === 'editor'"
+    >
+      Revisor
+    </button>
+    <button
+      (click)="setActiveTab('resume')"
+      [class.active]="activeTab === 'resume'"
+    >
+      Resumen
+    </button>
+  </div>
+</div>
+
+<!-- Event monitor bar (translated from React) -->
+<div
+  class="event-monitor-bar"
+  style="
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 8px 12px;
+    color: #e6eef8;
+  "
+>
+  <div
+    style="
+      width: 100%;
+      max-width: 960px;
+      background: rgba(15, 23, 42, 1);
+      border: 1px solid rgba(148, 163, 184, 1);
+      border-radius: 12px;
+      overflow: hidden;
+      color: inherit;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        min-height: 56px;
+      "
+    >
+      <!-- Section 1: Navigation & Counter -->
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 8px 12px;
+          width: 160px;
+          background: rgba(148, 163, 184, 0.04);
+          border-right: 1px solid rgba(148, 163, 184, 0.06);
+        "
+      >
+        <button
+          type="button"
+          (click)="previousEvent()"
+          title="Previous Event"
+          style="
+            padding: 6px;
+            border-radius: 999px;
+            background: transparent;
+            border: none;
+            color: #e6eef8;
+            cursor: pointer;
+          "
+          aria-label="Previous Event"
+        >
+          <lucide-icon name="chevron-left"></lucide-icon>
+        </button>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 8px;
+            color: inherit;
+          "
+        >
+          <span
+            style="
+              font-size: 10px;
+              font-family: monospace;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            "
+            >Event</span
+          >
+          <span style="font-size: 18px; font-weight: 800; color: #60a5fa">
+            {{ (currentEventIndex || 0) + 1 }}
+            <small style="font-size: 11px; color: #94a3b8; font-weight: 400"
+              >/{{
+                eventos && eventos[currentSetIndex]
+                  ? eventos[currentSetIndex].length
+                  : 0
+              }}</small
+            >
+          </span>
+        </div>
+        <button
+          type="button"
+          (click)="nextEvent()"
+          title="Next Event"
+          style="
+            padding: 6px;
+            border-radius: 999px;
+            background: transparent;
+            border: none;
+            color: #e6eef8;
+            cursor: pointer;
+          "
+          aria-label="Next Event"
+        >
+          <lucide-icon name="chevron-right"></lucide-icon>
+        </button>
+      </div>
+
+      <!-- Section 2: Scoreboard -->
+      <div
+        style="
+          flex: 1;
+          color: inherit;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          padding: 8px 16px;
+          border-right: 1px solid rgba(148, 163, 184, 0.06);
+        "
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: right;
+          "
+        >
+          <div
+            [ngClass]="{
+              'text-foreground':
+                currentEvent?.scoreLocal > currentEvent?.scoreVisitor,
+              'text-of': currentEvent?.scoreLocal <= currentEvent?.scoreVisitor
+            }"
+            style="display: flex; flex-direction: column"
+          >
+            <span style="font-size: 10px; font-weight: 700; opacity: 0.75"
+              >LOC</span
+            >
+            <span style="font-size: 24px; font-weight: 900">{{
+              currentEvent?.scoreLocal ?? 0
+            }}</span>
+          </div>
+          <div style="font-size: 12px; color: inherit; padding-top: 6px">
+            ({{ currentEvent?.setsLocal ?? 0 }})
+          </div>
+        </div>
+
+        <div
+          style="
+            width: 1px;
+            height: 36px;
+            background: rgba(148, 163, 184, 0.12);
+          "
+          aria-hidden
+        ></div>
+
+        <div
+          style="display: flex; align-items: center; gap: 8px; text-align: left"
+        >
+          <div style="font-size: 12px; color: inherit; padding-top: 6px">
+            ({{ currentEvent?.setsVisitor ?? 0 }})
+          </div>
+          <div
+            [ngClass]="{
+              'text-foreground':
+                currentEvent?.scoreVisitor > currentEvent?.scoreLocal,
+              'text-of': currentEvent?.scoreVisitor <= currentEvent?.scoreLocal
+            }"
+            style="display: flex; flex-direction: column"
+          >
+            <span style="font-size: 10px; font-weight: 700; opacity: 0.75"
+              >VIS</span
+            >
+            <span style="font-size: 24px; font-weight: 900">{{
+              currentEvent?.scoreVisitor ?? 0
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Details & Actions -->
+      <div
+        style="
+          flex: 2;
+          padding: 8px 12px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+        "
+      >
+        <!-- Team indicator stripe -->
+        <div
+          [style.background]="
+            currentEvent?.team === 'Local'
+              ? 'linear-gradient(90deg, rgba(96,165,250,0.06), transparent)'
+              : 'linear-gradient(90deg, rgba(248,113,113,0.06), transparent)'
+          "
+          style="
+            position: absolute;
+            inset: 0;
+            opacity: 0.04;
+            pointer-events: none;
+          "
+        ></div>
+
+        <div
+          *ngIf="!editMode"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            color: inherit;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 12px;
+              min-width: 160px;
+            "
+          >
+            <div
+              [ngStyle]="{
+                background:
+                  currentEvent?.team === 'Local'
+                    ? 'rgba(96,165,250,0.1)'
+                    : 'rgba(248,113,113,0.1)',
+                color: currentEvent?.team === 'Local' ? '#60a5fa' : '#f87171'
+              }"
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 999px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                border: 1px solid rgba(255, 255, 255, 0.03);
+              "
+            >
+              {{
+                currentEvent?.player.player_name
+                  ? currentEvent.player.player_name.charAt(0)
+                  : "?"
+              }}
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <span style="font-size: 10px; color: inherit; font-weight: 700"
+                >Player</span
+              >
+              <span style="font-weight: 700">{{
+                currentEvent?.player.player_name ?? "—"
+              }}</span>
+            </div>
+          </div>
+
+          <div style="flex: 1; display: flex; align-items: center">
+            <div style="display: flex; flex-direction: column">
+              <span style="font-size: 10px; color: inherit; font-weight: 700"
+                >Action</span
+              >
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span style="font-weight: 600">{{
+                  currentEvent?.event.type ?? "—"
+                }}</span>
+                <span
+                  *ngIf="currentEvent?.event.isSuccess"
+                  style="color: #34d399"
+                  >✔</span
+                >
+                <span
+                  *ngIf="currentEvent && !currentEvent.event.isSuccess"
+                  style="color: #fb7185"
+                  >✖</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-left: 8px;
+            "
+          >
+            <button
+              *ngIf="!editMode"
+              (click)="toggleEditMode()"
+              title="Edit Event"
+              style="
+                width: 36px;
+                height: 36px;
+                border-radius: 999px;
+                border: none;
+                background: transparent;
+                color: inherit;
+                cursor: pointer;
+              "
+            >
+              ✎
+            </button>
+          </div>
+        </div>
+
+        <!-- Edit mode -->
+        <div
+          *ngIf="editMode"
+          style="display: flex; align-items: center; gap: 12px; width: 100%"
+        >
+          <div style="flex: 1; display: flex; gap: 8px; align-items: center">
+            <select
+              [(ngModel)]="currentEvent.player.player_name"
+              style="
+                height: 36px;
+                padding: 6px;
+                border-radius: 6px;
+                border: 1px solid rgba(148, 163, 184, 0.12);
+                background: transparent;
+                color: #e6eef8;
+              "
+            >
+              <option *ngFor="let p of currentPlayers" [value]="p.name">
+                {{ p.name }}
+              </option>
+            </select>
+            <select
+              *ngIf="currentEvent.event.isSuccess"
+              [(ngModel)]="currentEvent.event.type"
+              style="
+                height: 36px;
+                padding: 6px;
+                border-radius: 6px;
+                border: 1px solid rgba(148, 163, 184, 0.12);
+                background: transparent;
+                color: #e6eef8;
+              "
+            >
+              <option *ngFor="let t of aciertos" [value]="t.type">
+                {{ t.type }}
+              </option>
+            </select>
+            <select
+              *ngIf="!currentEvent.event.isSuccess"
+              [(ngModel)]="currentEvent.event.type"
+              style="
+                height: 36px;
+                padding: 6px;
+                border-radius: 6px;
+                border: 1px solid rgba(148, 163, 184, 0.12);
+                background: transparent;
+                color: #e6eef8;
+              "
+            >
+              <option *ngFor="let t of fallos" [value]="t.type">
+                {{ t.type }}
+              </option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button
+              (click)="saveChanges(); toggleEditMode()"
+              style="
+                height: 36px;
+                padding: 6px;
+                border-radius: 6px;
+                background: #2563eb;
+                color: #fff;
+                border: none;
+              "
+            >
+              Save
+            </button>
+            <button
+              (click)="toggleEditMode()"
+              style="
+                height: 36px;
+                padding: 6px;
+                border-radius: 6px;
+                background: transparent;
+                color: inherit;
+                border: 1px solid rgba(148, 163, 184, 0.12);
+              "
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  [hidden]="activeTab !== 'editor'"
+  class="revisor"
+  [class.right-overlay-active]="useRightOverlay"
+  [class.aside-collapsed]="isAsideCollapsed()"
+>
+  <aside class="marcoherramientas">
+    <div class="herramientas">
+      <div
+        class="quick-actions"
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 8px;
+        "
+      >
+        <div class="action-row">
+          <div class="text-white">Acción</div>
+
+          <div class="text-white">Mapa</div>
+        </div>
+        <div class="action-row">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary rival mt-2 action-btn"
+            role="button"
+            (click)="openPlayerModal(1)"
+            title="Saque"
+          >
+            Saque
+          </button>
+          <mat-slide-toggle
+            class="action-toggle"
+            [(ngModel)]="mapaSaque"
+            color="accent"
+            ></mat-slide-toggle
+          >
+        </div>
+
+        <div class="action-row">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary rival mt-2 action-btn"
+            role="button"
+            (click)="openPlayerModal(2)"
+            title="Recepción"
+          >
+            Recepción
+          </button>
+          <mat-slide-toggle
+            class="action-toggle"
+            [(ngModel)]="mapaRece"
+            color="accent"
+            ></mat-slide-toggle
+          >
+        </div>
+
+        <div class="action-row">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary rival mt-2 action-btn"
+            role="button"
+            (click)="openPlayerModal(3)"
+            title="Ataque"
+          >
+            Ataque
+          </button>
+          <mat-slide-toggle
+            class="action-toggle"
+            [(ngModel)]="mapaAtaque"
+            color="accent"
+            ></mat-slide-toggle
+          >
+        </div>
+
+        <div class="action-row">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary rival mt-2 action-btn"
+            role="button"
+            (click)="openPlayerModal(4)"
+            title="Colocación"
+          >
+            Colocación
+          </button>
+          <mat-slide-toggle
+            class="action-toggle"
+            [(ngModel)]="mapaColocacion"
+            color="accent"
+            ></mat-slide-toggle
+          >
+        </div>
+      </div>
+      <app-annotation-toolbar
+        *ngIf="!useRightOverlay"
+        [selectedTool]="selectedTool"
+        [color]="color"
+        [strokeWidth]="strokeWidth"
+        [opacity]="opacity"
+        [canUndo]="canUndo"
+        [canRedo]="canRedo"
+        (toolSelect)="onToolSelect($event)"
+        (colorChange)="onColorChange($event)"
+        (strokeWidthChange)="onStrokeWidthChange($event)"
+        (opacityChange)="onOpacityChange($event)"
+        (undo)="onUndo()"
+        (redo)="onRedo()"
+      ></app-annotation-toolbar>
+    </div>
+  </aside>
+  <section class="lienzo">
+    <div #playerContainer class="player-container mt-5 mb-4">
+      <div id="player" class="player-iframe"></div>
+      <app-annotation-canvas
+        [annotations]="anotaciones"
+        [selectedTool]="selectedTool"
+        [color]="color"
+        [strokeWidth]="strokeWidth"
+        [opacity]="opacity"
+        [currentTime1]="currentTime"
+        [highlightedAnnotationId]="highlightedAnnotationId"
+        (addAnnotation)="handleAddAnnotation($event)"
+        (hoverAnnotation)="handleHoverAnnotation($event)"
+        class="absolute inset-0 w-full h-full pointer-events-auto"
+      ></app-annotation-canvas>
+
+      <!-- Popup para añadir descripción a la anotación recién creada -->
+      <div
+        *ngIf="pendingAnnotationId"
+        class="annotation-desc-popup dark-popup"
+        [ngStyle]="pendingPopupStyle"
+        @fadeInOut
+      >
+        <div class="popup-header">
+          <strong>Descripción de la anotación</strong>
+          <button
+            (click)="cancelAnnotationDescription()"
+            title="Cerrar"
+            class="popup-close"
+          >
+            ✕
+          </button>
+        </div>
+        <textarea
+          [(ngModel)]="pendingAnnotationText"
+          rows="3"
+          placeholder="Añade una breve descripción..."
+          class="popup-textarea"
+        ></textarea>
+        <div class="popup-actions">
+          <button
+            (click)="cancelAnnotationDescription()"
+            class="btn btn-sm popup-cancel"
+          >
+            Cancelar
+          </button>
+          <button
+            (click)="saveAnnotationDescription()"
+            class="btn btn-primary btn-sm popup-save"
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <!-- Hover popup for existing annotations (select tool) -->
+      <div
+        *ngIf="hoverAnnotationId"
+        class="annotation-desc-popup dark-popup hover-popup"
+        [ngStyle]="hoverPopupStyle"
+        @fadeInOut
+      >
+        <div class="popup-header">
+          <strong>Descripción</strong>
+        </div>
+        <div
+          class="popup-body"
+          style="
+            margin-top: 6px;
+            color: #cbd5e1;
+            font-size: 13px;
+            white-space: pre-wrap;
+          "
+        >
+          {{ hoverAnnotationDescription }}
+        </div>
+      </div>
+
+      <div class="overlay">
+        <div class="controls">
+          <button
+            class="control-btn"
+            (click)="onPlayPause()"
+            aria-label="Play/Pause"
+          >
+            <lucide-icon [name]="play ? 'pause' : 'play'"></lucide-icon>
+          </button>
+
+          <button
+            class="control-btn"
+            (click)="skipBack(5)"
+            aria-label="Back 1 second"
+          >
+            <lucide-icon name="skip-back"></lucide-icon>
+          </button>
+
+          <button
+            class="control-btn"
+            (click)="prevFrame()"
+            aria-label="Prev frame (,)"
+            title=","
+          >
+            <lucide-icon name="arrow-left"></lucide-icon>
+          </button>
+
+          <button
+            class="control-btn"
+            (click)="nextFrame()"
+            aria-label="Next frame (.)"
+            title="."
+          >
+            <lucide-icon name="arrow-right"></lucide-icon>
+          </button>
+          <button
+            class="control-btn"
+            (click)="skipForward(5)"
+            aria-label="Forward 1 second"
+          >
+            <lucide-icon name="skip-forward"></lucide-icon>
+          </button>
+          <button
+            class="control-btn"
+            (click)="toggleMute()"
+            aria-label="Mute/Unmute (M)"
+          >
+            <lucide-icon
+              [name]="isMuted ? 'volume-x' : 'volume-2'"
+            ></lucide-icon>
+          </button>
+
+          <div style="display: flex; align-items: center; gap: 6px">
+            <button
+              class="control-btn"
+              (click)="speedDown()"
+              aria-label="Speed down (<)"
+            >
+              &lt;
+            </button>
+            <div style="min-width: 40px; text-align: center; font-size: 13px">
+              {{ currentPlaybackRate | number : "1.2-2" }}x
+            </div>
+            <button
+              class="control-btn"
+              (click)="speedUp()"
+              aria-label="Speed up (>)"
+            >
+              &gt;
+            </button>
+          </div>
+          <div class="time-text">
+            {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+          </div>
+
+          <div class="controls-spacer"></div>
+
+          <div class="volume-group">
+            <lucide-icon name="volume-2"></lucide-icon>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              [value]="volume"
+              (input)="onVolumeChange($event)"
+              class="volume-range"
+            />
+          </div>
+
+          <!-- Resolution selector -->
+          <div
+            class="resolution-group"
+            style="display: flex; align-items: center; gap: 6px"
+          >
+            <select
+              class="control-select"
+              [value]="currentQuality"
+              (change)="onQualityChange($any($event.target).value)"
+            >
+              <option value="">Auto</option>
+              <option *ngFor="let q of availableQualities" [value]="q">
+                {{ getQualityLabel(q) }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            class="control-btn"
+            (click)="toggleFullScreen()"
+            aria-label="Fullscreen"
+          >
+            <lucide-icon name="maximize-2"></lucide-icon>
+          </button>
+          <!-- Layout toggle: switch to right overlay. Icon changes depending on current layout -->
+          <button
+            class="control-btn"
+            (click)="toggleRightOverlay()"
+            [attr.aria-label]="
+              useRightOverlay ? 'Toggle left layout' : 'Toggle right layout'
+            "
+            [title]="
+              useRightOverlay
+                ? 'Mostrar panel izquierdo'
+                : 'Mostrar panel derecho'
+            "
+          >
+            <lucide-icon
+              [name]="useRightOverlay ? 'panel-left' : 'panel-right'"
+            ></lucide-icon>
+          </button>
+        </div>
+      </div>
+      <app-right-overlay
+        *ngIf="useRightOverlay"
+        [selectedTool]="selectedTool"
+        [color]="color"
+        [strokeWidth]="strokeWidth"
+        [opacity]="opacity"
+        (toolSelect)="onToolSelect($event)"
+        (colorChange)="onColorChange($event)"
+        (strokeWidthChange)="onStrokeWidthChange($event)"
+        (opacityChange)="onOpacityChange($event)"
+        (undo)="onUndo()"
+        (redo)="onRedo()"
+        (closeOverlay)="setUseRightOverlay(false)"
+      ></app-right-overlay>
+    </div>
+    <!-- TIMELINE -->
+    <div class="space-y-2 mt-4">
+      <!-- Timeline principal -->
+      <div
+        #timelineRef
+        class="timeline"
+        (mousedown)="handleMouseDown($event)"
+        (mousemove)="handleMouseMove($event)"
+        (mouseup)="handleMouseUp()"
+        (mouseleave)="handleMouseLeave()"
+      >
+        <!-- Marcadores de tiempo -->
+        <div class="timeline-grid">
+          <div *ngFor="let mark of timeMarkers">{{ mark }}s</div>
+        </div>
+
+        <!-- Anotaciones -->
+        <div
+          *ngFor="let annotation of anotaciones"
+          class="annotation"
+          [style.left.%]="(annotation.timestamp / duration) * 100"
+        ></div>
+        <!-- Indicador de tiempo actual -->
+        <div
+          class="current-time"
+          [style.left.%]="(currentTime / duration) * 100"
+        >
+          <div class="current-time-dot"></div>
+        </div>
+
+        <!-- Hover line -->
+        <div
+          *ngIf="hoveredTime !== null"
+          class="hover-line"
+          [style.left.%]="(hoveredTime / duration) * 100"
+        ></div>
+      </div>
+      <!-- Secondary timeline (same style as above, read-only visual duplicate) -->
+      <div class="space-y-2 mt-4">
+        <div
+          class="timeline secondary-timeline"
+          aria-label="Secondary timeline"
+        >
+          <!-- Marcadores de tiempo -->
+          <div class="timeline-grid">
+            <div *ngFor="let mark of timeMarkers">{{ mark }}s</div>
+          </div>
+          <!-- Eventos (visual) -->
+          <div
+            *ngFor="let event of eventos.flat()"
+            class="event"
+            [style.left.%]="(event.timeStamp / duration) * 100"
+          ></div>
+
+          <!-- Indicador de tiempo actual -->
+          <div
+            class="current-time"
+            [style.left.%]="(currentTime / duration) * 100"
+          >
+            <div class="current-time-dot"></div>
+          </div>
+        </div>
+        <!-- Secondary timeline action buttons -->
+        <div
+          class="timeline-actions mt-2"
+          style="display: flex; gap: 8px; align-items: center"
+        >
+          <button (click)="sincronizarVideo()" class="btn btn-sm btn-primary">
+            Sincronizar video
+          </button>
+          <span style="font-size: 12px; color: #94a3b8"
+            >Sincroniza marcas con el tiempo del reproductor</span
+          >
+        </div>
+      </div>
+
+      <!-- If there is no youtubeId for this match, show an input to add it -->
+      <div
+        *ngIf="showYoutubeInput"
+        class="youtube-id-popup"
+        style="
+          position: absolute;
+          top: 48px;
+          left: 50%;
+          z-index: 60;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+          padding: 12px;
+          width: 360px;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+          "
+        >
+          <strong style="font-size: 14px">YouTube ID del partido</strong>
+        </div>
+        <div style="margin-bottom: 8px">
+          <input
+            [(ngModel)]="youtubeInput"
+            placeholder="Introduce el ID de YouTube (ej: dQw4w9WgXcQ)"
+            style="
+              width: 100%;
+              padding: 8px;
+              border-radius: 6px;
+              border: 1px solid #e2e8f0;
+            "
+          />
+        </div>
+        <div style="display: flex; justify-content: flex-start; gap: 8px">
+          <button
+            (click)="showYoutubeInput = false; youtubeInput = ''"
+            class="btn"
+            style="
+              background: #f3f4f6;
+              border: none;
+              padding: 6px 10px;
+              border-radius: 6px;
+            "
+          >
+            Cancelar
+          </button>
+          <button
+            (click)="submitYoutubeId()"
+            class="btn btn-primary"
+            style="
+              background: #2563eb;
+              color: #fff;
+              border: none;
+              padding: 6px 10px;
+              border-radius: 6px;
+            "
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+
+      <!-- Leyenda -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color blue"></div>
+          <span>Anotaciones</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color yellow"></div>
+          <span>Eventos</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <aside
+    class="collapsible-aside"
+    (mouseenter)="onAsideHover(true)"
+    (mouseleave)="onAsideHover(false)"
+    [class.pinned]="asidePinned"
+  >
+    <div class="aside-tab">
+      <button
+        class="aside-pin-btn"
+        type="button"
+        (click)="toggleAsidePinned()"
+        [attr.aria-pressed]="asidePinned"
+        title="Fijar panel"
+      >
+        <lucide-icon [name]="asidePinned ? 'pin' : 'pin'"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="aside-content">
+      <!-- <app-set-map></app-set-map>     -->
+      <app-annotation-list
+        [annotations]="anotaciones"
+        [selectedAnnotationId]="selectedAnnotationId"
+        [asidePinned]="asidePinned"
+        (toggleAsidePin)="toggleAsidePinned()"
+        (selectAnnotation)="setSelectedAnnotationId($event)"
+        (toggleVisibility)="handleToggleVisibility($event)"
+        (deleteAnnotation)="handleDeleteAnnotation($event)"
+      ></app-annotation-list>
+    </div>
+  </aside>
+
+  <!-- Right overlay: tool-only panel that mirrors annotation-toolbar functionality -->
+</div>
+
+<!-- Actions resume shown when 'resume' tab is active (kept in DOM to preserve state) -->
+<div [hidden]="activeTab !== 'resume'">
+  <app-actions-resume [matchId]="matchId"></app-actions-resume>
+</div>

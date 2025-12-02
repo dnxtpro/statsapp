@@ -1,27 +1,104 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { StorageService } from './_services/storage.service';
 import { AuthService } from './_services/auth.service';
-
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MatSidenav } from '@angular/material/sidenav';
+import { RouterOutlet } from '@angular/router';
+import {
+  trigger,
+  transition,
+  style,
+  query,
+  group,
+  animate,
+  animateChild,
+} from '@angular/animations';
+import { Router } from '@angular/router';
+import { MatchService } from './services/match.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('routeAnimations', [
+      transition('* <=> *', [
+        style({ position: 'relative' }),
+        query(
+          ':enter, :leave',
+          [
+            style({
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              opacity: 0,
+              transform: 'scale(0) translateY(100%)',
+            }),
+          ],
+          { optional: true }
+        ),
+        query(
+          ':enter',
+          [
+            animate(
+              '600ms ease',
+              style({ opacity: 1, transform: 'scale(1) translateY(0)' })
+            ),
+          ],
+          { optional: true }
+        ),
+        query(
+          ':leave',
+          [
+            animate(
+              '600ms ease',
+              style({ opacity: 0, transform: 'scale(0) translateY(-100%)' })
+            ),
+          ],
+          { optional: true }
+        ),
+      ]),
+    ]),
+  ],
 })
 export class AppComponent {
+  isLandingPage: boolean = false;
   title = 'lawea';
   private roles: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
-  currentUser:any;
-  isAdmin=false;
+  currentUser: any;
+  isAdmin = false;
+  currentTeam: any;
+  @ViewChild(MatSidenav)
+  sidenav!: MatSidenav;
+  isMobile = true;
+  reward :boolean = false;
 
-
+  isCollapsed = true;
 
   sidebarAbierto = false;
-  constructor(private storageService: StorageService, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private storageService: StorageService,
+    private observer: BreakpointObserver,
+    private authService: AuthService,
+    private matchService: MatchService
+  ) {}
   ngOnInit(): void {
+    
+    this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
+      if (screenSize.matches) {
+        this.isMobile = true;
+      } else {
+        this.isMobile = false;
+      }
+    });
+    this.router.events.subscribe(() => {
+      this.isLandingPage = this.router.url === '/';
+    });
     this.currentUser = this.storageService.getUser();
     this.isLoggedIn = this.storageService.isLoggedIn();
 
@@ -34,23 +111,37 @@ export class AppComponent {
 
       this.username = user.username;
     }
+    this.matchService.obtenerEquipos().subscribe(
+      (data) => {
+        console.log('Datos recibidos:', data);
+        this.currentTeam = data;
+      },
+      (error) => {
+        console.error('Error al obtener los datos:', error);
+      })
+  
   }
+
   logout(): void {
     this.authService.logout().subscribe({
-      next: res => {
+      next: (res) => {
         console.log(res);
         this.storageService.clean();
 
         window.location.reload();
       },
-      error: err => {
+      error: (err) => {
         console.log(err);
-      }
+      },
     });
   }
-  toggleSidebar() {
-    console.log('h')
-    this.sidebarAbierto = !this.sidebarAbierto;
+  toggleSideBar() {
+    if (this.isMobile) {
+      this.sidenav.toggle();
+      this.isCollapsed = false; // On mobile, the menu can never be collapsed
+    } else {
+      this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
+      this.isCollapsed = !this.isCollapsed;
+    }
   }
 }
-

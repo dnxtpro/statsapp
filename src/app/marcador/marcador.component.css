@@ -1,39 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap');
-.cuadrado {
-    width: 1920px;
-    height: 1080px;
-    background-color: transparent; /* Puedes cambiar el color de fondo si lo deseas */
-    border:4px;
-  }
-  
-  .cuadrado2 {
-   width: 174px;
-  height: 100px;
-  background-color: transparent;
-  
+.fondo{
+  color:white;
 
-  }
-  .container {
-    position: relative;
-    width: 1080px;
-    margin: auto;
-    background-color:transparent;
-  }
-  .backgroundperso{
-    
-    font-family: "Bruno Ace", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    color:#041f62;
-    font-size:120px;
-  }
-  .azul{background-color: #5aaec3e3;}
-  .rosa{background-color: #C281E8e3;}
-  .azulc{background-color: #4ab1ca;}
-  .rosac{background-color: #cd78ff;}
-  body{
-    background-color: transparent;
-  }
-  .blanco{
-    color:white;
-  }
+}
+.imagen{
+  background-color:white;
+  border-radius:9999px;
+  overflow:hidden;
+  width:8rem;
+  height:8rem;
+}
+.imagen img{
+  width:8rem;
+display:block;
+object-fit:cover;
+}
+.equipoL{
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  text-align: center;
+}
+.nset,.set{
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 2.25rem;
+
+}
+.set{
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.conte{
+  justify-content: center;
+  align-items: center;
+  display:flex;
+  flex-direction: column;
+}
+.centro{
+  font-weight: 700;
+  font-size:5rem;
+  line-height: 2.5rem;
+  margin-bottom: 1rem;
+}
+.puntos{
+
+  justify-content: center;
+  align-items: center;
+
+}
+
+.puntos1,.puntos span{
+  font-weight: 700;
+  font-size: 15rem;
+  line-height: 1;
+
+}
+.contenedorp{
+  height:100vh;
+  background-color:black;
+  background: rgba(0, 0, 0, 0.6); 
+  backdrop-filter:blur(2px);
+  align-items: center;
+ 
+}
+.text-yellow-400{
+color:yellow;
+}
+.text-white{
+color:white;
+
+}

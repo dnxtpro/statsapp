@@ -1,200 +1,287 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
 <section class="container-fluid container drop">
-<div class="container-fluid">
-    
-    <div >
-      <mat-card class="row d-flex flex-column flex-sm-row justify-content-between align-items-start py-3 fondo1">
+  <div class="container-fluid">
+    <div>
+      <mat-card
+        class="row d-flex flex-column flex-sm-row justify-content-between align-items-start py-3 fondo1"
+      >
         <div class="col d-flex flex-wrap">
-      <span class="fs-5 fw-medium mx-3">Rival:</span>
-      <p >{{ latestMatchRival }}</p>
-    </div>
-    <div class="col d-flex flex-wrap">
-      <mat-icon>event</mat-icon>
-      <span class="fs-5 fw-medium mx-3" >Fecha:</span>
-      <span >{{ latestMatchDate | date: 'dd/MM/yyyy' }}</span>
-      </div>
-      <div class="col d-flex flex-wrap">
-        <mat-icon>location_on</mat-icon>
-      <span class="fs-5 fw-medium mx-3" >Ubicación:</span>
-      <span >{{ latestMatchLocation }}</span>
-      </div>  
-      <div class="col d-flex flex-wrap">
-        <mat-icon>schedule</mat-icon>
-        <span class="fs-5 fw-medium mx-3" >Hora:</span>
-        <span >{{ latestMatchLocation }}</span>
-        </div>  
+          <span class="fs-5 fw-medium mx-3">Rival:</span>
+          <p>{{ latestMatchRival }}</p>
+        </div>
+        <div class="col d-flex flex-wrap">
+          <mat-icon>event</mat-icon>
+          <span class="fs-5 fw-medium mx-3">Fecha:</span>
+          <span>{{ latestMatchDate | date : "dd/MM/yyyy" }}</span>
+        </div>
+        <div class="col d-flex flex-wrap">
+          <mat-icon>location_on</mat-icon>
+          <span class="fs-5 fw-medium mx-3">Ubicación:</span>
+          <span>{{ latestMatchLocation }}</span>
+        </div>
+        <div class="col d-flex flex-wrap">
+          <mat-icon>schedule</mat-icon>
+          <span class="fs-5 fw-medium mx-3">Hora:</span>
+          <span>{{ latestMatchLocation }}</span>
+        </div>
         <div class="col d-flex flex-wrap">
           <mat-icon>groups_2</mat-icon>
-          <span class="fs-5 fw-medium mx-3" >Equipo:</span>
-          <span >{{ latestMatchEquipo }}</span>
-          </div>  
-        </mat-card>
-       
-  </div>
-    <hr class="border border-dark border-3 opacity-75 mb-4">
-    <div class="row d-flex justify-content-center">
-      <mat-card class="col fondo1 d-flex justify-content-center">
-        <mat-progress-bar mode="determinate" max="25" [value]="matchScore.homeTeam.points"></mat-progress-bar>
-        <div class="d-flex flexp  align-items-center justify-content-between">
-          <div class="d-flex align-items-center justify-content-between">
-             <mat-progress-bar mode="determinate" max="25" [value]="matchScore.homeTeam.points"></mat-progress-bar>
-            <span class="fs-5 fw-medium mx-3">Roche</span>
-            <div class="d-flex align-items-baseline">
-              <span class="display-4 fw-bold">{{ matchScore.homeTeam.points }}</span>
-             
-            </div>
-            <div class="d-flex align-items-center mx-5">
-              <span class="fs-5 fw-medium mx-2">{{ matchScore.homeTeam.sets }}</span>
-             
-            </div>
-            
-          </div>
-          
-          <div class="d-flex align-items-center">
-            <div class="border-end d-none d-sm-block" style="height: 2rem;"></div>
-            <mat-icon class="dis" *ngIf="tieneSaque">arrow_back_ios</mat-icon>
-            <span class="fs-2 fw-bold mx-2">VS</span>
-            <mat-icon class="dis" *ngIf="!tieneSaque" >arrow_forward_ios</mat-icon>
-            <div class="border-start d-none d-sm-block" style="height: 2rem;"></div>
-          </div>
-          <div class="d-flex flex1 align-items-center justify-content-between">
-            <mat-progress-bar mode="determinate" max="25" [value]="matchScore.awayTeam.points"></mat-progress-bar>
-            <div class="d-flex align-items-center mx-5">
-           
-              <span class="fs-5 fw-medium mx-2">{{ matchScore.awayTeam.sets }}</span>
-            </div>
-            <div class="d-flex align-items-baseline">
-           
-              <span class="display-4 fw-bold">{{ matchScore.awayTeam.points }}</span>
-            </div>
-            
-            <span class="fs-5 fw-medium mx-3">{{latestMatchRival}}</span>
-            
-          </div>
+          <span class="fs-5 fw-medium mx-3">Equipo:</span>
+          <span>{{ latestMatchEquipo }}</span>
         </div>
       </mat-card>
     </div>
-  
-<div class="row d-flex flex-row justify-content-between  mt-3">
-   
-    <div class=" Aciertos d-flex flex-column col-4 col-sm-5 ">
-  
-        <h3 class="display-4 fw-bold text-center" >ACIERTOS</h3>
-        <div class="btn-group-vertical" *ngFor="let acierto of aciertos">
-          <button  mat-fab extended type="button" class="btn btn-primary" role="button" (click)="handleAcierto(acierto.type)" [ngClass]="{ 'btn-success': acierto.type !== 'ErrorSaqueRival' && acierto.type !== 'ErrorAtaqueRival' && acierto.type !== 'EXRival'   }" >
+    <hr class="border border-dark border-3 opacity-75 mb-4" />
+    <div class="row d-flex justify-content-center">
+      <mat-card class="col fondo1 d-flex justify-content-center">
+        <mat-progress-bar
+          mode="determinate"
+          max="25"
+          [value]="matchScore.homeTeam.points"
+        ></mat-progress-bar>
+        <div class="d-flex flexp align-items-center justify-content-between">
+          <div class="d-flex align-items-center justify-content-between">
+            <mat-progress-bar
+              mode="determinate"
+              max="25"
+              [value]="matchScore.homeTeam.points"
+            ></mat-progress-bar>
+            <span class="fs-5 fw-medium mx-3">Roche</span>
+            <div class="d-flex align-items-baseline">
+              <span class="display-4 fw-bold">{{
+                matchScore.homeTeam.points
+              }}</span>
+            </div>
+            <div class="d-flex align-items-center mx-5">
+              <span class="fs-5 fw-medium mx-2">{{
+                matchScore.homeTeam.sets
+              }}</span>
+            </div>
+          </div>
 
-           <ng-container [ngSwitch]="acierto.type">
-            <span *ngSwitchDefault>{{ acierto.type }}</span>
-            <span *ngSwitchCase="'ErrorSaqueRival'">Error Saque Rival</span>
-            <span *ngSwitchCase="'ErrorAtaqueRival'">Error Ataque Rival</span>
-            <span *ngSwitchCase="'EXRival'">EX Rival</span>
-          </ng-container> 
-        
-        </button>
+          <div class="d-flex align-items-center">
+            <div
+              class="border-end d-none d-sm-block"
+              style="height: 2rem"
+            ></div>
+            <mat-icon class="dis" *ngIf="tieneSaque">arrow_back_ios</mat-icon>
+            <span class="fs-2 fw-bold mx-2">VS</span>
+            <mat-icon class="dis" *ngIf="!tieneSaque"
+              >arrow_forward_ios</mat-icon
+            >
+            <div
+              class="border-start d-none d-sm-block"
+              style="height: 2rem"
+            ></div>
+          </div>
+          <div class="d-flex flex1 align-items-center justify-content-between">
+            <mat-progress-bar
+              mode="determinate"
+              max="25"
+              [value]="matchScore.awayTeam.points"
+            ></mat-progress-bar>
+            <div class="d-flex align-items-center mx-5">
+              <span class="fs-5 fw-medium mx-2">{{
+                matchScore.awayTeam.sets
+              }}</span>
+            </div>
+            <div class="d-flex align-items-baseline">
+              <span class="display-4 fw-bold">{{
+                matchScore.awayTeam.points
+              }}</span>
+            </div>
+
+            <span class="fs-5 fw-medium mx-3">{{ latestMatchRival }}</span>
+          </div>
         </div>
-     
+        <div class="d-flex justify-content-evenly mb-1">
+          <button mat-flat-button (click)="resetScores()">Resetear Marcador</button>
+          <button mat-flat-button (click)="sincronizarPartido()">Pitido Inicial</button>
+        </div>
+      </mat-card>
     </div>
-      <!-- Fallos -->
-      <div class="Fallos d-flex flex-column col-4 col-sm-5">
-        <h3 class="display-4 fw-bold text-center" >FALLOS</h3>
-        <div class="btn-group-vertical" *ngFor="let fallo of fallos">
-          <button mat-fab extended  type="button" class="btn btn-primary" role="button" (click)="handleFallo(fallo.type)"  
-          [ngClass]="{
-            'btn-primary': fallo.type === 'AciertoRival' ||'AciertoZagueroRival '|| 'AciertoFintaRival',
-            'btn-danger': fallo.type !== 'AciertoRival' && fallo.type !== 'AciertoZagueroRival' && fallo.type !== 'AciertoFintaRival'
-          }"
-        >
-            <ng-container [ngSwitch]="fallo.type">
-              <span *ngSwitchDefault>{{ fallo.type }}</span> 
-              <span *ngSwitchCase="'AciertoRival'">Acierto Rival</span>
-              <span *ngSwitchCase="'AciertoZagueroRival'">Acierto Zaguero Rival</span>
-              <span *ngSwitchCase="'AciertoFintaRival'">Acierto Finta Rival</span><!-- Valor por defecto si no coincide con ningún caso -->
+
+    <div class="row d-flex flex-row justify-content-between mt-3">
+      <div class="Aciertos d-flex flex-column col-4 col-sm-5">
+        <mat-card-header class="cabecera">
+          <mat-icon class="mr-5">task_alt</mat-icon>
+          <h3 class="display-4 fw-bold text-center">ACIERTOS</h3>
+        </mat-card-header>
+        <div class="btn-group-vertical" *ngFor="let acierto of aciertos">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary rival mt-2"
+            role="button"
+            (click)="handleAcierto(acierto.type)"
+            [ngClass]="{
+              'norival':
+                acierto.type !== 'ErrorSaqueRival' &&
+                acierto.type !== 'ErrorAtaqueRival' &&
+                acierto.type !== 'EXRival'
+            }"
+          >
+            <ng-container [ngSwitch]="acierto.type">
+              <span *ngSwitchDefault>{{ acierto.type }}</span>
+              <span *ngSwitchCase="'ErrorSaqueRival'">Error Saque Rival</span>
+              <span *ngSwitchCase="'ErrorAtaqueRival'">Error Ataque Rival</span>
+              <span *ngSwitchCase="'EXRival'">EX Rival</span>
             </ng-container>
-          
           </button>
         </div>
-        
       </div>
-</div>
-    <div class="row  mt-3 ">
+      <!-- Fallos -->
+      <div class="Fallos d-flex flex-column col-4 col-sm-5">
+        <mat-card-header class="cabecera">
+          <mat-icon class="mr-5">warning</mat-icon>
+          <h3>FALLOS</h3>
+        </mat-card-header>
+        <div class="btn-group-vertical" *ngFor="let fallo of fallos">
+          <button
+            mat-fab
+            extended
+            type="button"
+            class="btn btn-primary mt-2"
+            role="button"
+            (click)="handleFallo(fallo.type)"
+            [ngClass]="{
+              'btn-primary rival':
+                fallo.type === 'AciertoRival' ||
+                'AciertoZagueroRival ' ||
+                'AciertoFintaRival',
+              'norival':
+                fallo.type !== 'AciertoRival' &&
+                fallo.type !== 'AciertoZagueroRival' &&
+                fallo.type !== 'AciertoFintaRival'
+            }"
+          >
+            <ng-container [ngSwitch]="fallo.type">
+              <span *ngSwitchDefault>{{ fallo.type }}</span>
+              <span *ngSwitchCase="'AciertoRival'">Acierto Rival</span>
+              <span *ngSwitchCase="'AciertoZagueroRival'"
+                >Acierto Zaguero Rival</span
+              >
+              <span *ngSwitchCase="'AciertoFintaRival'"
+                >Acierto Finta Rival</span
+              ><!-- Valor por defecto si no coincide con ningún caso -->
+            </ng-container>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
       <div class="col-4"></div>
       <div class="col-4 d-flex justify-content-center">
-<button class="align-middle btn btn-secondary "  (click)="deleteLastMatchEvent()">Deshacer Ultimo Punto</button>
-</div>
-<div class="col-4"></div>
-
+        <button
+          class="align-middle btn btn-secondary"
+          (click)="deleteLastMatchEvent()"
+        >
+          Deshacer Ultimo Punto
+        </button>
+      </div>
+      <div class="col-4"></div>
     </div>
 
-    <div class="row gx-3 d-flex justify-content-around mt-3 h-50 ">
-
-      
-      <div class="col-6 ">
+    <div class="row gx-3 d-flex justify-content-around mt-3 h-50">
+      <div class="col-6">
         <mat-card class="court-container1 fondo1">
           <mat-card-header>
-         <mat-card-title class="mb-2">ULTIMOS PUNTOS</mat-card-title>
+            <mat-card-title class="mb-2">ULTIMOS PUNTOS</mat-card-title>
           </mat-card-header>
-          <mat-card-content  >
-            <ul class="d-flex flex-column justify-content-center px-0 ">
-              <li class=" mb-2 d-flex justify-content-center fondo2 py-4 rounded-pill align-items-center h-50 " *ngFor="let player_name of Eventos " >
-                <div class="d-flex justify-content-center align-items-center mx-2">
-                  <mat-chip matBadge class="mx-2">{{player_name.dorsal}}</mat-chip>
-                  <span>{{player_name.player_name}}</span>
-                </div>
-                <strong class="d-flex justify-content-center">
-                  {{player_name.scoreLocal}}-{{player_name.scoreVisitor}} 
+          <mat-card-content>
+            <ul class="d-flex flex-column justify-content-center px-0">
+              <li
 
-                </strong>
+                class="mb-2 d-flex justify-content-between fondo2 py-4 rounded-pill align-items-center h-50"
+                
+                *ngFor="let player_name of Eventos"
+              >
+                <div
+                  class="d-flex justify-content-center align-items-center mx-2"
+                >
+                  <mat-chip matBadge class="mx-2">{{
+                    player_name.dorsal
+                  }}
+                  {{
+                    player_name.player_name
+                  }}</mat-chip>
+                  <span>{{ player_name.type }}</span>
+                </div>
+                <strong class="d-flex justify-content-center"
+                [ngClass]="{
+                  'si':
+                    player_name.actionType === 'acierto' ,
+                  'no':
+                    player_name.actionType === 'fallo' ,
+
                     
-             
+                }">
+                  {{ player_name.scoreLocal }}-{{ player_name.scoreVisitor }}
+                </strong>
               </li>
             </ul>
           </mat-card-content>
         </mat-card>
-    
-  </div>
-  <div class="col-6">
-    <mat-card class="court-container">
-      <div class="front-zone">
-        <div class="position-box primary" >
-          <span class="position-number ">{{selectedPlayers[3].dorsal}}</span>
-    
-        </div>
-        <div class="position-box primary">
-          <span class="position-number ">{{selectedPlayers[2].dorsal}}</span>
-        </div>
-        <div class="position-box primary" >
-         
-          <span class="position-number ">{{selectedPlayers[1].dorsal}}</span>
-        </div>
       </div>
-      <div class="back-zone">
-        <mat-grid-list cols="3" rowHeight="20vh">
-          <mat-grid-tile>
-            <div class="position-box secondary">
-            <span class="position-number">{{selectedPlayers[4].dorsal}}</span>
+      <div class="col-6">
+        <mat-card class="court-container">
+          <div class="front-zone">
+            <div class="position-box primary">
+              <span class="position-number">{{
+                selectedPlayers[3].dorsal
+              }}</span>
             </div>
-            </mat-grid-tile>
-          <mat-grid-tile>
-            <div class="position-box secondary">
-            <span class="position-number">{{selectedPlayers[5].dorsal}}</span>
+            <div class="position-box primary">
+              <span class="position-number">{{
+                selectedPlayers[2].dorsal
+              }}</span>
             </div>
-          </mat-grid-tile>
-          <mat-grid-tile >
-            <div class="position-box secondary "[ngClass]="{ 'saque': tieneSaque }">
-            <span class="position-number">{{selectedPlayers[0].dorsal}}</span>
+            <div class="position-box primary">
+              <span class="position-number">{{
+                selectedPlayers[1].dorsal
+              }}</span>
             </div>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </div>
-    </mat-card>
- 
-<div class="row justify-content-center" >
-  <div class="col-5">
-    <button mat-fab extended (click)="openSexteto()"><mat-icon>open_in_full</mat-icon>Seleccionar Sexteto</button> </div></div>
-    </div >
-  </div>
+          </div>
+          <div class="back-zone">
+            <mat-grid-list cols="3" rowHeight="20vh">
+              <mat-grid-tile>
+                <div class="position-box secondary">
+                  <span class="position-number">{{
+                    selectedPlayers[4].dorsal
+                  }}</span>
+                </div>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <div class="position-box secondary">
+                  <span class="position-number">{{
+                    selectedPlayers[5].dorsal
+                  }}</span>
+                </div>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <div
+                  class="position-box secondary"
+                  [ngClass]="{ saque: tieneSaque }"
+                >
+                  <span class="position-number">{{
+                    selectedPlayers[0].dorsal
+                  }}</span>
+                </div>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </div>
+        </mat-card>
 
-</div>
-<!-- HTML !-->
+        <div class="row justify-content-center">
+          <div class="col-5">
+            <button mat-fab extended (click)="openSexteto()">
+              <mat-icon>open_in_full</mat-icon>Seleccionar Sexteto
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- HTML !-->
 </section>
-

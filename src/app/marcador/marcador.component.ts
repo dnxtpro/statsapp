@@ -8,15 +8,37 @@ import { trigger,transition,style,animate,state } from '@angular/animations';
   styleUrl: './marcador.component.css',
   animations: [
     trigger('parpadeoLocal', [
-      transition('false => true', [
-        style({ transform: 'scale(1)', backgroundColor: 'rgba(255, 0, 0, 1)' }),
-        animate('500ms ease-out', style({ transform: 'scale(0)', backgroundColor: 'rgba(255, 0, 0, 0)' })),
+      state(
+        'true',
+        style({
+          transform: 'scale(1.3)',
+        })
+      ),
+      state(
+        'false',
+        style({
+          transform: 'scale(1)',
+        })
+      ),
+      transition('false <=> true', [
+        animate('1000ms ease-in-out'),
       ]),
     ]),
     trigger('parpadeoVisitor', [
-      transition('false => true', [
-        style({ transform: 'scale(1)', backgroundColor: 'rgba(0, 0, 255, 1)' }),
-        animate('500ms ease-out', style({ transform: 'scale(0)', backgroundColor: 'rgba(0, 0, 255, 0)' })),
+      state(
+        'true',
+        style({
+          transform: 'scale(1.3)',
+        })
+      ),
+      state(
+        'false',
+        style({
+          transform: 'scale(1)',
+        })
+      ),
+      transition('false <=> true', [
+        animate('1000ms ease-in-out'),
       ]),
     ]),
   ],
@@ -25,6 +47,7 @@ import { trigger,transition,style,animate,state } from '@angular/animations';
 export class MarcadorComponent implements AfterViewInit,OnInit,OnDestroy {
   marcador: any = [];
   parpadeoLocal = false;
+  setsTotales:number =0;
   parpadeoVisitor = false;
   private intervalo: any;
   constructor(private matchService: MatchService, private router: Router,private cdRef:ChangeDetectorRef) {
@@ -47,6 +70,7 @@ getMarcador() {
 
   this.matchService.getMarcador().subscribe((data) => {
     this.marcador = data;
+    this.setsTotales= this.marcador.setsLocal + this.marcador.setsVisitor + 1;
 
     if (prevScoreLocal !== this.marcador.scoreLocal) {
       this.parpadeoLocal = true;

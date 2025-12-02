@@ -29,8 +29,25 @@
     </mat-select>
   </mat-form-field>
   
-  
-    <button mat-fab extended type="submit"  [disabled]="!matchForm.valid"><mat-icon>start</mat-icon>Empezar Partido</button>
+  <div class="mt-3">
+    <label style="font-weight:600; display:block; margin-bottom:6px;">Opciones avanzadas</label>
+    <mat-checkbox formControlName="advanced" style="margin-bottom:8px;" color="primary">Habilitar opciones avanzadas</mat-checkbox>
+
+    <div style="display:flex; flex-wrap:wrap; gap:8px; opacity: 1; transition:opacity 180ms;">
+      <div formGroupName="modules" style="display:flex; gap:8px; flex-wrap:wrap;">
+        <mat-checkbox formControlName="recepcion" color="primary">Recepción</mat-checkbox>
+        <mat-checkbox formControlName="saque" color="primary">Saque</mat-checkbox>
+        <mat-checkbox formControlName="ataque" color="primary">Ataque</mat-checkbox>
+        <mat-checkbox formControlName="colocacion" color="primary">Colocación</mat-checkbox>
+        <mat-checkbox formControlName="defensa" color="primary">Defensa</mat-checkbox>
+        <mat-checkbox formControlName="bloqueo" color="primary">Bloqueo</mat-checkbox>
+      </div>
+    </div>
+  </div>
+
+    <div style="margin-top:18px;">
+      <button mat-fab extended type="submit"  [disabled]="!matchForm.valid"><mat-icon>start</mat-icon>Empezar Partido</button>
+    </div>
 
 
 

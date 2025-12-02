@@ -1,0 +1,361 @@
+<div class="actions-resume-root">
+  <div class="tabs">
+     <div class="tab-panel2" id="resumen-2" >
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Rendimiento del Saque</div>
+          <div class="card-trend neutral" aria-hidden="true">-</div>
+        </div>
+        <div class="card-content">
+          <div class="card-value">{{ percentSaque }}%</div>
+          <p class="card-sub">
+            {{
+              saques?.total ? "Total saques: " + saques.total : "Cargando..."
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Rendimiento del Ataque</div>
+          <div class="card-trend neutral" aria-hidden="true">-</div>
+        </div>
+        <div class="card-content">
+          <div class="card-value">{{ percentAtaque }}%</div>
+          <p class="card-sub">
+            {{
+              ataques?.total ? "Total ataques: " + ataques.total : "Cargando..."
+            }}
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Rendimiento de la Recepción</div>
+          <div class="card-trend neutral" aria-hidden="true">-</div>
+        </div>
+        <div class="card-content">
+          <div class="card-value">{{ percentRece   }}%</div>
+          <p class="card-sub">
+            {{
+              reces?.total ? "Total recepciones: " + reces.total : "Cargando..."
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="tabs-list">
+      <button
+        [class.active]="activeTab === 'overview'"
+        (click)="activeTab = 'overview'"
+      >
+        Resumen
+      </button>
+      <button
+        [class.active]="activeTab === 'attack'"
+        (click)="activeTab = 'attack'"
+      >
+        Ataque
+      </button>
+      <button
+        [class.active]="activeTab === 'reception'"
+        (click)="activeTab = 'reception'"
+      >
+        Recepción
+      </button>
+      <button
+        [class.active]="activeTab === 'serve'"
+        (click)="activeTab = 'serve'"
+      >
+        Saque
+      </button>
+      <button
+        [class.active]="activeTab === 'setting'"
+        (click)="activeTab = 'setting'"
+      >
+        Colocación
+      </button>
+      <button
+        [class.active]="activeTab === 'pdf'"
+        (click)="activeTab = 'pdf'"
+      >
+        Pdf
+      </button>
+    </div>
+
+    <div class="tab-panel3" *ngIf="activeTab === 'overview'">
+     <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Distribución de los puntos</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <ngx-charts-advanced-pie-chart
+              [results]="scoreDistribution"
+              [animations]="false"
+            >
+            </ngx-charts-advanced-pie-chart>
+          </div>
+        </div>
+      </div>
+      
+     <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Distribución Porcentual de Resultados de Ataque</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <ngx-charts-advanced-pie-chart
+              [results]="eficaciaAtaque"
+              [animations]="false"
+            >
+            </ngx-charts-advanced-pie-chart>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="tab-panel3" *ngIf="activeTab === 'overview'">
+      <div class="card card-white"  >
+        <div class="card-header">
+          <div class="card-title">Tabla de Jugadores — Resumen</div>
+        </div>
+        <div class="card-content" id="tabla-resumen">
+          <div *ngIf="playersOverview && playersOverview.length > 0">
+            <table mat-table [dataSource]="playersOverview" class="mat-elevation-z1" style="width:100%;">
+
+              <!-- Player Name -->
+              <ng-container matColumnDef="player">
+                <th mat-header-cell class="col-player" *matHeaderCellDef> Jugador </th>
+                <td mat-cell class="col-player" *matCellDef="let row"> {{ row.player }} </td>
+              </ng-container>
+
+              <!-- Group headers (top row) -->
+              <ng-container matColumnDef="receGroup">
+                <th mat-header-cell class="group-header-rece" *matHeaderCellDef colspan="4" class="group-header">Recepción</th>
+                <td mat-cell  *matCellDef="let row" style="display:none"></td>
+              </ng-container>
+              <ng-container matColumnDef="serveGroup">
+                <th mat-header-cell class="group-header-saque" *matHeaderCellDef colspan="3" class="group-header">Saque</th>
+                <td mat-cell class="group-header-saque" *matCellDef="let row" style="display:none"></td>
+              </ng-container>
+              <ng-container matColumnDef="attackGroup">
+                <th mat-header-cell class="group-header-ataque" *matHeaderCellDef colspan="5" class="group-header">Ataque</th>
+                <td mat-cell class="group-header-ataque" *matCellDef="let row" style="display:none"></td>
+              </ng-container>
+
+              <!-- Reception group -->
+              <ng-container matColumnDef="receTotal">
+                <th mat-header-cell class="group-rece" *matHeaderCellDef> Tot </th>
+                <td mat-cell class="group-rece numeric" *matCellDef="let row"> {{ row.receTotal }} </td>
+              </ng-container>
+              <ng-container matColumnDef="receErr">
+                <th mat-header-cell class="group-rece" *matHeaderCellDef> Err </th>
+                <td mat-cell class="group-rece numeric" *matCellDef="let row"> {{ row.receErr }} </td>
+              </ng-container>
+              <ng-container matColumnDef="recePosPct">
+                <th mat-header-cell class="group-rece" *matHeaderCellDef> Pos% </th>
+                <td mat-cell class="group-rece numeric" *matCellDef="let row"> {{ (row.recePosPct * 100) | number:'1.0-1' }}% </td>
+              </ng-container>
+              <ng-container matColumnDef="recePerfPct">
+                <th mat-header-cell class="group-rece" *matHeaderCellDef> Perf%</th>
+                <td mat-cell class="group-rece numeric" *matCellDef="let row"> {{ (row.recePerfPct * 100) | number:'1.0-1' }}% </td>
+              </ng-container>
+
+              <!-- Serve group -->
+              <ng-container matColumnDef="serveTotal">
+                <th mat-header-cell class="group-serve" *matHeaderCellDef> Tot </th>
+                <td mat-cell class="group-serve numeric" *matCellDef="let row"> {{ row.serveTotal }} </td>
+              </ng-container>
+              <ng-container matColumnDef="serveErr">
+                <th mat-header-cell class="group-serve" *matHeaderCellDef> Err </th>
+                <td mat-cell class="group-serve numeric" *matCellDef="let row"> {{ row.serveErr }} </td>
+              </ng-container>
+              <ng-container matColumnDef="servePts">
+                <th mat-header-cell class="group-serve" *matHeaderCellDef> Pts </th>
+                <td mat-cell class="group-serve numeric" *matCellDef="let row"> {{ row.servePts }} </td>
+              </ng-container>
+
+              <!-- Attack group -->
+              <ng-container matColumnDef="attackTotal">
+                <th mat-header-cell class="group-attack" *matHeaderCellDef> Tot </th>
+                <td mat-cell class="group-attack numeric" *matCellDef="let row"> {{ row.attackTotal }} </td>
+              </ng-container>
+              <ng-container matColumnDef="attackErr">
+                <th mat-header-cell class="group-attack" *matHeaderCellDef> Err </th>
+                <td mat-cell class="group-attack numeric" *matCellDef="let row"> {{ row.attackErr }} </td>
+              </ng-container>
+              <ng-container matColumnDef="attackBlock">
+                <th mat-header-cell class="group-attack" *matHeaderCellDef> Block </th>
+                <td mat-cell class="group-attack numeric" *matCellDef="let row"> {{ row.attackBlock }} </td>
+              </ng-container>
+              <ng-container matColumnDef="attackPts">
+                <th mat-header-cell class="group-attack" *matHeaderCellDef> Pts </th>
+                <td mat-cell class="group-attack numeric" *matCellDef="let row"> {{ row.attackPts }} </td>
+              </ng-container>
+              <ng-container matColumnDef="attackPtsPct">
+                <th mat-header-cell class="group-attack" *matHeaderCellDef> Pts% </th>
+                <td mat-cell class="group-attack numeric" *matCellDef="let row"> {{ (row.attackPtsPct * 100) | number:'1.0-1' }}% </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="headerRow1"></tr>
+              <tr mat-header-row *matHeaderRowDef="playersOverviewColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: playersOverviewColumns;"></tr>
+            </table>
+          </div>
+          <div *ngIf="!playersOverview || playersOverview.length === 0" class="placeholder">No hay datos de jugadores disponibles.</div>
+        </div>
+      </div>
+      </div>
+    
+
+    <div class="tab-panel" *ngIf="activeTab === 'attack'">
+      <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Calidad media del ataque</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <ngx-charts-bar-horizontal
+              [results]="playerAttackScores"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="true"
+              xAxisLabel="Eficacia del Ataque"
+              yAxisLabel="Jugador"
+              [animations]="false"
+              [xScaleMax]="10"
+              
+              [showDataLabel]="true"
+            >
+            </ngx-charts-bar-horizontal>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel3" *ngIf="activeTab === 'reception'">
+      <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Calidad media de la recepción</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <div style="margin-bottom:8px; display:flex; gap:8px; align-items:center;">
+              <label style="font-size:13px; color:var(--text-color, #fff);">Jugador:</label>
+              <select (change)="onRecePlayerChange($event)">
+                <option value="">Todos</option>
+                <option *ngFor="let p of playersForRece" [value]="p">{{ p }}</option>
+              </select>
+            </div>
+            <ngx-charts-advanced-pie-chart
+              [results]="breakdownBySymbolPerPlayer"
+              xAxisLabel="Eficacia de la Recepción"
+              yAxisLabel="Jugador"
+              [animations]="false"
+            >
+            </ngx-charts-advanced-pie-chart>
+          </div>
+        </div>
+      </div>
+      <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Calidad media de la recepción</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <ngx-charts-bar-horizontal-2d
+              [results]="playerReceScores"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="true"
+              xAxisLabel="Eficacia de la recepción"
+              yAxisLabel="Jugador"
+              [animations]="false"
+              [xScaleMax]="10"
+              [showDataLabel]="true"
+            >
+            </ngx-charts-bar-horizontal-2d>
+          </div>
+          <div class="h-350">
+            <ngx-charts-advanced-pie-chart
+              [results]="breakdownBySymbol"
+             
+              xAxisLabel="Eficacia de la recepción"
+              yAxisLabel="Jugador"
+              [animations]="false"
+              
+            >
+            </ngx-charts-advanced-pie-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'serve'">
+      <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Calidad media del saque</div>
+        </div>
+        <div class="card-content">
+          
+          <div class="h-350">
+            <ngx-charts-bar-horizontal
+              [results]="playerScores"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="true"
+              xAxisLabel="Eficacia del Saque"
+              yAxisLabel="Jugador"
+              [animations]="false"
+              [xScaleMax]="10"
+              [showDataLabel]="true"
+            >
+            </ngx-charts-bar-horizontal>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'setting'">
+       <div class="card card-white">
+        <div class="card-header">
+          <div class="card-title">Calidad media de la colocación</div>
+        </div>
+        <div class="card-content">
+          <div class="h-350">
+            <ngx-charts-bar-horizontal
+              [results]="playerColocacionScores"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="true"
+              xAxisLabel="Eficacia del Ataque"
+              yAxisLabel="Jugador"
+              [animations]="false"
+              [xScaleMax]="10"
+              [showDataLabel]="true"
+            >
+            </ngx-charts-bar-horizontal>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" *ngIf="activeTab === 'pdf'">
+      <app-descargar-resumen
+        [playersOverview]="playersOverview"
+        [saques]="saques"
+        [reces]="reces"
+        [ataques]="ataques"
+        [colocacion]="colocacion"
+        [matchInfo]="{ id: matchId }"
+        [playerAttackScores]="playerAttackScores"
+        [breakdownBySymbolPerPlayer]="breakdownBySymbolPerPlayer"
+        [playerReceScores]="playerReceScores"
+        [breakdownBySymbol]="breakdownBySymbol"
+        [playerScores]="playerScores"
+        [playerColocacionScores]="playerColocacionScores"
+      >
+      </app-descargar-resumen>
+    </div>
+  </div>
+</div>

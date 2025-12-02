@@ -2,11 +2,13 @@ import { Component,Input } from '@angular/core';
 import { Inject } from '@angular/core';
 import { MAT_DIALOG_DATA,MatDialogRef } from '@angular/material/dialog';
 import { Player } from '../models/player.model';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 interface SextetoPlayer {
  dorsal:string;
-  position: number;
+  position: number | string;
   player_id:number;
 }
 interface QrData {
@@ -36,6 +38,7 @@ export class SextetoComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<SextetoComponent>,
+    private cdr: ChangeDetectorRef
   ) {
     this.players = data.players;
     this.position_name=data.position_name;
@@ -58,17 +61,33 @@ export class SextetoComponent {
     this.dialogRef.close({ selectedPlayers: reorderedPlayers, tieneSaque: this.tieneSaque });
 
   }
-  updateSelectedPlayer(index: number, selectedPlayer: { player_id: number; dorsal: string }) {
-    this.selectedPlayers[index] = {
-      player_id: selectedPlayer.player_id,
-      dorsal: selectedPlayer.dorsal,
-      position: this.getPosition(index), // Asegúrate de tener este método que devuelva la posición adecuada
-    };
+  updateSelectedPlayer(index: number, playerId: number) {
+    // Encuentra al jugador seleccionado en la lista de jugadores
+    const selectedPlayer = this.players.find(player => player.player_id === playerId);
+  
+    if (selectedPlayer) {
+      console.log(selectedPlayer,"jugador seleccionado",index)
+      this.selectedPlayers[index] = {
+        player_id: selectedPlayer.player_id,
+        dorsal: selectedPlayer.dorsal.toString(),
+        position: index, 
+      };
+    } else {
+      console.warn(`Jugador con ID ${playerId} no encontrado`);
+    }
+  
+    // Fuerza la detección de cambios si es necesario
+    this.cdr.detectChanges();
+    this.selectedPlayers = [...this.selectedPlayers];
+    console.log(this.selectedPlayers);
   }
   cambiarLado() {
     this.lado = this.lado === 'A' ? 'B' : 'A';
     console.log(this.lado);
     
+  }
+  comparePlayers(player1: any, player2: any): boolean {
+    return player1 && player2 && player1.player_id === player2.player_id;
   }
   cambiarSet(){
     this.qrset = this.sliderValue;

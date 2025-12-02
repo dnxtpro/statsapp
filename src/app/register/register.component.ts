@@ -17,7 +17,6 @@ export class RegisterComponent implements OnInit {
     username: null,
     email: null,
     password: null,
-    equipoId:null,
     roles:['user']
     
   };
@@ -44,15 +43,15 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
    
-    const { username, email, password,roles,equipoId } = this.form;
-console.log( username, email, password,roles,equipoId)
-    this.authService.register(username, email, password,roles,equipoId).subscribe({
+    const { username, email, password,roles } = this.form;
+console.log( username, email, password,roles)
+    this.authService.register(username, email, password,roles,).subscribe({
       next: data => {
         console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
         this.openSnackBar('Perfecto usuario registrado correctamente')
-        this.router.navigate(['login'])
+        this.router.navigate(['/'])
 
       },
       error: err => {

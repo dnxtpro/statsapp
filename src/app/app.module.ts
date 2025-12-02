@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MarcadorComponent } from './marcador/marcador.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 import { AddPlayerComponent } from './add-player/add-player.component';
 import { ChoosePlayersComponent } from './choose-players/choose-players.component';
 import { HomeComponent } from './home/home.component';
@@ -27,16 +28,20 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SextetoComponent } from './sexteto/sexteto.component';
 import { HttpClient } from '@angular/common/http';
-import {MatCardModule} from '@angular/material/card';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SoniaComponent } from './sonia/sonia.component';
-import { NgxEchartsModule,provideEcharts,NgxEchartsDirective } from 'ngx-echarts';
+import {
+  NgxEchartsModule,
+  provideEcharts,
+  NgxEchartsDirective,
+} from 'ngx-echarts';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { httpInterceptorProviders} from './helpers/htttp.interceptor';
+import { httpInterceptorProviders } from './helpers/htttp.interceptor';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
@@ -48,25 +53,77 @@ import { TeamsManagerComponent } from './teams-manager/teams-manager.component';
 import { NewMatch1Component } from './new-match1/new-match1.component';
 import { RoleDirective } from './role.directive';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatListModule} from '@angular/material/list';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatListModule } from '@angular/material/list';
 import { MatOptionModule } from '@angular/material/core';
-import {CdkAccordionModule} from '@angular/cdk/accordion'; 
-import {MatSelectModule} from '@angular/material/select';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatBadgeModule} from '@angular/material/badge';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatBadgeModule } from '@angular/material/badge';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import {MatTable, MatTableModule} from '@angular/material/table';
-import {MatTableDataSource} from '@angular/material/table';
-import {ProgressBarMode, MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatRadioModule} from '@angular/material/radio';
-import { MatSnackBarModule} from '@angular/material/snack-bar'
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import {
+  ProgressBarMode,
+  MatProgressBarModule,
+} from '@angular/material/progress-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import localeEs from '@angular/common/locales/es';
+import { MatSort } from '@angular/material/sort';
+import { registerLocaleData } from '@angular/common';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { EditorComponent } from './editor/editor.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { YouTubePlayer, YouTubePlayerModule } from '@angular/youtube-player';
+import { YoutubePlayerComponent } from './youtube-player/youtube-player.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RewardComponent } from './reward/reward.component';
+import { DialogoRecompensaComponent } from './dialogo-recompensa/dialogo-recompensa.component';
+import { CanvasComponent } from './canvas/canvas.component';
+import { FirstComponent } from './first/first.component';
+import {
+  LucideAngularModule,
+  Pencil,
+  Minus,
+  ArrowRight,
+  Square,
+  Circle,
+  Type,
+  Highlighter,
+  Eraser,
+  MousePointer,
+  Undo,
+  Redo,
+  Play,
+  Pause
+  ,ChevronUp, ChevronDown, MoreVertical, Edit2, Eye, EyeOff, Trash2,ArrowLeft,VolumeX,Volume2
+ , Droplet,LayoutPanelLeft,
+ PanelRight,PanelLeft,ChevronLeft,ChevronRight,SkipBack,SkipForward,Maximize2,Pin,
+} from 'lucide-angular';
+import { AnnotationToolbarComponent } from './annotation-toolbar/annotation-toolbar.component';
+import { RightOverlayComponent } from './right-overlay/right-overlay.component';
+import { AnnotationCanvasComponent } from './annotation-canvas/annotation-canvas.component';
+import { AnnotationListComponent } from './annotation-list/annotation-list.component';
+import { ResumenPartidoComponent } from './resumen-partido/resumen-partido.component';
+import { EvaluarComponent } from './evaluar/evaluar.component';
+import { ActionsResumeComponent } from './actions-resume/actions-resume.component';
+import { ModalReceComponent } from './modal-rece/modal-rece.component';
+import { DescargarResumenComponent } from './descargar-resumen/descargar-resumen.component';
+import { SetMapComponent } from './set-map/set-map.component';
+import { DetallesModalComponent } from './detalles-modal/detalles-modal.component';
 
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [
@@ -97,17 +154,34 @@ import { MatSnackBarConfig } from '@angular/material/snack-bar';
     TeamsManagerComponent,
     NewMatch1Component,
     RoleDirective,
-    
+    ConfirmDialogComponent,
+    EditorComponent,
+    YoutubePlayerComponent,
+    RewardComponent,
+    DialogoRecompensaComponent,
+    CanvasComponent,
+    FirstComponent,
+    AnnotationToolbarComponent,
+  RightOverlayComponent,
+    AnnotationCanvasComponent,
+    AnnotationListComponent,
+    ResumenPartidoComponent,
+    EvaluarComponent,
+    ActionsResumeComponent,
+    ModalReceComponent,
+    DescargarResumenComponent,
+    SetMapComponent,
+    DetallesModalComponent,
   ],
-  
+
   imports: [
-MatChipsModule,
+    MatChipsModule,
     CommonModule,
     RouterModule,
     BrowserModule,
     AppRoutingModule,
     MatDialogModule,
-    RouterModule, 
+    RouterModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -115,10 +189,11 @@ MatChipsModule,
     ReactiveFormsModule,
     DatePipe,
     NgxChartsModule,
-    NgxEchartsModule,NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
+    NgxEchartsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
     }),
-    NgxEchartsDirective,  
+    NgxEchartsDirective,
     MatSlideToggleModule,
     MatCardModule,
     MatIconModule,
@@ -140,11 +215,47 @@ MatChipsModule,
     MatCheckboxModule,
     MatRadioModule,
     MatSnackBarModule,
-
+    MatSidenavModule,
+    MatSort,
+    MatProgressSpinnerModule,
+    YouTubePlayerModule,
+    MatTooltipModule,
+    LucideAngularModule.pick({
+      Pencil,
+      Minus,
+      ArrowRight,
+      Square,
+      Circle,
+      Type,
+      Highlighter,
+      Eraser,
+      MousePointer,
+      Undo,
+      Redo,
+      Play, 
+      Pause,
+        ChevronUp,
+        ChevronDown,
+        MoreVertical,
+        Edit2,
+        Eye,
+        EyeOff,
+        Trash2,
+        ArrowLeft,
+        VolumeX,
+        Volume2
+        ,Droplet,PanelLeft,PanelRight,ChevronLeft,ChevronRight,SkipBack,SkipForward,Maximize2,
+        Pin
+    }),
   ],
-  providers: [httpInterceptorProviders,provideEcharts(), provideAnimationsAsync(),provideHttpClient(withInterceptorsFromDi()), provideHttpClient(),
-    
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
+    httpInterceptorProviders,
+    provideEcharts(),
+    provideAnimationsAsync(),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

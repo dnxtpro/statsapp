@@ -1,64 +1,155 @@
-.margenarriba{
-    border-top: 4px solid black;
-    margin-bottom: 2px;
-    border-left: 4px solid black;
-  }
-  .margenabajo{
-    border-bottom: 4px solid black;
-  }
-  .court-container {
-    max-width: 50vw;
-    margin: auto;
-    margin-top: 20px;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .court-container1 {
-    max-width: auto;
-    margin: auto;
-    margin-top: 20px;
-    aspect-ratio:1/1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .front-zone {
-    height: 33.33%;
-    border-bottom: 2px solid #1976d2;
-    background-color: #bbdefb;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-  
-  .back-zone {
-    height: 66.67%;
-    background-color: #e0e0ff;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
-  
-  .court-info {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .position-box {
-    width: 10vh;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 90%;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-  }
-  .primary{
-    background-color: #2196f3;
-  }
-  .secondary{
-    background-color: hwb(240 50% 0%);
-  }
+/* Modern, clean sports UI redesign */
+
+.margenarriba {
+  border-top: 1px solid #e5e7eb;
+  margin-bottom: 8px;
+  border-left: 1px solid #e5e7eb;
+}
+
+.margenabajo {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.court-container {
+  max-width: 50vw;
+  margin: auto;
+  margin-top: 24px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 10px 20px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+.court-container1 {
+  max-width: auto;
+  margin: auto;
+  margin-top: 24px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 10px 20px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+.front-zone {
+  height: 33.33%;
+  border-bottom: 2px solid #1e40af;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 16px 0;
+}
+
+.back-zone {
+  height: 66.67%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 16px 0;
+}
+
+.court-info {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.position-box {
+  width: 10vh;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.position-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+
+.primary:hover {
+  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+
+.secondary {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.secondary:hover {
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Material form field styling */
+.position-box mat-form-field {
+  width: 100%;
+}
+
+.position-box ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+}
+
+.position-box ::ng-deep .mdc-text-field {
+  background-color: transparent !important;
+}
+
+.position-box ::ng-deep .mat-mdc-select-trigger {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.position-box ::ng-deep .mat-mdc-form-field-infix {
+  padding: 8px 0 !important;
+}
+
+.position-box ::ng-deep .mat-mdc-form-field-hint-wrapper {
+  display: none;
+}
+
+.position-box ::ng-deep .mdc-text-field__input {
+  color: white !important;
+  text-align: center;
+}
+
+.position-box ::ng-deep .mat-mdc-select-arrow {
+  display: none;
+}
+
+.position-box ::ng-deep .mat-mdc-form-field-focus-overlay {
+  display: none;
+}
+
+/* Saque indicator - service position highlight */
+.saque {
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 0 0 3px
+    rgba(217, 119, 6, 0.2) !important;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+}
+
+.saque:hover {
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 0 0 3px
+    rgba(217, 119, 6, 0.2) !important;
+}

@@ -23,6 +23,12 @@ export class PlayerService {
         tap(players => console.log('Respuesta del servidor:', players))
       );
     }
+    getAllTeamPlayers(teamId:any): Observable<Player[]> {
+      console.log(teamId)
+      return this.http.get<Player[]>(`${environment.apiUrl}/api/players/${teamId}`,httpOptions).pipe(
+        tap(players => console.log('Respuesta del servidor:', players))
+      );
+    }
     getPlayerByNumber(playerNumber: number): Observable<Player> {
       // Puedes cambiar la implementación según la estructura de tu backend
       // Este es solo un ejemplo de cómo podrías obtener un jugador por su número

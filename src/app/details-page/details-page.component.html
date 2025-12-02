@@ -1,25 +1,28 @@
 
 
-<div class=" d-flex flex-column justify-content-center align-items-center container-fluid">
+<div class=" d-flex flex-column respo justify-content-center align-items-center overflow-x-hidden">
 
-<div class="row">
+<div class="row d-flex flex-column gap-2 ">
  <mat-button-toggle-group [value]="selectedSet" (change)="showSet($event.value)" appearance="standard">
     <mat-button-toggle *ngFor="let set of setsData; let i = index" [value]="i + 1">
       Set {{ i + 1 }}
     </mat-button-toggle>
+   
   </mat-button-toggle-group>
+  <button mat-fab extended  (click)="addDataToTemplate()"> <mat-icon>download</mat-icon> Descargar Excel</button>
 </div>
   
 
-    <div class="row row-cols-2 gx-5" *ngIf="selectedSet && selectedSet.setNumber">
-      <!-- Tabla de Aciertos -->
-      <div class="col">
+    <div class="row row-cols-1 row-cols-xl-2 gx-5" *ngIf="selectedSet && selectedSet.setNumber">
       
-        <h2 class="text-white">Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
-        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8 table-responsive">
+      <div class="col overflow-x-auto hola">
+       
+      
+        <h2 class="text-white sticky">Tabla de Aciertos - Set {{ selectedSet.setNumber }}</h2>
+        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8 table-responsive  ">
           <!-- Definir las columnas -->
           <ng-container matColumnDef="player_name">
-            <th mat-header-cell *matHeaderCellDef class="custom-table">Player</th>
+            <th mat-header-cell *matHeaderCellDef class="custom-table sticky-column">Player</th>
             <td mat-cell *matCellDef="let element" class="custom-table">{{ element || 'Nombre Desconocido' }}</td>
           </ng-container>
     
@@ -68,12 +71,12 @@
       </div>
     
       <!-- Tabla de Fallos -->
-      <div class="col">
-        <h2 class="text-white">Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
-        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8 table-responsive">
+      <div class="col overflow-x-auto hola">
+        <h2 class="text-white sticky">Tabla de Fallos - Set {{ selectedSet.setNumber }}</h2>
+        <table mat-table [dataSource]="getObjectKeys(selectedSet.data)" class="mat-elevation-z8  table-responsive">
           <ng-container matColumnDef="player_name">
-            <th mat-header-cell *matHeaderCellDef class="custom-table">Player</th>
-            <td mat-cell *matCellDef="let element" class="custom-table">{{ element|| 'Nombre Desconocido' }}</td>
+            <th mat-header-cell *matHeaderCellDef class="custom-table sticky-column">Player</th>
+            <td mat-cell *matCellDef="let element" class="custom-table sticky-column">{{ element|| 'Nombre Desconocido' }}</td>
           </ng-container>
     
           <ng-container matColumnDef="FalloSaque">
@@ -103,7 +106,7 @@
           </ng-container>
           <ng-container matColumnDef="azrival">
             <th mat-header-cell *matHeaderCellDef class="custom-table">Acierto Zaguero Rival</th>
-            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.AciertoZagueroRIval || 0 }}</td>
+            <td mat-cell *matCellDef="let element" class="text-center">{{ selectedSet.data[element]?.AciertoZagueroRival || 0 }}</td>
           </ng-container>
     
           <ng-container matColumnDef="afrival">
@@ -121,7 +124,7 @@
     </div>
 
 
- <div class="row my-3" >
+ <div class="row my-3 hola overflow-x-auto" >
   <table mat-table [dataSource]="resultadosPorJugador" class="mat-elevation-z8">
     <ng-container matColumnDef="jugador">
       <th mat-header-cell *matHeaderCellDef> Jugador </th>
@@ -158,7 +161,27 @@
  </div>
 
 
-  <div class="row col-8 d-flex justify-content-center" @fadedIn>
+  <div class="row my-3 hola col-md-8 d-flex justify-content-center" @fadedIn>
+    <div class="card">
+      <div class="card-header"><h2 >Puntos con Saque/Rece</h2>
+      </div>
+    <div class="card-body  ">
+  <ngx-charts-advanced-pie-chart
+  [scheme]="colorScheme3"
+  [results]="pieChartData"
+  
+  [gradient]=true
+  (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)"
+  >
+</ngx-charts-advanced-pie-chart>
+</div>
+
+</div>
+ 
+  </div>
+  <div class="row hola col-md-8 d-flex justify-content-center" @fadedIn>
     <div class="card">
       <div class="card-header"><h2 >Grafico de Fallos/Aciertos</h2>
       </div>

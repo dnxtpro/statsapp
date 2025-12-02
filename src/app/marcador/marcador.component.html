@@ -1,27 +1,45 @@
-<div class="container h-100 w-100 position-absolute top-50 start-50 translate-middle" >
-        <div class="row h-100 p-0 m-0">
-          <div class="row p-0 m-0">
-            <div class="col-6 backgroundperso d-flex align-items-center justify-content-center  align-middle azul">
-              <p class=" text-center  fw-bold">CVR</p>
+<div class="contenedorp" >
+
+        <div class="row h-100 fondo gap-3">
+          <div class="col d-flex flex-column conte gap-3">
+
+              <div class="imagen">
+                <img src="../../assets/logo.svg" alt="">
+              </div>
+            <span class="equipoL">CV ROCHELAMBERT</span>
+            <div class="nset">{{ marcador?.setsLocal }}</div>
+            <div class="set">SETS</div>
+          </div>
+          <div class="col-6 d-flex conte gap-3">
+            <div class="centro">
+              SET   
+              {{setsTotales}}
             </div>
-            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle azul">
-              <p class=" text-center ">{{ marcador?.setsLocal }}</p>
-            </div>
-            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle azulc">
-              <p class=" text-center " [@parpadeoLocal]="parpadeoLocal">{{ marcador?.scoreLocal }}</p>
+            <div class="d-flex puntos gap-5">
+              <div [ngClass]="{ 'text-yellow-400': parpadeoLocal, 'text-white': !parpadeoLocal }" [@parpadeoLocal]="parpadeoLocal" class="puntos1">
+                {{marcador.scoreLocal}}
+              </div>
+              <span>-</span>
+              <div [ngClass]="{ 'text-yellow-400': parpadeoVisitor, 'text-white': !parpadeoVisitor }" [@parpadeoVisitor]="parpadeoVisitor" class="puntos1">
+                {{marcador.scoreVisitor}}
+              </div>
+
             </div>
           </div>
-          <div class="row p-0 m-0">
-            <div class="col-6 backgroundperso  d-flex align-items-center justify-content-center align-middle rosa">
-              <p class=" text-center  fw-bold">VIS</p>
+          <div class="col d-flex flex-column conte gap-3">
+
+            <div class="imagen">
+              <img src="../../assets/logo.svg" alt="">
             </div>
-            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center align-middle rosa">
-              <p class=" text-center ">{{ marcador?.setsVisitor }}</p>
-            </div>
-            <div class="col-3 backgroundperso d-flex align-items-center justify-content-center  align-middle rosac">
-              <p class=" text-center " [@parpadeoVisitor]="parpadeoVisitor">{{ marcador?.scoreVisitor }}</p>
-            </div>
-          </div>
+          <span class="equipoL">VISITANTE</span>
+          <div class="nset">{{ marcador?.setsVisitor}}</div>
+          <div class="set">SETS</div>
         </div>
-      </div>
+          
+        </div>
+        <div>
+
+        </div>
+        
+  </div>
       

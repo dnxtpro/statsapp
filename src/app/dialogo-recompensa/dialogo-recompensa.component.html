@@ -1,0 +1,21 @@
+<div class="tit" >
+    <h2 >Canjear Recompensa</h2>
+    <p>¿Estás seguro de que deseas canjear la recompensa?</p>
+
+</div>
+<div class="cont">
+    <h3>
+        {{reward.title}}
+    </h3>
+    <p class="description">
+        {{reward.description}}
+    </p>
+    <p class="felipes"><img src="../../assets/felipe.svg"  alt=""> 
+        {{ reward.pointsRequired }} Felipes
+    </p>
+</div>
+<mat-dialog-actions>
+    <button mat-button (click)="onClose()">Cancelar</button>
+    <button mat-flat-button (click)="onCanjear()" >Confirmar Canje</button>
+
+</mat-dialog-actions>

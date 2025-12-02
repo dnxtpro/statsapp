@@ -1,0 +1,33 @@
+.dialog-container {
+    padding: 20px;
+    overflow:auto;
+  }
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .warning-icon {
+    color: #f44336;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+  .dialog-message {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  mat-dialog-actions {
+    margin: 24px -24px -24px;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .cancel-button {
+    margin-right: 8px;
+  }
+  button mat-icon {
+    margin-right: 8px;
+  }

@@ -1,0 +1,325 @@
+/* Card base */
+.card {
+	border: 1px solid #e6e6e6;
+	border-radius: 8px;
+	background: #111827;
+	padding: 12px;
+	max-width: 360px;
+	box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+	color:#a0aabe;
+}
+
+.card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.card-title {
+	font-size: 0.875rem;
+	color: #e7e7e7ff; /* muted */
+	font-weight: 600;
+}
+
+.card-trend {
+	font-weight: 700;
+	font-size: 14px;
+}
+.card-trend.up { color: #16a34a; }
+.card-trend.down { color: #dc2626; }
+.card-trend.neutral { color: #f59e0b; }
+
+.card-content {
+	padding-top: 4px;
+}
+
+.card-value {
+	font-size: 2rem;
+	font-weight: 700;
+	color: #ffffffff;
+}
+
+.card-sub {
+	margin-top: 6px;
+	font-size: 0.75rem;
+	color: #6b7280;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+	.card {
+		background: #0b1220;
+		border-color: #1f2937;
+		box-shadow: none;
+	}
+	.card-title, .card-sub { color: #94a3b8; }
+	.card-value { color: #e6eef8; }
+}
+/* Ensure legend text stays white on hover / when bars are hovered */
+:host ::ng-deep .ngx-charts .legend-label,
+:host ::ng-deep .ngx-charts .advanced-pie-legend,
+:host ::ng-deep .ngx-charts .legend-label:hover,
+:host ::ng-deep .ngx-charts .legend-item text,
+:host ::ng-deep .ngx-charts .legend-item text:hover,
+:host ::ng-deep .ngx-charts .legend-entry text,
+:host ::ng-deep .ngx-charts .legend-entries text {
+	fill: #ffffff !important;
+	color: #ffffff !important;
+}
+
+/* Cover common state classes applied by ngx-charts (inactive/disabled/active) */
+:host ::ng-deep .ngx-charts .legend-item.inactive text,
+:host ::ng-deep .ngx-charts .legend-item.disabled text,
+:host ::ng-deep .ngx-charts .legend-item.active text {
+	fill: #ffffff !important;
+	color: #ffffff !important;
+}
+/* ngx-charts: force axis labels / ticks to white for dark backgrounds */
+/* Use ::ng-deep so selectors apply inside the chart SVG rendered by ngx-charts */
+:host ::ng-deep .ngx-charts text,
+:host ::ng-deep .ngx-charts .axis text,
+:host ::ng-deep .ngx-charts .tick text,
+:host ::ng-deep .ngx-charts .axis-label {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* Slightly increase contrast for axis labels */
+:host ::ng-deep .ngx-charts .axis-label {
+  font-weight: 600;
+}
+
+/* If using ngx-charts' legend or tooltip text inside SVG */
+:host ::ng-deep .ngx-charts .legend-label,
+:host ::ng-deep .ngx-charts .legend-title {
+  fill: #ffffff !important;
+}
+/* Tabs */
+.tabs { max-width: 780px; }
+.tabs-list { display: flex; gap: 8px; margin-bottom: 12px; }
+.tabs-list button { padding: 6px 12px; border-radius: 8px; border: 1px solid #e6e6e6; background: #fff; cursor: pointer; }
+.tabs-list button.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+.tabs-list button:focus { outline: 2px solid #c7d2fe; }
+
+.tab-panel { padding: 6px 0;
+ }
+.tab-panel2 { padding: 6px 0;
+display:flex;
+justify-content:space-evenly;
+flex-direction: row;
+ }
+.tab-panel3 {
+	padding: 6px 0;
+	display: flex;
+	width: 80vw;
+	gap: 4px; /* espacio entre las dos tarjetas */
+	flex-direction: row;
+	align-items: stretch;
+	flex-wrap: wrap; /* permite que en pantallas pequeñas las tarjetas se apilen */
+}
+
+.placeholder { color: #6b7280; padding: 12px 0; }
+
+
+/* White card variant: force white background for important cards */
+.card.card-white {
+	box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+	max-width: 100%;
+	/* Permitir que las tarjetas ocupen el espacio disponible en la fila */
+	flex: 1 1 0;
+	min-width: 0; /* para evitar overflow en flex children */
+}
+
+/* Fixed-height container for charts */
+.h-350 {overflow: none; padding: 8px;height:25vh }
+
+text.ng-star-inserted {
+	color: #a0b5e7ff;
+}
+title.ng-star-inserted {
+	color: #a0b5e7ff;
+}
+.cursor-pointer {
+  cursor: pointer;
+}	
+.advanced-pie-legend .legend-items-container .legend-items .legend-item:hover {
+  color:white !important;
+}
+
+/* Ensure SVG/text inside legend stays white when hovering (ngx-charts uses <text> with fill) */
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover text,
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover tspan,
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover .legend-label,
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover .legend-entry text {
+	fill: #ffffff !important;
+	color: #ffffff !important;
+}
+
+/* also cover active/inactive states on hover */
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover .legend-item.inactive text,
+:host ::ng-deep .advanced-pie-legend .legend-items-container .legend-items .legend-item:hover .legend-item.disabled text {
+	fill: #ffffff !important;
+	color: #ffffff !important;
+}
+
+/* Target the plain HTML legend markup (from inspector):
+	 <div class="legend-items">
+		 <div class="legend-item">...
+			 <div class="item-value">...</div>
+			 <div class="item-label">...</div>
+			 <div class="item-percent">...</div>
+		 </div>
+	 </div>
+*/
+:host ::ng-deep .legend-items .legend-item:hover,
+:host ::ng-deep .legend-items .legend-item:hover .item-label,
+:host ::ng-deep .legend-items .legend-item:hover .item-value,
+:host ::ng-deep .legend-items .legend-item:hover .item-percent {
+	color: #ffffff !important;
+}
+
+/* Also ensure nested spans or other inline elements inherit white on hover */
+:host ::ng-deep .legend-items .legend-item:hover * {
+	color: #ffffff !important;
+}
+
+/* Target ngx-charts legend list structure (.legend-labels) so label text turns white on hover */
+:host ::ng-deep ul.legend-labels li.legend-label:hover,
+:host ::ng-deep ul.legend-labels li.legend-label:hover ngx-charts-legend-entry,
+:host ::ng-deep ul.legend-labels li.legend-label:hover ngx-charts-legend-entry span,
+:host ::ng-deep ul.legend-labels li.legend-label:hover .legend-label-text,
+:host ::ng-deep ul.legend-labels li.legend-label:hover .legend-label-color {
+	color: #ffffff !important;
+	fill: #ffffff !important;
+}
+
+/* Specifically ensure inner span text uses white (covers different markup variants) */
+:host ::ng-deep ul.legend-labels li.legend-label:hover span.legend-label-text,
+:host ::ng-deep ul.legend-labels li.legend-label:hover span.legend-label-color {
+	color: #ffffff !important;
+}
+
+/* Also handle focus (keyboard navigation) to match hover behavior */
+:host ::ng-deep ul.legend-labels li.legend-label:focus,
+:host ::ng-deep ul.legend-labels li.legend-label:focus .legend-label-text {
+	color: #ffffff !important;
+}
+
+/* Material table — dark theme styles for the overview table */
+:host ::ng-deep table.mat-elevation-z1 {
+	width: 100%;
+	background: linear-gradient(180deg, rgba(6,10,18,0.8), rgba(10,14,24,0.85));
+	color: #e6eef8;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+:host ::ng-deep .mat-header-row {
+	background: rgba(255,255,255,0.04);
+}
+
+:host ::ng-deep .mat-header-cell {
+	color: #f8fafc;
+	font-weight: 700;
+	padding: 12px 10px;
+	border-bottom: 1px solid rgba(255,255,255,0.06);
+	text-transform: none;
+}
+
+:host ::ng-deep .mat-cell {
+	color: #dbeafe;
+	padding: 10px 10px;
+	border-bottom: 1px solid rgba(255,255,255,0.02);
+	font-size: 0.95rem;
+}
+
+:host ::ng-deep .mat-row:nth-child(odd) .mat-cell {
+	background: rgba(255,255,255,0.01);
+}
+
+:host ::ng-deep .mat-row:hover .mat-cell {
+	background: rgba(255,255,255,0.03);
+}
+
+/* Make numeric values a bit more distinct */
+:host ::ng-deep .mat-cell.numeric {
+	color: #c7e3ff;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Small responsive tweak: allow horizontal scroll on very small screens */
+:host ::ng-deep .mat-table {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+}
+
+/* Force light text colors for all table content to override global/material themes */
+:host ::ng-deep table.mat-elevation-z1,
+:host ::ng-deep table.mat-elevation-z1 th,
+:host ::ng-deep table.mat-elevation-z1 td,
+:host ::ng-deep .mat-header-row,
+:host ::ng-deep .mat-row,
+:host ::ng-deep .mat-cell,
+:host ::ng-deep .mat-header-cell {
+	color: #e6eef8 !important;
+}
+
+/* Ensure any inner inline elements inherit the light color */
+:host ::ng-deep table.mat-elevation-z1 .mat-cell *,
+:host ::ng-deep table.mat-elevation-z1 .mat-header-cell * {
+	color: inherit !important;
+	fill: currentColor !important;
+}
+
+/* Group-based column tinting (subtle) */
+:host ::ng-deep th.col-player,
+:host ::ng-deep td.col-player {
+	background: #0b1220; /* azul tenue */
+}
+
+:host ::ng-deep th.group-attack,
+:host ::ng-deep td.group-attack {
+	background: #2d173bff; /* verde tenue */
+}
+
+:host ::ng-deep th.group-rece,
+:host ::ng-deep td.group-rece {
+	background: #2d173bff; /* naranja tenue */
+}
+
+:host ::ng-deep th.group-serve,
+:host ::ng-deep td.group-serve {
+	background: #18253dff;  /* morado tenue */
+}
+
+:host ::ng-deep th.group-coloc,
+:host ::ng-deep td.group-coloc {
+	background: #2d173bff; /* teal tenue */
+}
+:host ::ng-deep th.group-header-rece,
+:host ::ng-deep th.group-header-ataque,
+:host ::ng-deep td.group-header-rece ,
+:host ::ng-deep td.group-header-ataque {
+	background: #2d173bff; /* teal tenue */
+}
+:host ::ng-deep th.group-header-saque ,
+:host ::ng-deep td.group-header-saque {
+	background: #2d173bff; /* teal tenue */
+}
+
+/* Make header cells slightly stronger tint */
+:host ::ng-deep .mat-header-cell.col-player,
+:host ::ng-deep .mat-header-cell.group-attack,
+:host ::ng-deep .mat-header-cell.group-rece,
+:host ::ng-deep .mat-header-cell.group-serve,
+:host ::ng-deep .mat-header-cell.group-coloc {
+	background-blend-mode: overlay;
+	color: #f8fafc !important;
+}
+
+/* Ensure numeric cells use the numeric color style */
+:host ::ng-deep .mat-cell.numeric {
+	color: #c7e3ff !important;
+}
