@@ -196,7 +196,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   datosDePartido: MatchDetails | null = null;
 
   // ===== Event Monitor Internal State =====
-  private _eventMonitor: NodeJS.Timeout | null = null;
+  private _eventMonitor: ReturnType<typeof setInterval> | null = null;
   private _eventMonitorActive: boolean = false;
   private _lastCheckedTime: number | null = null;
 
