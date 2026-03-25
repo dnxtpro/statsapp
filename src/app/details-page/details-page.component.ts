@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatchService } from '../services/match.service';
 import { Match } from '../models/match.model';
@@ -11,6 +11,8 @@ import * as XLSX from 'xlsx';
 import { HttpClient } from '@angular/common/http';
 import * as Excel from 'exceljs';
 import { StorageService } from '../_services/storage.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface Saque{
   tieneSaque: string;
@@ -53,7 +55,8 @@ interface Jugador {
     ]),
   ],
 })
-export class DetailsPageComponent implements OnInit {
+export class DetailsPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   currentUser: any;
   columnasAciertos: string[] = [
     'Ataque',
@@ -464,6 +467,7 @@ export class DetailsPageComponent implements OnInit {
     this.chartData = this.dataAciertos;
     this.matchService
       .getServicePoints(this.matchId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((points) => {
         this.eficaciaSaque = points;
         this.eficaciaSaqueChartData = this.prepararDatosEficaciaSaque(points);
@@ -472,14 +476,15 @@ export class DetailsPageComponent implements OnInit {
       });
     this.matchService
       .getMatchDetailsByMatchId(this.matchId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((partido) => {
         this.detalles = partido;
         console.log(this.detalles);
 
-        this.playerService.getAllTeamPlayers(partido[0].equipoId).subscribe((players) => {
+        this.playerService.getAllTeamPlayers(partido[0].equipoId).pipe(takeUntil(this.destroy$)).subscribe((players) => {
           console.log(players);
           this.players = players;
-          this.matchService.getPlayerResume(this.matchId).subscribe((matches) => {
+          this.matchService.getPlayerResume(this.matchId).pipe(takeUntil(this.destroy$)).subscribe((matches) => {
             this.playerResume = matches;
             this.resultadosPorJugador = this.contarFallosYAciertos(
               matches,
@@ -498,6 +503,7 @@ export class DetailsPageComponent implements OnInit {
           // Llama a la función del servicio con el matchId
           this.matchService
             .getMatchEventsByMatchId(this.matchId)
+            .pipe(takeUntil(this.destroy$))
             .subscribe((matches) => {
               this.matchDetails = matches;
               console.log(matches, 'partidos que he recibido');
@@ -635,6 +641,11 @@ export class DetailsPageComponent implements OnInit {
     });
     console.log('sets', setsData);
     return setsData;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   onSelect(event: any): void {
     console.log('Selected:', event);

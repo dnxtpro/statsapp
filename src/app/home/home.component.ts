@@ -1,6 +1,6 @@
 // home.component.ts
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { StorageService } from '../_services/storage.service';
@@ -8,6 +8,8 @@ import { MatchService } from '../services/match.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Form } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -29,7 +31,8 @@ import { HttpClient } from '@angular/common/http';
     ]),
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   events: any[] = [];
   upcomingEvents: any[] = [];
   equipos: any[] = [];
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
     
     this.getUpcomingEvents();
     this.getclasification(10)
-    this.matchService.resumenTemporada().subscribe(
+    this.matchService.resumenTemporada().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Datos recibidos:', data);
         this.resumentemporada = data;
@@ -71,7 +74,7 @@ export class HomeComponent implements OnInit {
         console.error('Error al obtener los datos:', error);
       }
     );
-    this.matchService.resumenTemporadaPorFallos().subscribe(
+    this.matchService.resumenTemporadaPorFallos().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Datos recibidos:', data);
         this.resumentemporada1 = data;
@@ -81,7 +84,7 @@ export class HomeComponent implements OnInit {
         console.error('Error al obtener los datos:', error);
       }
     );
-    this.matchService.resumenTemporadaPorPartido().subscribe(
+    this.matchService.resumenTemporadaPorPartido().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Datos recibidos:', data);
         this.resumentemporada2 = data;
@@ -91,7 +94,7 @@ export class HomeComponent implements OnInit {
         console.error('Error al obtener los datos:', error);
       }
     );
-    this.matchService.obtenerEquipos().subscribe(
+    this.matchService.obtenerEquipos().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Datos recibidos:', data);
         this.equipos = data;
@@ -103,7 +106,7 @@ export class HomeComponent implements OnInit {
 
     this.currentUser = this.storageService.getUser();
     this.isLoggedIn = this.storageService.isLoggedIn();
-    this.userService.getAllUsers().subscribe({
+    this.userService.getAllUsers().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         console.log(data);
       },
@@ -112,7 +115,7 @@ export class HomeComponent implements OnInit {
       },
     });
 
-    this.userService.getPublicContent().subscribe({
+    this.userService.getPublicContent().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
         this.content = data;
       },
@@ -133,7 +136,7 @@ export class HomeComponent implements OnInit {
     this.sidebarAbierto = !this.sidebarAbierto;
   }
   getclasification(equipoId: any) {
-    this.matchService.clasificacion(equipoId).subscribe({
+    this.matchService.clasificacion(equipoId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (data: any[]) => {  // Definimos 'data' como un array de objetos
         this.clasificacion = data;
   
@@ -172,7 +175,7 @@ export class HomeComponent implements OnInit {
   }
   
   getUpcomingEvents() {
-    this.matchService.getEvents().subscribe((events: any[]) => {
+    this.matchService.getEvents().pipe(takeUntil(this.destroy$)).subscribe((events: any[]) => {
       // Aquí indicamos el tipo de 'events'
       this.events = events;
       console.log(events)
@@ -312,5 +315,10 @@ export class HomeComponent implements OnInit {
   isEvenRow(row: any): boolean {
     const index = this.clasificacion.indexOf(row);
     return index % 2 === 0;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

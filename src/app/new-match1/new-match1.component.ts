@@ -1,15 +1,18 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatchService } from '../services/match.service'; // Asume que tienes un servicio para manejar las solicitudes HTTP
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-match1',
   templateUrl: './new-match1.component.html',
   styleUrl: './new-match1.component.css'
 })
-export class NewMatch1Component implements OnInit {
+export class NewMatch1Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   matchForm!: FormGroup;
  data=[]
  teams: any[] = [];
@@ -23,7 +26,7 @@ export class NewMatch1Component implements OnInit {
       location: ['', Validators.required],
       equipoId:[''],
     });
-    this.matchService.obtenerEquipos().subscribe(data=>{
+    this.matchService.obtenerEquipos().pipe(takeUntil(this.destroy$)).subscribe(data=>{
       this.teams = data;
       console.log(this.teams)
        },)
@@ -33,7 +36,7 @@ export class NewMatch1Component implements OnInit {
     if (this.matchForm.valid) {
       const datosPartido = this.matchForm.value;
 console.log(datosPartido)
-      this.matchService.createMatch(datosPartido).subscribe(
+      this.matchService.createMatch(datosPartido).pipe(takeUntil(this.destroy$)).subscribe(
         (response) => {
           console.log('Partido creado:', response);
           this.router.navigate(['/match-live']);
@@ -44,6 +47,11 @@ console.log(datosPartido)
         }
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
 

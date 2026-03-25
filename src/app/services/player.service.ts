@@ -14,8 +14,6 @@ const httpOptions = {
     providedIn: 'root',
 })
 export class PlayerService {
-    private apiUrl = 'http://localhost:4001'; // Aquí almacenarás la lista de jugadores
-
     constructor(private http: HttpClient) {}
 
     getAllPlayers(): Observable<Player[]> {

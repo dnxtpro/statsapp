@@ -1,17 +1,23 @@
 import { TestBed } from '@angular/core/testing';
-import { CanActivateFn } from '@angular/router';
+import { Router } from '@angular/router';
+import { EntrenadorGuard } from './entrenador.guard';
+import { StorageService } from './_services/storage.service';
 
-import { entrenadorGuard } from './entrenador.guard';
-
-describe('entrenadorGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => entrenadorGuard(...guardParameters));
+describe('EntrenadorGuard', () => {
+  let guard: EntrenadorGuard;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        EntrenadorGuard,
+        { provide: StorageService, useValue: { getUser: () => ({ roles: [] }) } },
+        { provide: Router, useValue: { navigateByUrl: jasmine.createSpy('navigateByUrl') } },
+      ],
+    });
+    guard = TestBed.inject(EntrenadorGuard);
   });
 
   it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
+    expect(guard).toBeTruthy();
   });
 });

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatchService } from '../services/match.service'; // Asume que tienes un servicio para manejar las solicitudes HTTP
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -9,7 +11,8 @@ import { Router } from '@angular/router';
   templateUrl: './new-match.component.html',
 
 })
-export class NewMatchComponent implements OnInit {
+export class NewMatchComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   matchForm!: FormGroup;
  data=[]
  teams: any[] = [];
@@ -40,13 +43,13 @@ export class NewMatchComponent implements OnInit {
     if (modulesGroup) {
       modulesGroup.disable({ emitEvent: false });
     }
-    this.matchForm.get('advanced')?.valueChanges.subscribe((enabled) => {
+    this.matchForm.get('advanced')?.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((enabled) => {
       if (modulesGroup) {
         if (enabled) modulesGroup.enable({ emitEvent: false });
         else modulesGroup.disable({ emitEvent: false });
       }
     });
-    this.matchService.obtenerEquipos().subscribe(data=>{
+    this.matchService.obtenerEquipos().pipe(takeUntil(this.destroy$)).subscribe(data=>{
       this.teams = data;
       console.log(this.teams)
        },)
@@ -56,7 +59,7 @@ export class NewMatchComponent implements OnInit {
     if (this.matchForm.valid) {
       const datosPartido = this.matchForm.value;
 console.log(datosPartido)
-      this.matchService.createMatch(datosPartido).subscribe(
+      this.matchService.createMatch(datosPartido).pipe(takeUntil(this.destroy$)).subscribe(
         (response) => {
           console.log('Partido creado:', response);
       
@@ -74,5 +77,10 @@ console.log(datosPartido)
         }
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

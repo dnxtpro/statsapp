@@ -16,8 +16,6 @@ interface positions{
   providedIn: 'root'
 })
 export class FaultTypeService {
-  private baseUrl = 'http://localhost:4001/'; // Reemplaza con la URL de tu backend
-
   constructor(private http: HttpClient) { }
 
   getFaultTypes(): Observable<any[]> {

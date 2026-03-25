@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatchService } from '../services/match.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -6,12 +6,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { StorageService } from '../_services/storage.service';
 import { Router } from '@angular/router';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-match-details',
   templateUrl: './match-details.component.html',
   styleUrls: ['./match-details.component.css'],
 })
-export class MatchDetailsComponent implements OnInit {
+export class MatchDetailsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   matchId!: number;
   previousMatches: any[] = [];
@@ -78,9 +81,9 @@ export class MatchDetailsComponent implements OnInit {
   deleteMatch(matchId: any) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent,{ width: '350px',});
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe(result => {
       if (result) {
-        this.matchService.deleteMatch(matchId).subscribe({
+        this.matchService.deleteMatch(matchId).pipe(takeUntil(this.destroy$)).subscribe({
           next: (response) => {
             console.log('Respuesta:', response);
             this.fetchPreviousMatches();  // Actualizar la lista de partidos después de eliminar
@@ -94,7 +97,7 @@ export class MatchDetailsComponent implements OnInit {
 
   // Llamada para obtener los detalles de los partidos anteriores
   fetchPreviousMatches() {
-    this.matchService.getMatchDetails().subscribe(matches => {
+    this.matchService.getMatchDetails().pipe(takeUntil(this.destroy$)).subscribe(matches => {
       this.previousMatches = matches;
       console.log('Detalles del partido más reciente:', matches);
       
@@ -120,5 +123,10 @@ export class MatchDetailsComponent implements OnInit {
           return acc;
         }, {} as { [key: string]: any[] });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

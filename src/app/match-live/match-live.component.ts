@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   OnInit,
   DoCheck,
+  OnDestroy,
   Input,
   OnChanges,
   SimpleChanges,
@@ -14,7 +15,8 @@ import { PlayerService } from '../services/player.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerModalComponent } from '../player-list-modal/player-list-modal.component';
 import { Player } from '../models/player.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ChoosePlayersComponent } from '../choose-players/choose-players.component';
 import { SextetoComponent } from '../sexteto/sexteto.component';
 import { BooleanService } from '../services/boolean.service';
@@ -107,7 +109,8 @@ interface MatchEvent {
     ]),
   ],
 })
-export class MatchLiveComponent implements OnInit, DoCheck {
+export class MatchLiveComponent implements OnInit, DoCheck, OnDestroy {
+  private destroy$ = new Subject<void>();
   primaryColor = '#2196f3'; // Blue
   secondaryColor = '#ff9800'; // Orange
   player_name: string | undefined;
@@ -224,7 +227,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
   }
 
   loadLatestMatchDetails() {
-    this.matchService.getLatestMatchDetails().subscribe(
+    this.matchService.getLatestMatchDetails().pipe(takeUntil(this.destroy$)).subscribe(
       (latestMatchDetails) => {
         console.log(
           'Detalles del partido más reciente:',
@@ -242,7 +245,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
         this.latestMatchEquipo = latestMatchDetails.equipoNombre;
         this.latestMatchEquipoId = latestMatchDetails.equipoId;
         console.log("1", this.latestMatchEquipoId)
-        this.playerService.getAllTeamPlayers(this.latestMatchEquipoId).subscribe((players) => {
+        this.playerService.getAllTeamPlayers(this.latestMatchEquipoId).pipe(takeUntil(this.destroy$)).subscribe((players) => {
           console.log("2", this.latestMatchEquipoId)
           console.log('Jugadores obtenidos:', players);
           this.currentPlayers = players;
@@ -257,7 +260,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
         // Manejar errores si es necesario
       }
     );
-    this.matchService.getLatestMatchEvent().subscribe(
+    this.matchService.getLatestMatchEvent().pipe(takeUntil(this.destroy$)).subscribe(
       (latestMatchEvent) => {
         console.log('Latest match event:', latestMatchEvent);
         this.matchScore.homeTeam.points = latestMatchEvent.scoreLocal;
@@ -277,7 +280,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
   
 
     // Cargar tipos de fallos y aciertos
-    this.matchService.getFaultTypes().subscribe(
+    this.matchService.getFaultTypes().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Tipos de fallo antes de mapear:', data);
         this.aciertos = data.successes;
@@ -434,7 +437,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
 
     console.log('envio al servidor:', eventId);
     if (eventId !== undefined) {
-      this.matchService.saveMatchEvent(matchEventData, eventId,this.conSaque).subscribe(
+      this.matchService.saveMatchEvent(matchEventData, eventId,this.conSaque).pipe(takeUntil(this.destroy$)).subscribe(
         (response) => {
           console.log('Evento del partido guardado con éxito', response);
         },
@@ -509,7 +512,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
         players: this.currentPlayers,
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result) {
         const { player, data } = result; // Access the combined data
         const playerName = player.playerName;
@@ -536,7 +539,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
         modalTitle: 'QUE PUTERO HA SIDO?',
       },
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result) {
         this.selectedPlayers = result.selectedPlayers;
         this.tieneSaque = result.tieneSaque;
@@ -548,7 +551,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
     });
   }
   loadSexteto() {
-    this.faultTypeService.getPosiciones().subscribe(
+    this.faultTypeService.getPosiciones().pipe(takeUntil(this.destroy$)).subscribe(
       (positions) => {
         if (Array.isArray(positions) && positions.length === 6) {
           this.selectedPlayers = positions;
@@ -574,7 +577,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
   }
 
   pushData(data: SextetoPlayer[]) {
-    this.faultTypeService.updatePlayerPositions(data).subscribe(
+    this.faultTypeService.updatePlayerPositions(data).pipe(takeUntil(this.destroy$)).subscribe(
       (response) => {
         console.log('Posiciones de jugadores actualizadas con éxito', response);
         // Maneja cualquier acción adicional aquí, como actualizar la vista
@@ -602,7 +605,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.destroy$)).subscribe((result) => {
       if (result) {
         const { player, data } = result; // Access the combined data
         const playerName = player.playerName;
@@ -622,7 +625,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
     return this.matchService.getLatestMatchEvent();
   }
   deleteLastMatchEvent() {
-    this.matchService.deleteLastMatchEvent(this.latestMatchId).subscribe(
+    this.matchService.deleteLastMatchEvent(this.latestMatchId).pipe(takeUntil(this.destroy$)).subscribe(
       (response) => {
         console.log('Evento eliminado con éxito:', response);
         // Manejar la respuesta del backend si es necesario
@@ -643,6 +646,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
   ultimoseventosss() {
     this.matchService
       .ultimoseventos(this.latestMatchId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((Eventos) => {
         if (Eventos && Eventos.length > 0) {
           this.Eventos = Eventos;
@@ -653,7 +657,7 @@ export class MatchLiveComponent implements OnInit, DoCheck {
       });
   }
   sincronizarPartido() {
-    this.matchService.sincronizarPartido(this.latestMatchId).subscribe(
+    this.matchService.sincronizarPartido(this.latestMatchId).pipe(takeUntil(this.destroy$)).subscribe(
       (response) => { }
     );;
   } 
@@ -675,5 +679,10 @@ export class MatchLiveComponent implements OnInit, DoCheck {
 
     // Optionally reset other properties as needed, such as events array:
     this.matchScore.events = [];
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

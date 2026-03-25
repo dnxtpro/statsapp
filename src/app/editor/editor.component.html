@@ -807,7 +807,7 @@
           <div
             *ngFor="let event of eventos.flat()"
             class="event"
-            [style.left.%]="(event.timeStamp / duration) * 100"
+            [style.left.%]="((event.timeStamp ?? 0) / duration) * 100"
           ></div>
 
           <!-- Indicador de tiempo actual -->

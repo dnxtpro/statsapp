@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StorageService } from './_services/storage.service';
 import { AuthService } from './_services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -15,6 +15,8 @@ import {
 } from '@angular/animations';
 import { Router } from '@angular/router';
 import { MatchService } from './services/match.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -61,7 +63,8 @@ import { MatchService } from './services/match.service';
     ]),
   ],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   isLandingPage: boolean = false;
   title = 'lawea';
   private roles: string[] = [];
@@ -89,14 +92,14 @@ export class AppComponent {
   ) {}
   ngOnInit(): void {
     
-    this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
+    this.observer.observe(['(max-width: 800px)']).pipe(takeUntil(this.destroy$)).subscribe((screenSize) => {
       if (screenSize.matches) {
         this.isMobile = true;
       } else {
         this.isMobile = false;
       }
     });
-    this.router.events.subscribe(() => {
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.isLandingPage = this.router.url === '/';
     });
     this.currentUser = this.storageService.getUser();
@@ -111,7 +114,7 @@ export class AppComponent {
 
       this.username = user.username;
     }
-    this.matchService.obtenerEquipos().subscribe(
+    this.matchService.obtenerEquipos().pipe(takeUntil(this.destroy$)).subscribe(
       (data) => {
         console.log('Datos recibidos:', data);
         this.currentTeam = data;
@@ -123,7 +126,7 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.authService.logout().subscribe({
+    this.authService.logout().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         console.log(res);
         this.storageService.clean();
@@ -143,5 +146,10 @@ export class AppComponent {
       this.sidenav.open(); // On desktop/tablet, the menu can never be fully closed
       this.isCollapsed = !this.isCollapsed;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

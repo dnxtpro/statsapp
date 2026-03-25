@@ -1,13 +1,16 @@
 import { TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 
-import { ModalServiceService } from './modal-service.service';
+import { ModalService } from './modal-service.service';
 
-describe('ModalServiceService', () => {
-  let service: ModalServiceService;
+describe('ModalService', () => {
+  let service: ModalService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ModalServiceService);
+    TestBed.configureTestingModule({
+      providers: [ModalService, { provide: MatDialog, useValue: { open: jasmine.createSpy('open') } }],
+    });
+    service = TestBed.inject(ModalService);
   });
 
   it('should be created', () => {

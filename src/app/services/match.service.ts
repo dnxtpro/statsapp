@@ -27,9 +27,6 @@ export class MatchService {
   // Lista de partidos, asegúrate de tener datos aquí
   private matches: Match[] = [];
 
-  // Reemplaza con la URL de tu backend
-  private apiUrl = 'http://localhost:4001/';
-
   constructor(
     private http: HttpClient,
     private dialog: MatDialog,

@@ -49,5 +49,9 @@ export interface Match {
   location: string;
   setsLocal: number;
     setsVisitor: number;
+    equipoId?: number;
+    equipoNombre?: string;
+    youtubeId?: string | null;
+    lastRequestAt?: string | number | null;
 
   }

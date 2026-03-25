@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatchService } from '../services/match.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 interface PositionSeries {
     name: string;
     series: Array<{ name: string; value: number }>;
@@ -10,7 +12,8 @@ interface PositionSeries {
   styleUrl: './actions-resume.component.css'
 })
 
-export class ActionsResumeComponent implements OnInit {
+export class ActionsResumeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   saques: any = {};
   reces : any ={};
   ataques : any ={};
@@ -37,7 +40,7 @@ export class ActionsResumeComponent implements OnInit {
   }
   getSaques(){
     const id = Number(this.matchId ?? 111) || 111;
-    this.matchService.getSaques(id).subscribe(data=>{
+    this.matchService.getSaques(id).pipe(takeUntil(this.destroy$)).subscribe(data=>{
       console.log('saques',data);
       this.saques=data;
     }); 
@@ -55,7 +58,7 @@ export class ActionsResumeComponent implements OnInit {
   }
   getReces(){
     const id = Number(this.matchId ?? 111) || 111;
-    this.matchService.getReces(id).subscribe(data=>{
+    this.matchService.getReces(id).pipe(takeUntil(this.destroy$)).subscribe(data=>{
       console.log('reces',data);
       this.reces = data;
       console.log('playerReceScores', this.playerReceScores);
@@ -73,7 +76,7 @@ export class ActionsResumeComponent implements OnInit {
   };
   getAtaques(){
     const id = Number(this.matchId ?? 111) || 111;
-    this.matchService.getAtaques(id).subscribe(data=>{
+    this.matchService.getAtaques(id).pipe(takeUntil(this.destroy$)).subscribe(data=>{
       console.log('ataques',data);
       this.ataques = data;
     }); 
@@ -90,7 +93,7 @@ export class ActionsResumeComponent implements OnInit {
   }
   getColocaciones(){
     const id = Number(this.matchId ?? 111) || 111;
-    this.matchService.getColocaciones(id).subscribe(data=>{
+    this.matchService.getColocaciones(id).pipe(takeUntil(this.destroy$)).subscribe(data=>{
       console.log('colocaciones',data);
       this.colocacion = data;
     }); 
@@ -529,6 +532,11 @@ get playerColocacionScores(): Array<{ name: string; value: number }> {
       // table rows
       playersOverview: this.playersOverview
     };
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
   
 

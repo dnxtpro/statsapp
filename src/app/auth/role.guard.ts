@@ -12,7 +12,7 @@ export class RoleGuard implements CanActivate {
     const user = this.storageService.getUser();
     if (user && user.roles && user.roles.includes('ROLE_ADMIN')) {
       return true;
-    }  {
+    } else {
       // Redirigir o bloquear acceso si no tiene el rol adecuado
       this.router.navigateByUrl('error-505');
       return false;

@@ -19,6 +19,24 @@ import { PlayerModalComponent } from '../player-list-modal/player-list-modal.com
 import { MatDialog } from '@angular/material/dialog';
 import { EvaluarComponent } from '../evaluar/evaluar.component';
 import { ModalReceComponent } from '../modal-rece/modal-rece.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {
+  MatchDetails,
+  FaultType,
+  FaultTypeResponse,
+  MatchEventDetail,
+  MatchEventsBySet,
+  ScoreBySet,
+  Player,
+  ActionRating,
+  CanvasAnnotationResponse,
+  AnnotationSavePayload,
+  PendingAnnotationPayload,
+  ActionRegisterPayload,
+  YoutubeIdResponse,
+  PopupStyle,
+} from '../models/editor.model';
 
 export type AnnotationType =
   | 'pen'
@@ -65,7 +83,11 @@ export interface Annotation {
     ]),
   ],
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
+  // ===== RxJS Memory Leak Prevention =====
+  private destroy$ = new Subject<void>();
+
+  // ===== Annotation Properties =====
   selectedTool: AnnotationType | 'select' | 'eraser' = 'select';
   color: string = '#3B82F6';
   strokeWidth: number = 2;
@@ -83,32 +105,52 @@ export class EditorComponent implements OnInit {
   pendingAnnotationId: string | null = null; // id of last-created annotation waiting for description
   pendingAnnotationText: string = '';
   // Store prepared payloads for annotations that are pending backend creation
-  pendingDbPayloads: { [id: string]: any } = {};
+  pendingDbPayloads: { [id: string]: PendingAnnotationPayload } = {};
   currentTime1: number = 0;
 
-  eventos: any[] = [];
+  // ===== Match Event Properties =====
+  eventos: MatchEventsBySet = [];
   currentSetIndex: number = 0;
   currentEventIndex: number = 0;
-  currentEvent: any;
+  currentEvent: any = {
+    id: 0,
+    eventId: 0,
+    matchId: 0,
+    playerId: 0,
+    faultType: '',
+    scoreLocal: 0,
+    scoreVisitor: 0,
+    setsLocal: 0,
+    setsVisitor: 0,
+    event: { isSuccess: false, type: '' },
+    player: { player_name: '' },
+  };
 
+  // ===== Annotation Mode Properties =====
   anotacionMode = false;
   annotationText: string = '';
-  filteredUsers: any[] = [];
-  mentionedUsers: any[] = [];
+  filteredUsers: Player[] = [];
+  mentionedUsers: Player[] = [];
   showAutocomplete = false;
-  saque: any[] = [];
-  rece: any[] = [];
-  ataque: any[] = [];
-  colo: any[] = [];
 
-  aciertos: any;
-  fallos: any;
-  currentPlayers: any[] = [];
+  // ===== Action Type Properties =====
+  saque: ActionRating[] = [];
+  rece: ActionRating[] = [];
+  ataque: ActionRating[] = [];
+  colo: ActionRating[] = [];
+
+  // ===== Fault Type Properties =====
+  aciertos: FaultType[] = [];
+  fallos: FaultType[] = [];
+
+  // ===== Player & Match Data =====
+  currentPlayers: Player[] = [];
   editMode = false;
   matchId: number = 0;
-  scorBySet: any[] = [];
+  scorBySet: ScoreBySet[] = [];
   selectedSetIndex: number = 0;
   selectedEventIndex: number = 0;
+  // ===== UI/UX Properties =====
   imageMap: { [key: string]: string } = {
     Saque: '/voley/assets/saque.svg',
     Ataque: '/voley/assets/ataque.svg',
@@ -118,18 +160,25 @@ export class EditorComponent implements OnInit {
     Gorro: '/voley/assets/bloqueoX.svg',
     EX: '/voley/assets/clown.svg',
   };
+  
+  // ===== Authentication =====
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   roles: string[] = [];
   username?: string;
 
+  // ===== ViewChild References =====
   @ViewChild('timelineRef', { static: false })
   timelineRef!: ElementRef<HTMLDivElement>;
   @ViewChild('playerContainer', { static: false })
   playerContainerRef!: ElementRef<HTMLDivElement>;
+
+  // ===== Mouse/Video Timeline Properties =====
   hoveredTime: number | null = null;
   isDragging = false;
+
+  // ===== YouTube Player Properties =====
   player: YT.Player | undefined;
   currentTime: number = 0;
   duration: number = 0;
@@ -137,43 +186,46 @@ export class EditorComponent implements OnInit {
   currentPlaybackRate = 1;
   play = false;
   isFullScreen = false;
-  datosDePartido: any;
   isMuted: boolean = false;
-  // video quality/resolution support
+  
+  // ===== Video Quality Support =====
   availableQualities: string[] = [];
   currentQuality: string = '';
-  // internal monitor id for watching eventos against currentTime
-  private _eventMonitor: any = null;
-  // event-driven monitor state: active when we want to evaluate on time changes
+
+  // ===== Match Data Properties =====
+  datosDePartido: MatchDetails | null = null;
+
+  // ===== Event Monitor Internal State =====
+  private _eventMonitor: NodeJS.Timeout | null = null;
   private _eventMonitorActive: boolean = false;
-  // last checked time used to detect backward seeks
   private _lastCheckedTime: number | null = null;
-  // layout toggle: when true the right-overlay is shown and the left annotation toolbar is hidden
+
+  // ===== Layout & Navigation =====
   useRightOverlay: boolean = false;
-  // Collapsible aside state: pinned = always open, hovering = temporary open
   asidePinned: boolean = false;
   asideHovering: boolean = false;
-  // Map toggle flags for quick action overlays (mapa = show map / heatmap etc.)
+  activeTab: 'editor' | 'resume' = 'editor';
+
+  // ===== Action Map Toggles =====
   mapaRece: boolean = false;
   mapaSaque: boolean = false;
   mapaAtaque: boolean = false;
-  // Use ASCII property name internally; UI label may show accented 'Colocación'
   mapaColocacion: boolean = false;
-  // Active top tab: 'editor' shows the main revisor UI, 'resume' shows the actions summary
-  activeTab: 'editor' | 'resume' = 'editor';
-  // YouTube fields
+
+  // ===== YouTube ID Management =====
   youtubeId: string | null = null;
   showYoutubeInput: boolean = false;
   youtubeInput: string = '';
-  // Style object for the pending annotation popup (positioning)
-  // Use `any` here to avoid strict index-signature mismatches from different shape objects (left/right/top)
-  pendingPopupStyle: any = null;
-  // hover popup state for showing existing annotation descriptions on hover
+
+  // ===== Popup Positioning Styles =====
+  pendingPopupStyle: PopupStyle | null = null;
+  hoverPopupStyle: PopupStyle | null = null;
   hoverAnnotationId: string | null = null;
-  hoverPopupStyle: any = null;
   hoverAnnotationDescription: string | null = null;
+
+  // ===== Temporal References & Combined Data =====
   tiempoReferencia: number = 0;
-  combinedData: any[] = [];
+  combinedData: ActionRegisterPayload[] = [];
   teamId: number = 0;
   setNumber: number = 0;
   
@@ -215,37 +267,43 @@ export class EditorComponent implements OnInit {
     }
     this.matchId = +this.route.snapshot.params['id'];
 
-    this.matchService.getMatchDetailsById(this.matchId).subscribe((match) => {
-      this.datosDePartido = match;
-      this.teamId = this.datosDePartido.equipoId;
-      console.log(this.datosDePartido, this.teamId);
-      this.loadMatchData();
+    this.matchService.getMatchDetailsById(this.matchId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((match: MatchDetails) => {
+        this.datosDePartido = match;
+        this.teamId = this.datosDePartido.equipoId ?? 0;
+        console.log(this.datosDePartido, this.teamId);
+        this.loadMatchData();
 
-     // Check localStorage for a saved reference for this match and apply it
-     try {
-       const raw = localStorage.getItem('editor.lastSavedReference');
-       if (raw) {
-         const saved = JSON.parse(raw);
-         if (saved && saved.matchId === this.matchId && saved.reference) {
-           console.log('[Editor] Applying saved reference from localStorage for match', this.matchId);
-           this.applySavedReference(saved.reference);
-         }
-       }
-     } catch (e) {
-       console.warn('[Editor] Failed to read saved reference from localStorage', e);
-     }
-    });
+        // Check localStorage for a saved reference for this match and apply it
+        try {
+          const raw = localStorage.getItem('editor.lastSavedReference');
+          if (raw) {
+            const saved = JSON.parse(raw);
+            if (saved && saved.matchId === this.matchId && saved.reference) {
+              console.log('[Editor] Applying saved reference from localStorage for match', this.matchId);
+              this.applySavedReference(saved.reference);
+            }
+          }
+        } catch (e) {
+          console.warn('[Editor] Failed to read saved reference from localStorage', e);
+        }
+      });
     // Fetch youtubeId for this match and decide whether to load the player or show input
     this.fetchYoutubeId();
 
     this.loadAnotaciones();
     console.log(this.matchId);
-    this.matchService.getPuntoxPunto(this.matchId).subscribe((events) => {
-      this.eventos = events;
-      console.log('Detalles del partido más reciente:', events);
-      this.loadCurrentEvent();
-      this.scoreBySet();
-    });
+    this.matchService.getPuntoxPunto(this.matchId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((events: MatchEventsBySet) => {
+        this.eventos = (events || []).map((set) =>
+          (set || []).map((item) => this.normalizeEvent(item))
+        );
+        console.log('Detalles del partido más reciente:', events);
+        this.loadCurrentEvent();
+        this.scoreBySet();
+      });
     this.loadActions();
 
     // Restore aside pinned state from localStorage
@@ -315,26 +373,28 @@ export class EditorComponent implements OnInit {
       this.currentEvent =
         this.eventos[this.currentSetIndex][this.currentEventIndex];
     } else {
-      this.currentEvent = {
+      this.currentEvent = this.normalizeEvent({
+        id: 0,
+        eventId: 0,
+        matchId: this.matchId,
+        playerId: 0,
+        faultType: '',
         scoreLocal: 0,
         scoreVisitor: 0,
         setsLocal: 0,
         setsVisitor: 0,
-      };
+      });
     }
   }
+  
   scoreBySet() {
-    this.scorBySet = this.eventos.map((set: any[], index: number) => ({
+    this.scorBySet = this.eventos.map((set: MatchEventDetail[], index: number) => ({
       set: index + 1,
       scores: set.map(
-        (item: {
-          scoreLocal: number;
-          scoreVisitor: number;
-          event: { isSuccess: boolean };
-        }) => ({
+        (item: MatchEventDetail) => ({
           scoreLocal: item.scoreLocal,
           scoreVisitor: item.scoreVisitor,
-          isSuccess: item.event.isSuccess, // Accediendo a event dentro de cada item
+          isSuccess: item.event?.isSuccess ?? item.isSuccess ?? false,
         })
       ),
     }));
@@ -355,29 +415,31 @@ export class EditorComponent implements OnInit {
   }
 
   loadCanvasAnnotations() {
-    this.annotationService.getAnnotationsByMatch(this.matchId).subscribe(
-      (canvasAnnotations) => {
-        // Mapear el formato backend al formato local del canvas
-        this.anotaciones = canvasAnnotations.map((ann) => ({
-          id: ann.annotation_id || `annotation-${ann.id}`,
-          type: ann.type as AnnotationType,
-          timestamp: ann.timestamp,
-          visible: ann.visible,
-          color: ann.color || '#3B82F6',
-          opacity: ann.opacity ?? 1,
-          strokeWidth: ann.strokeWidth,
-          data: ann.data,
-          description:
-            ann.description ?? (ann.data && ann.data.description) ?? undefined,
-          dbId: ann.id, // Store backend database ID for deletion
-        }));
-        console.log('[Editor] Canvas annotations loaded:', this.anotaciones);
-      },
-      (error) => {
-        console.error('[Editor] Error loading canvas annotations:', error);
-        this.anotaciones = [];
-      }
-    );
+    this.annotationService.getAnnotationsByMatch(this.matchId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (canvasAnnotations: CanvasAnnotationResponse[]) => {
+          // Mapear el formato backend al formato local del canvas
+          this.anotaciones = canvasAnnotations.map((ann) => ({
+            id: ann.annotation_id || `annotation-${ann.id}`,
+            type: ann.type as AnnotationType,
+            timestamp: ann.timestamp,
+            visible: ann.visible,
+            color: ann.color || '#3B82F6',
+            opacity: ann.opacity ?? 1,
+            strokeWidth: ann.strokeWidth,
+            data: ann.data,
+            description:
+              ann.description ?? (ann.data && ann.data.description) ?? undefined,
+            dbId: ann.id, // Store backend database ID for deletion
+          }));
+          console.log('[Editor] Canvas annotations loaded:', this.anotaciones);
+        },
+        (error) => {
+          console.error('[Editor] Error loading canvas annotations:', error);
+          this.anotaciones = [];
+        }
+      );
   }
 
   nextEvent(): void {
@@ -459,7 +521,7 @@ export class EditorComponent implements OnInit {
     }
     this.showAutocomplete = showAutocomplete;
   }
-  selectUser(user: any): void {
+  selectUser(user: Player): void {
     const contentDiv = document.querySelector('.formatted-text') as HTMLElement;
     const text = contentDiv.innerHTML || '';
     const atIndex = text.lastIndexOf('@');
@@ -498,7 +560,8 @@ export class EditorComponent implements OnInit {
       this.filteredUsers = [];
     }
   }
-  addMention(user: any): void {
+  
+  addMention(user: Player): void {
     this.mentionedUsers.push(user);
     const words = this.annotationText.split(' ');
     words[words.length - 1] = `@${user.name}`;
@@ -523,27 +586,29 @@ export class EditorComponent implements OnInit {
     const annotation = this.annotationText;
     const mentions = this.mentionedUsers.map((user) => user.player_id);
     const currentTime = this.player?.getCurrentTime();
-    const eventId = this.currentEvent.id;
+    const eventId = this.currentEvent?.id;
 
     console.log('Texto completo:', annotation, currentTime);
     console.log('Menciones separadas:', mentions);
 
-    const annotationData = {
+    const annotationData: AnnotationSavePayload = {
       player_ids: mentions,
       nombre: annotation,
-      timestamp: currentTime,
-      eventId: eventId,
+      timestamp: currentTime ?? 0,
+      eventId: eventId ?? 0,
     };
 
-    this.matchService.postAnotaciones(annotationData).subscribe(
-      (response) => {
-        console.log('Anotación guardada con éxito:', response);
-        this.loadAnotaciones();
-      },
-      (error) => {
-        console.error('Error al guardar la anotación:', error);
-      }
-    );
+    this.matchService.postAnotaciones(annotationData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (response) => {
+          console.log('Anotación guardada con éxito:', response);
+          this.loadAnotaciones();
+        },
+        (error) => {
+          console.error('Error al guardar la anotación:', error);
+        }
+      );
   }
 
   scrollToTop() {
@@ -564,34 +629,39 @@ export class EditorComponent implements OnInit {
     console.log(this.currentEvent);
     const data = this.currentEvent;
 
-    this.matchService.editarEvento(data.id, data).subscribe(
-      (response: any) => {
-        console.log('Evento editado con éxito:', response);
-        // Store reference + matchId in localStorage so we can reapply later
-        try {
-          const payload = {
-            matchId: this.matchId,
-            reference: response,
-            savedAt: new Date().toISOString(),
-          };
-          localStorage.setItem('editor.lastSavedReference', JSON.stringify(payload));
-          console.log('[Editor] Saved reference to localStorage', payload);
-        } catch (e) {
-          console.warn('[Editor] Could not save reference to localStorage', e);
-        }
+    this.matchService.editarEvento(data?.id ?? 0, data as any)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (response: any) => {
+          console.log('Evento editado con éxito:', response);
+          // Store reference + matchId in localStorage so we can reapply later
+          try {
+            const payload = {
+              matchId: this.matchId,
+              reference: response,
+              savedAt: new Date().toISOString(),
+            };
+            localStorage.setItem('editor.lastSavedReference', JSON.stringify(payload));
+            console.log('[Editor] Saved reference to localStorage', payload);
+          } catch (e) {
+            console.warn('[Editor] Could not save reference to localStorage', e);
+          }
 
-        this.matchService.getPuntoxPunto(this.matchId).subscribe((events) => {
-          this.eventos = events;
-          console.log('Detalles del partido más reciente:', events);
-          this.loadCurrentEvent();
-          this.toggleAnotacionMode();
-        });
-      },
-      (error: any) => {
-        console.error('Error al editar el evento:', error);
-        // Aquí puedes manejar el error de la forma que prefieras
-      }
-    );
+          this.matchService.getPuntoxPunto(this.matchId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((events: MatchEventsBySet) => {
+              this.eventos = (events || []).map((set) =>
+                (set || []).map((item) => this.normalizeEvent(item))
+              );
+              console.log('Detalles del partido más reciente:', events);
+              this.loadCurrentEvent();
+              this.toggleAnotacionMode();
+            });
+        },
+        (error: any) => {
+          console.error('Error al editar el evento:', error);
+        }
+      );
   }
   previousEvent(): void {
     if (this.currentEventIndex > 0) {
@@ -603,23 +673,27 @@ export class EditorComponent implements OnInit {
     this.loadCurrentEvent();
   }
   loadMatchData() {
-    this.playerService.getAllTeamPlayers(this.teamId).subscribe((players) => {
-      console.log('Jugadores obtenidos:', players);
-      this.currentPlayers = players;
-      console.log('Jugadores obtenidos:', players);
-    });
-    this.matchService.getFaultTypes().subscribe(
-      (data) => {
-        console.log('Tipos de fallo antes de mapear:', data);
-        this.aciertos = data.successes;
-        this.fallos = data.faults;
-        console.log('Tipos de fallo:', this.aciertos, this.fallos);
-        // Puedes asignar los resultados a una variable y mostrarlos en tu interfaz de usuario
-      },
-      (error) => {
-        console.error('Error al obtener tipos de fallo:', error);
-      }
-    );
+    this.playerService.getAllTeamPlayers(this.teamId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((players: Player[]) => {
+        console.log('Jugadores obtenidos:', players);
+        this.currentPlayers = players;
+        console.log('Jugadores obtenidos:', players);
+      });
+    
+    this.matchService.getFaultTypes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (data: FaultTypeResponse) => {
+          console.log('Tipos de fallo antes de mapear:', data);
+          this.aciertos = data.successes;
+          this.fallos = data.faults;
+          console.log('Tipos de fallo:', this.aciertos, this.fallos);
+        },
+        (error) => {
+          console.error('Error al obtener tipos de fallo:', error);
+        }
+      );
   }
   selectEvent(setIndex: number, eventIndex: number): void {
     this.currentSetIndex = setIndex;
@@ -630,7 +704,7 @@ export class EditorComponent implements OnInit {
     this.scrollToTop();
   }
   openPlayerModal(id: number): void {
-    let selectedAction: any[] = [];
+    let selectedAction: ActionRating[] = [];
     let selectedActionName: string = '';
     const typeId = Number(id);
     switch (typeId) {
@@ -669,66 +743,72 @@ export class EditorComponent implements OnInit {
         allowKeyboard: true,
       },
     });
-    dialogRef.afterClosed().subscribe((selectedPlayer: any) => {
-      if (selectedPlayer) {
-        console.log('Jugador seleccionado:', selectedPlayer);
-        const dialogRef2 = this.dialog.open(EvaluarComponent, {
-          backdropClass: 'backdropBackground',
-          width: 'auto',
-          height: 'auto',
-          data: {
-            saque: selectedAction,
-          },
-        });
-        dialogRef2.afterClosed().subscribe((selectedRating: any) => {
-          if (this.mapaRece && id === 2) {
-            const dialogRef3 = this.dialog.open(ModalReceComponent, {
-              backdropClass: 'backdropBackground',
-              width: 'auto',
-              height: 'auto',
-            });
-            dialogRef3.afterClosed().subscribe((mapaData: any) => {
-              console.log('Datos del mapa de recepción:', mapaData);
-            });
-          }
-          if (selectedRating) {
-            console.log('Acción seleccionada:', selectedRating);
-            this.combinedData = [
-              {
-                player_id: selectedPlayer.player.player_id,
-                rating_id: selectedRating[0],
-                matchId: this.matchId,
-                action_type_id: id,
-                timestamp: this.currentTime,
-                teamId: this.teamId,
-              },
-            ];
-            console.log(
-              'Datos combinados:',
-              this.combinedData,
-              selectedPlayer.player.name,
-              selectedRating[2]
-            );
-            this.matchService
-              .postActionRegister(this.combinedData[0])
-              .subscribe(
-                (response) => {
-                  console.log(
-                    'Registro de acción guardado con éxito:',
-                    response
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((selectedPlayer: any) => {
+        if (selectedPlayer) {
+          console.log('Jugador seleccionado:', selectedPlayer);
+          const dialogRef2 = this.dialog.open(EvaluarComponent, {
+            backdropClass: 'backdropBackground',
+            width: 'auto',
+            height: 'auto',
+            data: {
+              saque: selectedAction,
+            },
+          });
+          dialogRef2.afterClosed()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((selectedRating: any) => {
+              if (this.mapaRece && id === 2) {
+                const dialogRef3 = this.dialog.open(ModalReceComponent, {
+                  backdropClass: 'backdropBackground',
+                  width: 'auto',
+                  height: 'auto',
+                });
+                dialogRef3.afterClosed()
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe((mapaData: any) => {
+                    console.log('Datos del mapa de recepción:', mapaData);
+                  });
+              }
+              if (selectedRating) {
+                console.log('Acción seleccionada:', selectedRating);
+                const actionPayload: ActionRegisterPayload = {
+                  player_id: selectedPlayer.player.player_id,
+                  rating_id: selectedRating[0],
+                  matchId: this.matchId,
+                  action_type_id: id,
+                  timestamp: this.currentTime,
+                  teamId: this.teamId,
+                };
+                this.combinedData = [actionPayload];
+                console.log(
+                  'Datos combinados:',
+                  this.combinedData,
+                  selectedPlayer.player.name,
+                  selectedRating[2]
+                );
+                this.matchService
+                  .postActionRegister(actionPayload)
+                  .pipe(takeUntil(this.destroy$))
+                  .subscribe(
+                    (response) => {
+                      console.log(
+                        'Registro de acción guardado con éxito:',
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.error(
+                        'Error al guardar el registro de acción:',
+                        error
+                      );
+                    }
                   );
-                },
-                (error) => {
-                  console.error(
-                    'Error al guardar el registro de acción:',
-                    error
-                  );
-                }
-              );
-          }
-        });
-      } // Aquí puedes manejar el jugador seleccionado
-    });
+              }
+            });
+        }
+      });
   }
   /** Quick action buttons handler (saque, recepcion, ataque, bloqueo) */
   onQuickAction(action: string) {
@@ -784,41 +864,46 @@ export class EditorComponent implements OnInit {
       return;
     }
 
-    this.matchService.getYoutubeId(this.matchId).subscribe(
-      (res) => {
-        this.youtubeId = res?.youtubeId ?? null;
-        if (!this.youtubeId) {
-          // Show input to allow user to add a youtubeId
+    this.matchService.getYoutubeId(this.matchId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res: YoutubeIdResponse) => {
+          this.youtubeId = res?.youtubeId ?? null;
+          if (!this.youtubeId) {
+            // Show input to allow user to add a youtubeId
+            this.showYoutubeInput = true;
+          } else {
+            // We have a video id -> load YouTube API/player
+            this.showYoutubeInput = false;
+            this.loadYouTubeAPI();
+          }
+        },
+        (err) => {
+          console.error('[Editor] Error fetching youtubeId:', err);
+          // Fallback: allow manual entry
           this.showYoutubeInput = true;
-        } else {
-          // We have a video id -> load YouTube API/player
-          this.showYoutubeInput = false;
-          this.loadYouTubeAPI();
         }
-      },
-      (err) => {
-        console.error('[Editor] Error fetching youtubeId:', err);
-        // Fallback: allow manual entry
-        this.showYoutubeInput = true;
-      }
-    );
+      );
   }
 
   submitYoutubeId() {
     const id = (this.youtubeInput || '').trim();
     if (!id) return;
-    this.matchService.updateYoutubeId(this.matchId, id).subscribe(
-      (res) => {
-        console.log('[Editor] youtubeId saved:', res);
-        this.youtubeId = id;
-        this.showYoutubeInput = false;
-        // Load the player now that we have an id
-        this.loadYouTubeAPI();
-      },
-      (err) => {
-        console.error('[Editor] Error saving youtubeId:', err);
-      }
-    );
+    
+    this.matchService.updateYoutubeId(this.matchId, id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => {
+          console.log('[Editor] youtubeId saved:', res);
+          this.youtubeId = id;
+          this.showYoutubeInput = false;
+          // Load the player now that we have an id
+          this.loadYouTubeAPI();
+        },
+        (err) => {
+          console.error('[Editor] Error saving youtubeId:', err);
+        }
+      );
   }
   onPlayerReady(event: YT.PlayerEvent) {
     this.duration = this.player?.getDuration() ?? 0;
@@ -1309,14 +1394,14 @@ export class EditorComponent implements OnInit {
         const payload: any = response as any;
         const groups: any[] = payload && payload.groups ? payload.groups : [];
 
-        const mapRatings = (group: any) => {
+        const mapRatings = (group: any): ActionRating[] => {
           const ratings: any[] = group && group.ratings ? group.ratings : [];
           return ratings.map((r: any) => [
-            r.id,
-            r.symbol,
-            r.label,
-            r.description,
-          ]);
+            Number(r?.id ?? 0),
+            String(r?.symbol ?? ''),
+            String(r?.label ?? ''),
+            r?.description != null ? String(r.description) : undefined,
+          ] as ActionRating);
         };
 
         this.saque = mapRatings(groups[0] || { ratings: [] });
@@ -1418,8 +1503,8 @@ export class EditorComponent implements OnInit {
     // attach description at top-level and inside data for compatibility
     const payloadToSend = {
       ...payload,
-      description: description ?? null,
-      data: { ...(payload.data || {}), description: description ?? null },
+      description: description ?? undefined,
+      data: { ...(payload.data || {}), description: description ?? undefined },
     };
 
     this.annotationService.createAnnotation(payloadToSend).subscribe(
@@ -1442,6 +1527,34 @@ export class EditorComponent implements OnInit {
         console.error('[Editor] Error saving annotation to DB:', error);
       }
     );
+  }
+
+  private normalizeEvent(raw: Partial<MatchEventDetail> | any): any {
+    return {
+      id: Number(raw?.id ?? 0),
+      eventId: Number(raw?.eventId ?? 0),
+      matchId: Number(raw?.matchId ?? this.matchId ?? 0),
+      playerId: Number(raw?.playerId ?? 0),
+      team: raw?.team,
+      playerName: raw?.playerName,
+      dorsal: raw?.dorsal,
+      faultType: String(raw?.faultType ?? ''),
+      faultTypeName: raw?.faultTypeName,
+      scoreLocal: Number(raw?.scoreLocal ?? 0),
+      scoreVisitor: Number(raw?.scoreVisitor ?? 0),
+      setsLocal: Number(raw?.setsLocal ?? 0),
+      setsVisitor: Number(raw?.setsVisitor ?? 0),
+      timestamp: raw?.timestamp,
+      actionType: raw?.actionType,
+      isSuccess: raw?.isSuccess,
+      event: {
+        isSuccess: Boolean(raw?.event?.isSuccess ?? raw?.isSuccess ?? false),
+        type: raw?.event?.type,
+      },
+      player: {
+        player_name: String(raw?.player?.player_name ?? raw?.playerName ?? ''),
+      },
+    };
   }
 
   saveAnnotationDescription() {
@@ -1847,7 +1960,12 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    // Clean up event monitor
     this.stopEventMonitor();
+    
+    // Unsubscribe from all observables
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**
