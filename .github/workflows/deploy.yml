@@ -17,7 +17,7 @@ jobs:
           node-version: 18
 
       - name: Instalar dependencias
-        run: npm install
+        run: npm ci
 
       - name: Build Angular
         run: npx ng build --base-href /voley/
