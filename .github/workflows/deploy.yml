@@ -7,20 +7,25 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Clonar repo
         uses: actions/checkout@v3
 
-      - name: Instalar Node
+      - name: Configurar Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'   # cache de node_modules para acelerar CI
+
+      - name: Limpiar cache npm (opcional pero seguro)
+        run: npm cache clean --force
 
       - name: Instalar dependencias
-        run: npm ci
+        run: npm ci --no-audit --no-fund
 
       - name: Build Angular
-        run: npx ng build --base-href /voley/
+        run: npx ng build --base-href /voley/ --configuration production
 
       - name: Configurar SSH
         run: |
@@ -29,8 +34,13 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy
+      - name: Deploy al servidor
         run: |
+          # Borrar carpeta anterior
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "rm -rf /var/www/nervagest/voley/*"
+          
+          # Subir build
           scp -r dist/lawea/browser/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/nervagest/voley/
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "systemctl restart nginx"
+          
+          # Reiniciar nginx
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "sudo systemctl restart nginx"
