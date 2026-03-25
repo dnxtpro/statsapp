@@ -1,130 +1,227 @@
 <div class="entero">
+    <!-- DEBUG PANEL -->
+    <div class="debug-panel">
+        <div class="debug-title">📊 DEBUG CONTROLS</div>
+        <div class="debug-row">
+            <span>Section: {{debugInfo.activeSection}}</span>
+        </div>
+        
+        <div class="slider-group">
+            <label>Scene X: {{debugInfo.manualX | number:'1.2-2'}}</label>
+            <input type="range" min="-50" max="50" step="0.1" 
+                   [value]="debugInfo.manualX" 
+                   (input)="onSliderChange('x', $event)" class="debug-slider">
+        </div>
+        
+        <div class="slider-group">
+            <label>Scene Y: {{debugInfo.manualY | number:'1.2-2'}}</label>
+            <input type="range" min="-20" max="5" step="0.1" 
+                   [value]="debugInfo.manualY" 
+                   (input)="onSliderChange('y', $event)" class="debug-slider">
+        </div>
+        
+        <div class="slider-group">
+            <label>Scene Z: {{debugInfo.manualZ | number:'1.2-2'}}</label>
+            <input type="range" min="-15" max="20" step="0.1" 
+                   [value]="debugInfo.manualZ" 
+                   (input)="onSliderChange('z', $event)" class="debug-slider">
+        </div>
+
+        <div class="slider-group">
+            <label>Cam X: {{debugInfo.manualCamX | number:'1.2-2'}}</label>
+            <input type="range" min="-80" max="80" step="0.1"
+                   [value]="debugInfo.manualCamX"
+                   (input)="onSliderChange('camX', $event)" class="debug-slider">
+        </div>
+
+        <div class="slider-group">
+            <label>Cam Y: {{debugInfo.manualCamY | number:'1.2-2'}}</label>
+            <input type="range" min="-30" max="30" step="0.1"
+                   [value]="debugInfo.manualCamY"
+                   (input)="onSliderChange('camY', $event)" class="debug-slider">
+        </div>
+
+        <div class="slider-group">
+            <label>Cam Z: {{debugInfo.manualCamZ | number:'1.2-2'}}</label>
+            <input type="range" min="-120" max="120" step="0.1"
+                   [value]="debugInfo.manualCamZ"
+                   (input)="onSliderChange('camZ', $event)" class="debug-slider">
+        </div>
+
+        <div class="debug-row">
+            <span>Cam: X: {{debugInfo.cameraX | number:'1.2-2'}} Y: {{debugInfo.cameraY | number:'1.2-2'}} Z: {{debugInfo.cameraZ | number:'1.2-2'}}</span>
+        </div>
+        <div class="debug-row">
+            <span>Scroll Y: {{debugInfo.scrollY | number:'1.0-0'}}</span>
+        </div>
+        <div class="debug-actions">
+            <button class="debug-btn" (click)="setManualOverride(true)">Manual ON</button>
+            <button class="debug-btn" (click)="setManualOverride(false)">Auto ON</button>
+            <span>Modo: {{manualOverride ? 'Manual' : 'Auto'}}</span>
+        </div>
+    </div>
+
     <header>
-        <div class="content-fit">
+        <div class="content-fit nav-content">
             <div class="logo">PIPE STATS</div>
             <nav>
                 <ul>
-                    <li>Iniciar Sesión</li>
-                    <li>Detalles</li>
-                    <li ><a (click)="scrollToLogin()">Login</a></li>
+                    <li><a (click)="scrollToSection('intro')">Funcionalidades</a></li>
+                    <li><a (click)="scrollToSection('description')">Demo</a></li>
+                    <li><a (click)="scrollToSection('final')">Casos de uso</a></li>
+                    <li><button class="mini-cta" (click)="scrollToLogin()">Solicitar demo</button></li>
                 </ul>
             </nav>
         </div>
     </header>
+
     <div class="cuerpo">
-    <div class="section" id="banner">
-        <div class="content-fit">
-            <div class="title1 mar" data-before="WEBSITEDESIGN">ESTADÍSTICAS PARA TU EQUIPO? </div>
-            <p>Si ya tienes cuenta, <a class="subrayado" (click)="scrollToLogin()">Inicia Sesión</a></p>
-        </div>
-      
-        
-    </div>
-     <div *ngIf="!isHorizontal" class="section" id="login">
-        <div class="content-fit2">
-            <div class="form-container2 responsive-form-container">
-                <p class="title">HOLA DE NUEVO, INICIAS SESIÓN</p>
-                <div *ngIf="!isRegister" class="logins">
-                    <app-login></app-login>
+        <div class="section" id="banner">
+            <div class="content-fit hero-wrap">
+                <div class="hero-card">
+                    <p class="hero-eyebrow">Plataforma SaaS para entrenadores y staff técnico de voleibol</p>
+                    <h1 class="title1">Analiza tus partidos en directo, sin perder tiempo.</h1>
+                    <p class="hero-subtitle">
+                        Registra cada punto, conecta estadísticas y vídeo, y comparte un resumen claro con tu staff.
+                    </p>
+
+                    <div class="hero-ctas">
+                        <button class="cta-primary" (click)="scrollToLogin()">Solicitar demo</button>
+                        <button class="cta-secondary" (click)="scrollToSection('description')">Ver demo (2 min)</button>
+                    </div>
+
+                    <div class="hero-metrics">
+                        <span>⚡ Captura en directo</span>
+                        <span>📊 Estadísticas por jugadora</span>
+                        <span>🎬 Clips sincronizados</span>
+                        <span>📄 Informe listo para compartir</span>
+                    </div>
+
+                    <p class="hero-login-link">
+                        ¿Ya tienes cuenta?
+                        <a class="subrayado" (click)="scrollToLogin()">Iniciar sesión</a>
+                    </p>
                 </div>
-                <div *ngIf="isRegister" class="registers">
-                    <app-register></app-register>
-                </div>
-                    <div class="social-message">
-                    <div class="line"></div>
-                  
-                    <div class="line"></div>
-                  </div>
-                  
-                  <p *ngIf="!isRegister" class="signup">
-                    ¿No tienes cuenta aún?
-                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
-                  </p>
-                  
-        
             </div>
         </div>
-    
-    </div>
-    
-    <div class="section" id="intro">
-        <div class="content-fit">
-            <div class="number">01</div>
-            <div class="des">
-                <div class="title1">CREA TU EQUIPO</div>
-                <p>Diseña tu equipo de forma sencilla. Añade a cada jugador con sus datos, posición y rol dentro del grupo. Podrás organizar tu plantilla como quieras, tenerla siempre a mano y preparar tus entrenamientos y partidos con toda la información bien estructurada.</p>
-            </div>
-        </div>
-    </div>
-    <div class="section" id="description">
-        <div class="content-fit">
-            <div class="number">02</div>
-            <div class="des">
-                <div class="title1">Graba tus estadísticas</div>
-                <p>Lleva el control de todo lo que ocurre en la pista. Anota puntos, errores, aciertos y acciones clave mientras el partido se desarrolla. La aplicación está pensada para que registrar estadísticas sea rápido, claro y práctico, sin perderte nada de lo que sucede en el juego.</p>
-            </div>
-        </div>
-        <img src="img/leaf1.png" class="decorate" alt="" style="width: 70vw; bottom: 0; right: 0; z-index: 101;">
-    </div>
-    <div class="section" id="final">
-        <div class="content-fit">
-            <div class="number">03</div>
-            <div class="des">
-                <div class="title1">VISUALIZA LOS RESULTADOS</div>
-                <p>Analiza el rendimiento de tu equipo de un vistazo. Obtén gráficos, informes y resúmenes que te ayudarán a ver la evolución de tus jugadores, identificar fortalezas y detectar aspectos a mejorar. Convierte los datos en información útil para crecer y competir mejor en cada encuentro.</p>
-            </div>
-        </div>
-    </div>
-    <div *ngIf="isHorizontal" class="section" id="login">
-        <div class="content-fit">
-            <div class="form-container responsive-form-container">
-                <p class="title">HOLA DE NUEVO, INICIA SESIÓN</p>
-                <div *ngIf="!isRegister" class="logins">
-                    <app-login></app-login>
+
+        <div class="section" id="intro">
+            <div class="content-fit block-wrap">
+                <div class="section-head">
+                    <span class="number">01</span>
+                    <div class="des">
+                        <h2 class="title1">Lo que ganas desde el primer partido</h2>
+                        <p>
+                            Entrena con evidencia, no solo con sensaciones. Flujo completo: partido → live → análisis.
+                        </p>
+                    </div>
                 </div>
-                <div *ngIf="isRegister" class="registers">
-                    <app-register></app-register>
+
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <h3>🏐 Registro live ultra rápido</h3>
+                        <p>Anota acciones en pocos clics durante el partido sin frenar al staff.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>📈 Lectura clara del rendimiento</h3>
+                        <p>Visualiza aciertos/fallos por jugadora y por set para decidir qué entrenar desde mañana.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>🎯 Análisis útil para el coaching</h3>
+                        <p>Convierte datos en líneas de trabajo concretas para cada rotación.</p>
+                    </article>
+                    <article class="feature-card">
+                        <h3>👥 Alineado para todo el staff</h3>
+                        <p>Comparte la misma referencia entre entrenador principal, asistente y analista de vídeo.</p>
+                    </article>
                 </div>
-                    <div class="social-message">
-                    <div class="line"></div>
-                  
-                    <div class="line"></div>
-                  </div>
-                  
-                  <p *ngIf="!isRegister" class="signup">
-                    ¿No tienes cuenta aún?
-                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
-                  </p>
-                  
-        
             </div>
         </div>
-    </div>
-    <div *ngIf="!isHorizontal" class="section" id="login">
-        <div class="content-fit2">
-            <div class="form-container2 responsive-form-container">
-                <p class="title">HOLA DE NUEVO, INICIAS SESIÓN</p>
-                <div *ngIf="!isRegister" class="logins">
-                    <app-login></app-login>
+
+        <div class="section" id="description">
+            <div class="content-fit block-wrap">
+                <div class="section-head">
+                    <span class="number">02</span>
+                    <div class="des">
+                        <h2 class="title1">Demo rápida: del punto al clip de vídeo</h2>
+                        <p>En menos de 2 minutos, muestra cómo tu staff pasa del evento live a una acción utilizable.</p>
+                    </div>
                 </div>
-                <div *ngIf="isRegister" class="registers">
-                    <app-register></app-register>
+
+                <div class="demo-layout">
+                    <div class="demo-preview">
+                        <p class="demo-label">Vista previa de la demo</p>
+                        <div class="demo-placeholder">
+                            <span>▶ Flujo: Live → Análisis → Clip → Informe</span>
+                        </div>
+                    </div>
+                    <div class="demo-copy">
+                        <h3>Muestra el valor en 5 minutos</h3>
+                        <p>Empieza por live, sigue con estadísticas por jugadora y termina con un clip sincronizado.</p>
+                        <button class="cta-primary" (click)="scrollToLogin()">Reservar demo completa</button>
+                    </div>
                 </div>
-                    <div class="social-message">
-                    <div class="line"></div>
-                  
-                    <div class="line"></div>
-                  </div>
-                  
-                  <p *ngIf="!isRegister" class="signup">
-                    ¿No tienes cuenta aún?
-                    <a rel="noopener noreferrer" (click)="register()" class="registerss">¡Regístrate!</a>
-                  </p>
-                  
-        
             </div>
         </div>
-    
+
+        <div class="section" id="final">
+            <div class="content-fit block-wrap">
+                <div class="section-head">
+                    <span class="number">03</span>
+                    <div class="des">
+                        <h2 class="title1">Pensado para cada rol en pista</h2>
+                        <p>Cada perfil ve lo que necesita, en el momento adecuado.</p>
+                    </div>
+                </div>
+
+                <div class="role-grid">
+                    <article class="role-card">
+                        <h3>Entrenador</h3>
+                        <p>Control live, decisiones de set y prioridades de entrenamiento.</p>
+                    </article>
+                    <article class="role-card">
+                        <h3>Club</h3>
+                        <p>Visión consolidada de equipos y seguimiento del progreso.</p>
+                    </article>
+                    <article class="role-card">
+                        <h3>Staff técnico</h3>
+                        <p>Análisis detallado, clips y preparación de sesiones.</p>
+                    </article>
+                </div>
+
+                <div class="final-cta-wrap">
+                    <p>¿Listo para transformar tu análisis de partido?</p>
+                    <button class="cta-primary" (click)="scrollToLogin()">Empezar ahora</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="login">
+            <div [ngClass]="isHorizontal ? 'content-fit' : 'content-fit2'">
+                <div [ngClass]="isHorizontal ? 'form-container' : 'form-container2'">
+                    <div class="login-head">
+                        <span class="login-badge">Acceso plataforma</span>
+                        <h2 class="login-title">Bienvenido. Inicia sesión para lanzar tu próximo análisis.</h2>
+                        <p class="login-subtitle">Accede a tus partidos, estadísticas y reportes en un solo lugar.</p>
+                    </div>
+                    <div *ngIf="!isRegister" class="logins">
+                        <app-login></app-login>
+                    </div>
+                    <div *ngIf="isRegister" class="registers">
+                        <app-register></app-register>
+                    </div>
+                    <div class="social-message login-divider">
+                        <div class="line"></div>
+                        <div class="line"></div>
+                    </div>
+                    <p *ngIf="!isRegister" class="signup login-signup">
+                        ¿Aún no tienes cuenta?
+                        <a rel="noopener noreferrer" (click)="register()" class="registerss">Crear cuenta</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="canvas-box"></canvas> 
     </div>
-    <canvas id="canvas-box" ></canvas>
 </div>

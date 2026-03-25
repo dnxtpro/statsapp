@@ -2,7 +2,7 @@
   
   (ngSubmit)="f.form.valid && onSubmit()"
   #f="ngForm"
-  class="form"
+  class="form login-form"
   novalidate
 >
   <div class="input-group">
@@ -10,8 +10,11 @@
     <input
       matInput
       type="text"
+      id="username"
       name="username"
       [(ngModel)]="form.username"
+      placeholder="Ingresa tu usuario"
+      autocomplete="username"
       required
       #username="ngModel"
     />
@@ -25,8 +28,11 @@
     <input
       matInput
       type="password"
+      id="password"
       name="password"
       [(ngModel)]="form.password"
+      placeholder="Ingresa tu contraseña"
+      autocomplete="current-password"
       required
       minlength="6"
       #password="ngModel"
@@ -41,7 +47,7 @@
     </mat-error>
   </div>
 
-  <button class="sign">
+  <button class="sign" [disabled]="isLoading">
     <span *ngIf="!isLoading">INICIAR SESIÓN</span>
     <div *ngIf="isLoading" class="dot-spinner">
       <div class="dot-spinner__dot"></div>

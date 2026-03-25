@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-  apiUrl: 'http://localhost:4001'
+  apiUrl: 'http://localhost:4001',
+  youtubeApiKey: ''
 };

@@ -550,7 +550,9 @@ export class MatchLiveComponent implements OnInit, DoCheck {
   loadSexteto() {
     this.faultTypeService.getPosiciones().subscribe(
       (positions) => {
-        this.selectedPlayers = positions;
+        if (Array.isArray(positions) && positions.length === 6) {
+          this.selectedPlayers = positions;
+        }
 
         console.log('gola', this.selectedPlayers);
       },

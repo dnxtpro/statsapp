@@ -1,0 +1,39 @@
+name: Deploy Angular
+
+on:
+push:
+branches: [ main ]
+
+jobs:
+deploy:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Clonar repo
+    uses: actions/checkout@v3
+
+  - name: Instalar Node
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
+
+  - name: Instalar dependencias
+    run: npm install
+
+  - name: Build Angular
+    run: npx ng build --base-href /voley/
+
+  - name: Configurar SSH
+    run: |
+      mkdir -p ~/.ssh
+      echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+      chmod 600 ~/.ssh/id_ed25519
+      ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+  - name: Deploy
+    run: |
+      ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "rm -rf /var/www/nervagest/voley/*"
+      scp -r dist/lawea/browser/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/var/www/nervagest/voley/
+      ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "systemctl restart nginx"
+```

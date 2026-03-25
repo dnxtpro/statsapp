@@ -142,11 +142,10 @@ export class MatchService {
     );
   }
   sendMatchEvent(event: MatchEvent): Observable<any> {
-    // Lógica para enviar el evento al backend
-    return this.http.post<any>(
-      `${environment.apiUrl}/api/send-match-event`,
-      event
-    );
+    return this.http.post<any>(`${environment.apiUrl}/api/matchevent/user`, {
+      matchEventData: event,
+      conSaque: true,
+    });
   }
   ultimoseventos(match1Id: number): Observable<any> {
     console.log(match1Id);
@@ -171,17 +170,15 @@ export class MatchService {
     );
   }
   getLatestMatch(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/latest-match`);
+    return this.http.get<any>(`${environment.apiUrl}/api/latest-match-details`);
   }
 
   getMatches(): Observable<Match[]> {
-    // Reemplaza la implementación actual con una solicitud GET al backend
-    return this.http.get<Match[]>(`${environment.apiUrl}/api/partido`);
+    return this.http.get<Match[]>(`${environment.apiUrl}/api/partidos/user`);
   }
 
   getMatchById(id: number): Observable<Match> {
-    // Reemplaza la implementación actual con una solicitud GET al backend por ID
-    return this.http.get<Match>(`${environment.apiUrl}/${id}`);
+    return this.http.get<Match>(`${environment.apiUrl}/api/partidos/${id}/details`);
   }
   
   /**

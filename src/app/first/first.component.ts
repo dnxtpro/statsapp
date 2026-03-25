@@ -27,6 +27,32 @@ export class FirstComponent implements OnInit {
   isRegister: boolean = false;
   isFormulario:boolean = false;
   isHorizontal: boolean = true;
+
+  debugInfo = {
+    cameraX: 0,
+    cameraY: 0,
+    cameraZ: 0,
+    sceneX: 0,
+    sceneY: 0,
+    sceneZ: 0,
+    sceneRotX: 0,
+    sceneRotY: 0,
+    sceneRotZ: 0,
+    scrollY: 0,
+    activeSection: 'banner',
+    camZoom: 0,
+    modelScale: 0,
+    manualX: 0,
+    manualY: 0,
+    manualZ: 0,
+    manualCamX: 0,
+    manualCamY: 0,
+    manualCamZ: 0
+  };
+
+  sceneRef: any = null;
+  cameraRef: any = null;
+  manualOverride: boolean = false;
   ngOnInit(): void {
     this.getDispositivo();
     this.createThreeJsBox();
@@ -196,7 +222,9 @@ export class FirstComponent implements OnInit {
           }
         });
         scene.add(model);
+        model.scale.set(0.5, 0.5, 0.5);
         model.position.set(0, -2.5, 0);
+        mesh.scale.set(0.5, 0.5, 0.5);
         mesh.position.set(0, -2.5, 0);
         console.log('Model loaded and added to scene:', model);
       },
@@ -206,41 +234,56 @@ export class FirstComponent implements OnInit {
       }
     );
 
+    // Store reference to scene for slider controls
+    this.sceneRef = scene;
+    this.cameraRef = camera;
+    this.debugInfo.manualX = scene.position.x;
+    this.debugInfo.manualY = scene.position.y;
+    this.debugInfo.manualZ = scene.position.z;
+    this.debugInfo.manualCamX = camera.position.x;
+    this.debugInfo.manualCamY = camera.position.y;
+    this.debugInfo.manualCamZ = camera.position.z;
+
     let arrPositionModel = [
       {
           id: 'banner',
-          position: {x: 0, y: -5, z: 0},
-          rotation: {x: 0, y: 0.5, z: 0},
-          ball: {x:0,y:2,z:0},
+        position: {x: -24.5, y: 1.5, z: 3.7},
+        rotation: {x: 0, y: 0.35, z: 0},
+        ball: {x:1.5,y:1.9,z:0},
+        camera: { x: -33.8, y: 5, z: -40 },
           zoom:{x:-40,y:5,z:20},
        
       },
       {
           id: "intro",
-          position: { x: 15, y: -5, z: 5 },
-          rotation: { x: 0, y: -0.5, z: 0 },
-          ball: {x:4.5,y:2.5,z:0},
+        position: { x: 24.95, y: -7.18, z: 6.77 },
+        rotation: { x: 0, y: -0.9, z: 0 },
+        ball: {x:4.5,y:1.8,z:0},
+        camera: { x: 20, y: 5, z: -40 },
           zoom:{x:-40,y:5,z:20},
       },
       {
           id: "description",
-          position: { x: -20, y: -5, z: -5 },
-          rotation: { x: 0, y: -1, z: 0 },
-          ball: {x:0,y:1,z:-3},
+        position: { x: -6.6, y: -7.58, z: -1.16 },
+        rotation: { x: 0, y: -1.2, z: 0 },
+        ball: {x:0,y:1.4,z:-3},
+        camera: { x: 20, y: 5, z: -40 },
           zoom:{x:-40,y:5,z:20},
       },
       {
           id: "final",
-          position: { x: 10, y: -5, z: -5 },
-          rotation: { x: 0, y: 0.5, z: 0 },
-          ball: {x:0,y:1.5,z:-9},
+        position: { x: -40.1, y: -8.52, z: -6.15 },
+        rotation: { x: 0, y: -1.05, z: 0 },
+        ball: {x:0,y:1.5,z:-9},
+        camera: { x: 20, y: 5, z: -40 },
           zoom:{x:-40,y:5,z:20},
       },
       {
           id: "login",
-          position: { x: -30, y: -7, z: -1 },
-          rotation: { x: 0, y: -1, z: 0 },
-          ball: {x:0,y:1,z:0},
+        position: { x: -10, y: -1.1, z: -13.1 },
+        rotation: { x: 0, y: -1.15, z: 0 },
+        ball: {x:0,y:1.2,z:0},
+        camera: { x: 1.9, y: 5, z: -40 },
           zoom:{x:-40,y:5,z:20},
       },
   ];
@@ -262,16 +305,39 @@ export class FirstComponent implements OnInit {
      * move();
      * ```
      */
+    let activeSectionId = 'banner';
+
     const move = ()=>{
       const sections = document.querySelectorAll('.section');
       const ball = scene.getObjectByName('ball');
       let currentSection: string | undefined;
+      const markerY = window.innerHeight * 0.58;
+
       sections.forEach((section)=>{
         const rect = section.getBoundingClientRect();
-        if(rect.top <= window.innerHeight/3){
+        if(rect.top <= markerY && rect.bottom >= markerY){
           currentSection=section.id;
         }
       });
+
+      if (!currentSection) {
+        currentSection = activeSectionId;
+      }
+      
+      // Update debug info
+      this.debugInfo.activeSection = currentSection || 'unknown';
+      this.debugInfo.scrollY = window.scrollY;
+
+      if (this.manualOverride) {
+        return;
+      }
+
+      if (currentSection === activeSectionId) {
+        return;
+      }
+
+      activeSectionId = currentSection;
+
       let position_active = arrPositionModel.findIndex(
        (val)=> val.id == currentSection
       );
@@ -281,32 +347,38 @@ export class FirstComponent implements OnInit {
                   x: new_coordinates.position.x,
                   y: new_coordinates.position.y,
                   z: new_coordinates.position.z,
-                  duration: 3,
-                  ease: "power1.out"
+                  duration: 2.2,
+                  ease: "power3.inOut",
+                  overwrite: 'auto'
               });
               gsap.to(scene.rotation, {
                   x: new_coordinates.rotation.x,
                   y: new_coordinates.rotation.y,
                   z: new_coordinates.rotation.z,
-                  duration: 3,
-                  ease: "power1.out"
+                  duration: 2.2,
+                  ease: "power3.inOut",
+                  overwrite: 'auto'
               })
               if (ball) {
                 gsap.to(ball.position, {
                   x: new_coordinates.ball.x,
                   y: new_coordinates.ball.y,
                   z: new_coordinates.ball.z,
-                  duration: 3,
-                  ease: "power1.out"
+                  duration: 2.2,
+                  ease: "power3.inOut",
+                  overwrite: 'auto'
                 });
               }
-                // gsap.to(camera.position, {
-                //   x: new_coordinates.zoom.x,
-                //   y: new_coordinates.zoom.y,
-                //   z: new_coordinates.zoom.z,
-                // duration: 3,
-                // ease: "power1.out"
-                // });
+              if (new_coordinates.camera) {
+                gsap.to(camera.position, {
+                  x: new_coordinates.camera.x,
+                  y: new_coordinates.camera.y,
+                  z: new_coordinates.camera.z,
+                  duration: 2.2,
+                  ease: "power3.inOut",
+                  overwrite: 'auto'
+                });
+              }
                 
   
     }
@@ -317,6 +389,28 @@ export class FirstComponent implements OnInit {
       velocity += gravity * delta;
       velocity2 += 0.2 * delta;
       const ball = scene.getObjectByName('ball');
+      
+      // Update debug info every frame
+      this.debugInfo.cameraX = camera.position.x;
+      this.debugInfo.cameraY = camera.position.y;
+      this.debugInfo.cameraZ = camera.position.z;
+      this.debugInfo.sceneX = scene.position.x;
+      this.debugInfo.sceneY = scene.position.y;
+      this.debugInfo.sceneZ = scene.position.z;
+      this.debugInfo.sceneRotX = scene.rotation.x;
+      this.debugInfo.sceneRotY = scene.rotation.y;
+      this.debugInfo.sceneRotZ = scene.rotation.z;
+      this.debugInfo.camZoom = camera.zoom;
+
+      if (!this.manualOverride) {
+        this.debugInfo.manualX = scene.position.x;
+        this.debugInfo.manualY = scene.position.y;
+        this.debugInfo.manualZ = scene.position.z;
+      }
+
+      this.debugInfo.manualCamX = camera.position.x;
+      this.debugInfo.manualCamY = camera.position.y;
+      this.debugInfo.manualCamZ = camera.position.z;
       
       // if(!this.isAnimating){
       //   camera.position.z+= -0.5* delta * delta;
@@ -372,19 +466,79 @@ export class FirstComponent implements OnInit {
         // console.log({bee})
           move();
       }
-  })
+      // Update scroll info for debug
+      this.debugInfo.scrollY = window.scrollY;
+    })
+
+    move();
 
     console.log('Animation started');
   }
   register(){
     this.isRegister=true;
   }
+
+  onSliderChange(axis: string, event: any) {
+    const value = parseFloat(event.target.value);
+
+    if (axis === 'x' || axis === 'y' || axis === 'z') {
+      this.manualOverride = true;
+      gsap.killTweensOf(this.sceneRef?.position);
+    }
+    
+    if (this.sceneRef) {
+      switch(axis) {
+        case 'x':
+          this.sceneRef.position.x = value;
+          this.debugInfo.manualX = value;
+          break;
+        case 'y':
+          this.sceneRef.position.y = value;
+          this.debugInfo.manualY = value;
+          break;
+        case 'z':
+          this.sceneRef.position.z = value;
+          this.debugInfo.manualZ = value;
+          break;
+        case 'camX':
+          if (this.cameraRef) {
+            this.cameraRef.position.x = value;
+            this.debugInfo.manualCamX = value;
+          }
+          break;
+        case 'camY':
+          if (this.cameraRef) {
+            this.cameraRef.position.y = value;
+            this.debugInfo.manualCamY = value;
+          }
+          break;
+        case 'camZ':
+          if (this.cameraRef) {
+            this.cameraRef.position.z = value;
+            this.debugInfo.manualCamZ = value;
+          }
+          break;
+      }
+    }
+  }
+
+  setManualOverride(enabled: boolean) {
+    this.manualOverride = enabled;
+  }
+
   sceneMove()
      {}
   scrollToLogin() {
     const loginSection = document.getElementById('login');
     if (loginSection) {
       loginSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  scrollToSection(sectionId: string) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
     }
   }
 

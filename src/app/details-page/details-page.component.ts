@@ -176,6 +176,7 @@ export class DetailsPageComponent implements OnInit {
   detalles: any[] = [];
   eficaciaSaque: Saque[] = [];
   eficaciaSaqueChartData: any[] = []; // <-- Añade esta propiedad para la gráfica
+  setTrendData: any[] = [];
 
   constructor(
     private matchService: MatchService,
@@ -456,7 +457,7 @@ export class DetailsPageComponent implements OnInit {
       domain: ['#2C7C2F', '#FF0000'], // Colores personalizados
     };
     this.colorScheme3 = {
-    domain: ['#114a48', '#9c2e7b']
+    domain: ['#22d3ee', '#f59e0b']
   };
     this.currentUser = this.storageService.getUser();
     // Mostrar inicialmente los aciertos
@@ -506,6 +507,7 @@ export class DetailsPageComponent implements OnInit {
                 this.matchDetails,
                 this.players
               );
+              this.setTrendData = this.prepararTendenciaPorSet(this.setsData);
               this.showSet(1);
             });
         });
@@ -664,5 +666,55 @@ export class DetailsPageComponent implements OnInit {
       value: item.aciertos_count
     }));
     
+  }
+
+  prepararTendenciaPorSet(sets: any[]): any[] {
+    const positiveSeries: { name: string; value: number }[] = [];
+    const negativeSeries: { name: string; value: number }[] = [];
+
+    const orderedSets = [...sets].sort((firstSet, secondSet) => firstSet.setNumber - secondSet.setNumber);
+
+    orderedSets.forEach((set) => {
+      const playersInSet = Object.keys(set.data || {});
+      let positiveTotal = 0;
+      let negativeTotal = 0;
+
+      playersInSet.forEach((playerName) => {
+        const playerStats = set.data[playerName] || {};
+
+        this.columnasAciertos.forEach((columnName) => {
+          positiveTotal += Number(playerStats[columnName] || 0);
+        });
+
+        this.columnasFallos.forEach((columnName) => {
+          negativeTotal += Number(playerStats[columnName] || 0);
+        });
+      });
+
+      const totalActions = positiveTotal + negativeTotal;
+      const positiveEfficiency = totalActions > 0 ? Number(((positiveTotal / totalActions) * 100).toFixed(2)) : 0;
+      const negativeEfficiency = totalActions > 0 ? Number(((negativeTotal / totalActions) * 100).toFixed(2)) : 0;
+
+      positiveSeries.push({
+        name: `Set ${set.setNumber}`,
+        value: positiveEfficiency,
+      });
+
+      negativeSeries.push({
+        name: `Set ${set.setNumber}`,
+        value: negativeEfficiency,
+      });
+    });
+
+    return [
+      {
+        name: 'Eficacia Positiva',
+        series: positiveSeries,
+      },
+      {
+        name: 'Eficacia Negativa',
+        series: negativeSeries,
+      },
+    ];
   }
 }

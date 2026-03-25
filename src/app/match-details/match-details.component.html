@@ -1,119 +1,112 @@
-<div class="container-fluid ">
-  <div class="row">
-    
-
-    <div class="col-12 d-flex flex-row justify-content-center flex-wrap gap-3 mb-4">
-      <mat-button-toggle-group
-        multiple
-        (change)="onCheckboxChange($event)"
-        class="d-flex flex-row flex-wrap gap-3"
-      >
-        <mat-button-toggle
-          *ngFor="let team of teamKeys"
-          [value]="team"
-          class="mat-button-toggle"
-        >
-          {{ team }}
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+<div class="match-details-page">
+  <section class="toolbar-card">
+    <div class="toolbar-head">
+      <h1>Partidos registrados</h1>
+      <p>Consulta, filtra y gestiona tus partidos de forma rápida.</p>
     </div>
-  </div>
-  <div class="row justify-content-center">
 
-    <div
-      class=""
-      *ngIf="previousMatches.length > 0; else noMatchesTemplate"
-    >
-      <div
-        class="d-flex flex-column"
-        *ngFor="let category of filteredData | keyvalue"
+    <div class="toolbar-meta">
+      <span class="meta-pill">Equipos: {{ teamKeys.length }}</span>
+      <span class="meta-pill">Partidos: {{ previousMatches.length }}</span>
+      <button
+        *ngIf="selectedTeams.length > 0"
+        class="clear-filter-btn"
+        (click)="selectedTeams = []; filterByTeams()"
       >
-      <div class="cat">
-        <div class="categorias"></div>
+        Limpiar filtros
+      </button>
+    </div>
+
+    <mat-button-toggle-group
+      multiple
+      (change)="onCheckboxChange($event)"
+      class="team-toggle-group"
+    >
+      <mat-button-toggle
+        *ngFor="let team of teamKeys"
+        [value]="team"
+        class="team-toggle"
+      >
+        {{ team }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </section>
+
+  <section *ngIf="previousMatches.length > 0; else noMatchesTemplate" class="categories-stack">
+    <article class="category-block" *ngFor="let category of filteredData | keyvalue">
+      <div class="category-header">
         <h2>{{ category.key }}</h2>
+        <span class="category-count">{{ category.value.length }} partidos</span>
       </div>
-        
-        <div class="match-card-container">
-          <mat-card
-            class="mb-5 px-2 d-flex justify-content-center"
-            *ngFor="let match of category.value; let i = index"
-          >
-           
-              <mat-card-header>
-                <h3>{{ match.rivalTeam }}:</h3>
-                
-              </mat-card-header>
-              <mat-card-content>
-                <mat-list>
-                  <mat-list-item
-                    ><span matListItemTitle class="fw-bold">Equipo Local:</span>
-                    <span matListItemLine>
-                      {{ match.equipo_local }}
-                    </span>
-                  </mat-list-item>
-                  <mat-list-item
-                    ><span matListItemTitle class="fw-bold">Rival Team:</span>
-                    <span matListItemLine>
-                      {{ match.rivalTeam }}
-                    </span>
-                  </mat-list-item>
-                  <mat-list-item
-                    ><span matListItemTitle class="fw-bold">Date:</span>
-                    <span matListItemLine>
-                      {{ match.date | date : "fullDate" }}
-                    </span>
-                    </mat-list-item
-                  >
-                  <mat-list-item
-                    ><span matListItemTitle class="fw-bold">Location:</span>
-                    <span matListItemLine>
-                      {{ match.location }}
-                    </span>
-                  </mat-list-item>
-                  
-                </mat-list>
-              </mat-card-content>
-              <mat-card-footer>
-                <div class="button-row">
-                  <button
-                    class="button button-primary"
-                    [routerLink]="['/match-details', match.id]"
-                  >
-                    <mat-icon>visibility</mat-icon>Ver Detalles
-                  </button>
-                  <button
-                    *ngIf="showModeratorBoard"
-                    class="button button-secondary"
-                    [routerLink]="['/editor', match.id]"
-                  >
-                    <mat-icon>edit</mat-icon>Editar 
-                  </button>
-                  <button
-                    *ngIf="!showModeratorBoard"
-                    class="button button-secondary"
-                    [routerLink]="['/editor', match.id]"
-                  >
-                    <mat-icon>edit</mat-icon>Ver Anotaciones
-                  </button>
-                  <button
-                  *ngIf="showModeratorBoard"
-                      
-                      class="button-outline button button-full-width"
-                      (click)="deleteMatch(match.id)"
-                    >
-                      <mat-icon>delete</mat-icon>Borrar
-                    </button>
-                </div>
-              </mat-card-footer>
-            </mat-card>
-          </div>
-        </div>
+
+      <div class="match-card-container">
+        <mat-card class="match-card" *ngFor="let match of category.value; let i = index">
+          <mat-card-header class="match-card-header">
+            <mat-card-title>{{ match.equipo_local }} vs {{ match.rivalTeam }}</mat-card-title>
+            <mat-card-subtitle>{{ match.date | date : "fullDate" }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="match-meta-grid">
+              <div class="meta-item">
+                <span>Equipo local</span>
+                <strong>{{ match.equipo_local }}</strong>
+              </div>
+              <div class="meta-item">
+                <span>Rival</span>
+                <strong>{{ match.rivalTeam }}</strong>
+              </div>
+              <div class="meta-item">
+                <span>Fecha</span>
+                <strong>{{ match.date | date : "mediumDate" }}</strong>
+              </div>
+              <div class="meta-item">
+                <span>Ubicación</span>
+                <strong>{{ match.location || 'No definida' }}</strong>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-footer>
+            <div class="button-row">
+              <button class="button button-primary" [routerLink]="['/match-details', match.id]">
+                <mat-icon>visibility</mat-icon>Ver Detalles
+              </button>
+
+              <button
+                *ngIf="showModeratorBoard"
+                class="button button-secondary"
+                [routerLink]="['/editor', match.id]"
+              >
+                <mat-icon>edit</mat-icon>Editar
+              </button>
+
+              <button
+                *ngIf="!showModeratorBoard"
+                class="button button-secondary"
+                [routerLink]="['/editor', match.id]"
+              >
+                <mat-icon>edit</mat-icon>Ver Anotaciones
+              </button>
+
+              <button
+                *ngIf="showModeratorBoard"
+                class="button button-outline button-full-width"
+                (click)="deleteMatch(match.id)"
+              >
+                <mat-icon>delete</mat-icon>Borrar
+              </button>
+            </div>
+          </mat-card-footer>
+        </mat-card>
       </div>
-    
-    <ng-template #noMatchesTemplate>
-      <p class="col-4 text-center alert-heading alert alert-info">
-        No previous matches found.
-      </p>
-    </ng-template>
-  </div>
+    </article>
+  </section>
+
+  <ng-template #noMatchesTemplate>
+    <div class="empty-state">
+      <h3>No hay partidos anteriores</h3>
+      <p>Cuando registres nuevos partidos, aparecerán aquí automáticamente.</p>
+    </div>
+  </ng-template>
 </div>

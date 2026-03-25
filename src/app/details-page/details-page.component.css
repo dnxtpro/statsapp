@@ -1,150 +1,238 @@
 
+.details-page {
+  width: min(1320px, 95vw);
+  margin: 1.4rem auto 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
+.hero-panel,
+.table-card,
+.summary-card,
+.chart-card {
+  background: linear-gradient(130deg, rgba(7, 31, 49, 0.92), rgba(9, 42, 65, 0.9));
+  border: 1px solid rgba(161, 208, 236, 0.22);
+  border-radius: 1rem;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+}
 
-::ng-deep .ngx-charts-bar {
-    opacity: 0; /* Opacidad por defecto */
-  }
-  
-  ::ng-deep .ngx-charts-bar.active {
-    opacity: 1; 
-  }
-  .card{
-    max-width: 95%;
-  }
-  .card-body{
-    min-height:25vh ;
-  }
+.hero-panel {
+  padding: 1rem 1.1rem;
+}
 
-  .mat-table .mat-cell {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: 1em;
-    text-align: right;
-    font-weight: bold;
-    height:30px;
-    margin-bottom: 4%;
-  }
-  .mat-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .mat-mdc-form-field {
-    width: 100%;
-    max-width: 300px;
-  }
+.hero-panel h1 {
+  margin: 0;
+  color: #ecf8ff;
+  font-size: clamp(1.2rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+}
 
-  
-  .mat-mdc-header-cell {
-    font-weight: bold;
-    color:white !important;
-    text-transform: uppercase;
-    font-size: 0.9em;
-  }
-  .mat-mdc-header-row{
-    background-color: #001b30;
-    backdrop-filter: blur(4px);
-    color:white;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  .mat-column-jugador{
-    font-weight:600;
-  }
-  .mat-column-player_name{
-    font-weight:600;
-  }
-  
-  .mat-mdc-cell {
-    color: rgba(0, 0, 0, 0.87);
-  }
-  .respo{
-    max-width:100vw;
-  }
-  .cdk-column-jugador,.cdk-column-player_name,.sticky-column {
-    position: sticky;
-    left: 0;
-    z-index: 1;  /* Asegura que la columna fija quede encima de las otras columnas durante el scroll */
-  }
-  .sticky{  position: sticky;
-    left: 0; 
-  }
-  .hola{
- max-width: 100vw;
+.hero-panel p {
+  margin: 0.35rem 0 0.9rem;
+  color: #c6e3f5;
+}
 
-  }
-  
-  .mat-mdc-row:hover {
-    background-color: #eee9e9;
-  }
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 0.8rem;
+}
 
- .mat-column-positivo,.mat-column-positivo100,.mat-column-efpositiva{
- color: #114a48;
- }
- .mat-column-negativo,.mat-column-negativo100,.mat-column-efnegativa{
-  color: #9c2e7b;
- }
- .mat-mdc-cell{
-  text-align: center;
- }
- .mat-mdc-table{
+.meta-pill {
+  border: 1px solid rgba(169, 217, 246, 0.26);
+  background: rgba(13, 53, 82, 0.52);
+  color: #dcf2ff;
+  border-radius: 999px;
+  padding: 0.24rem 0.66rem;
+  font-size: 0.82rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.set-toggle-group {
+  border: none;
+  background: transparent;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.set-toggle-group .mat-button-toggle {
+  border: 1px solid rgba(147, 205, 239, 0.28);
+  color: #9cdcff;
+  background: rgba(12, 49, 76, 0.52);
+}
+
+.set-toggle-group .mat-button-toggle-checked {
+  background: linear-gradient(90deg, #0ea5e9, #0284c7);
+  color: white;
+  border-color: transparent;
+}
+
+.excel-btn {
+  background: linear-gradient(90deg, #22c55e, #16a34a) !important;
+  color: white !important;
+}
+
+.excel-btn mat-icon {
+  margin-right: 4px;
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.summary-card,
+.table-card,
+.chart-card {
+  padding: 0.85rem;
+}
+
+.table-head h2 {
+  margin: 0 0 0.7rem;
+  color: #dcf2ff;
+  font-size: clamp(1rem, 2vw, 1.24rem);
+}
+
+.table-wrap {
+  overflow: auto;
+  border-radius: 0.75rem;
+}
+
+.stats-table {
+  min-width: 780px;
   border-collapse: collapse;
- }
- .mat-button-toggle-group{
-  background-color: aliceblue;
- 
- }
-      
-       
-        .tables-container {
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
-        }
-        .table-wrapper {
-          width: 48%;
-          margin-bottom: 20px;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .table-wrapper.positive {
-          background-color: #e8f5e9;
-        }
-        .table-wrapper.negative {
-          background-color: #ffebee;
-        }
-        .table-title {
-          text-align: center;
-          padding: 15px;
-          margin: 0;
-          font-size: 1.2em;
-        }
-        .table-wrapper.positive,.table-title {
-          background-color: #4CAF50;
-          color: white;
-        }
-        .table-wrapper.negative,.table-title {
-          background-color: #F44336;
-          color: white;
-        }
-      
-        .table-wrapper.positive{
-          background-color: #c8e6c9;
-          color: #2e7d32;
-        }
-        .table-wrapper.negative {
-          background-color: #ffcdd2;
-          color: #c62828;
-        }
-        .table{
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-        @media (max-width: 768px) {
-          .table-wrapper {
-            width: 100%;
-          }
-        }
-.advance-pie-legend-wrapper{
-  width:50%:
+  background: rgba(246, 251, 255, 0.98);
+}
+
+.mat-mdc-header-row {
+  background: #0a2b45;
+}
+
+.mat-mdc-header-cell {
+  color: #ecf8ff !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.mat-mdc-cell {
+  color: #17374f;
+  text-align: center;
+  font-size: 0.88rem;
+  border-bottom: 1px solid rgba(173, 206, 229, 0.38);
+}
+
+.mat-mdc-row:hover {
+  background: rgba(160, 206, 232, 0.18);
+}
+
+.sticky-column,
+.cdk-column-jugador,
+.cdk-column-player_name {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #eef8ff;
+  font-weight: 700;
+}
+
+.mat-mdc-header-cell.sticky-column {
+  background: #0a2b45;
+}
+
+.value-positive {
+  color: #0e6b4f;
+  font-weight: 700;
+}
+
+.value-negative {
+  color: #8a2b65;
+  font-weight: 700;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.chart-card-wide {
+  grid-column: 1 / -1;
+}
+
+.chart-body {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 21, 35, 0.45);
+  border: 1px solid rgba(152, 205, 236, 0.16);
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+::ng-deep .ngx-charts text {
+  fill: #d8eeff !important;
+}
+
+::ng-deep .ngx-charts .pie-label text {
+  fill: #e6f5ff !important;
+  font-weight: 600;
+}
+
+::ng-deep .ngx-charts .legend-label-text,
+::ng-deep .ngx-charts .legend-title-text,
+::ng-deep .ngx-charts .legend-label {
+  color: #e6f5ff !important;
+  fill: #e6f5ff !important;
+}
+
+::ng-deep .advanced-pie-legend .total-value,
+::ng-deep .advanced-pie-legend .total-label {
+  color: #e6f5ff !important;
+}
+
+::ng-deep .ngx-charts .gridline-path {
+  stroke: rgba(199, 226, 245, 0.2) !important;
+}
+
+@media (max-width: 1100px) {
+  .tables-grid,
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-body {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .details-page {
+    width: 96vw;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .excel-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stats-table {
+    min-width: 700px;
+  }
 }
